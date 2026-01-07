@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User model for authentication
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  projects Project[]
+
+  @@map("users")
+}
+
+// Project model
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  cursorKey   String?  // Cursor密钥
+  uuid        String   @unique @default(cuid())
+  status      String   @default("active") // active, hidden
+  description String?
+  // AI execution status fields
+  aiStatus    String?  @default("idle") // idle, running, success, failed, warning
+  aiCommand   String?  // Current/last AI command executed
+  aiResult    String?  // Execution result or error message
+  aiDuration  Int?     // Execution time in milliseconds
+  aiStartedAt DateTime? // When current AI execution started
+  aiCompletedAt DateTime? // When AI execution completed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+
+  @@map("projects")
+}
+
+// Task model
+model Task {
+  id        String   @id @default(cuid())
+  title     String
+  status    String   @default("pending") // pending, in_progress, completed
+  priority  Int      @default(3) // 1-5, 1 is highest priority
+  order     Int?     // For drag-and-drop ordering
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("tasks")
+}
+

@@ -1,0 +1,189 @@
+import express from 'express'
+import cors from 'cors'
+import helmet from 'helmet'
+import { createServer } from 'http'
+import { Server } from 'socket.io'
+import { execSync } from 'child_process'
+import { prisma } from './lib/prisma.js'
+import { serverConfig, databaseConfig } from './config/database.js'
+
+// Import routes
+import authRoutes from './routes/auth.js'
+import projectRoutes from './routes/projects.js'
+import taskRoutes from './routes/tasks.js'
+import { ResponseUtil } from './lib/response.js'
+
+// Database connection test
+async function testDatabaseConnection() {
+  try {
+    await prisma.$connect()
+    await prisma.$queryRaw`SELECT 1`
+    return true
+  } catch (error) {
+    console.error(
+      'Database connection failed:',
+      error instanceof Error ? error.message : String(error)
+    )
+    return false
+  }
+}
+
+const app = express()
+const server = createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: serverConfig.corsOrigin,
+    methods: ['GET', 'POST'],
+  },
+})
+
+// Middleware
+app.use(helmet())
+app.use(express.json({ limit: '10mb', strict: false }))
+app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true)
+
+      // Allow localhost on any port during development
+      if (origin.startsWith('http://localhost:')) return callback(null, true)
+      if (origin.startsWith('http://127.0.0.1:')) return callback(null, true)
+
+      // Allow specific origins
+      const allowedOrigins = [
+        'http://localhost:5173',
+        'http://localhost:5176',
+        'http://127.0.0.1:5173',
+        'http://127.0.0.1:5176',
+      ]
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true)
+      }
+
+      return callback(new Error('Not allowed by CORS'))
+    },
+    credentials: true,
+  })
+)
+
+// Routes
+app.use('/api/auth', authRoutes)
+app.use('/api/projects', projectRoutes)
+app.use('/api/tasks', taskRoutes)
+
+// Basic health check
+app.get('/api/health', (req, res) => {
+  res.json(
+    ResponseUtil.success({
+      status: 'OK',
+      timestamp: new Date().toISOString(),
+    })
+  )
+})
+
+// Database health check
+app.get('/api/health/db', async (req, res) => {
+  try {
+    const isConnected = await testDatabaseConnection()
+    if (isConnected) {
+      res.json(
+        ResponseUtil.success({
+          status: 'OK',
+          database: 'connected',
+          timestamp: new Date().toISOString(),
+        })
+      )
+    } else {
+      res.status(503).json(ResponseUtil.internalError('数据库连接失败'))
+    }
+  } catch (error) {
+    res.status(503).json(ResponseUtil.internalError('数据库健康检查失败'))
+  }
+})
+
+// Socket.IO connection handling
+io.on('connection', (socket) => {
+  socket.on('disconnect', () => {
+    // Client disconnected
+  })
+
+  // AI status updates
+  socket.on('ai-status-update', (data) => {
+    // Broadcast to all connected clients
+    socket.broadcast.emit('ai-status-updated', data)
+  })
+})
+
+// Error handling middleware
+app.use(
+  (
+    err: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error('Server error:', err.message)
+    res.status(500).json(ResponseUtil.internalError('服务器内部错误'))
+  }
+)
+
+// Graceful shutdown
+let isShuttingDown = false
+
+async function gracefulShutdown(signal: string) {
+  if (isShuttingDown) return
+  isShuttingDown = true
+
+  console.log(`Shutting down gracefully (${signal})`)
+
+  try {
+    server.close(async () => {
+      try {
+        await prisma.$disconnect()
+        io.close(() => {
+          process.exit(0)
+        })
+      } catch (dbError) {
+        console.error(
+          'Database disconnect error:',
+          dbError instanceof Error ? dbError.message : String(dbError)
+        )
+        process.exit(1)
+      }
+    })
+
+    setTimeout(() => {
+      console.error('Force shutdown after timeout')
+      process.exit(1)
+    }, 10000)
+  } catch (error) {
+    console.error(
+      'Shutdown error:',
+      error instanceof Error ? error.message : String(error)
+    )
+    process.exit(1)
+  }
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'))
+process.on('SIGINT', () => gracefulShutdown('SIGINT'))
+
+// Try to start server with retry logic
+function startServer(retryCount = 0) {
+  server.listen(serverConfig.port, async () => {
+    console.log(`Server running on port ${serverConfig.port}`)
+    console.log(`Environment: ${serverConfig.nodeEnv}`)
+
+    // Test database connection on startup
+    const dbConnected = await testDatabaseConnection()
+    if (!dbConnected) {
+      console.warn('Database connection failed on startup')
+    }
+  })
+}
+
+startServer()
