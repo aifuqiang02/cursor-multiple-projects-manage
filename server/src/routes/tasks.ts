@@ -7,14 +7,22 @@ import { ResponseUtil } from '../lib/response.js';
 const router = express.Router();
 
 // Middleware to verify JWT
-const authenticateToken = (req: any, res: any, next: any) => {
+const authenticateToken = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const token = req.headers.authorization?.replace('Bearer ', '');
   if (!token) {
     return res.status(401).json(ResponseUtil.noToken());
   }
 
+  if (!jwtConfig.secret) {
+    console.error('JWT_SECRET not configured');
+    return res.status(500).json(ResponseUtil.internalError());
+  }
+
   try {
     const decoded = jwt.verify(token, jwtConfig.secret) as any;
+    if (!decoded.userId) {
+      return res.status(401).json(ResponseUtil.invalidToken());
+    }
     req.userId = decoded.userId;
     next();
   } catch (error) {
@@ -26,6 +34,9 @@ const authenticateToken = (req: any, res: any, next: any) => {
 router.get('/project/:projectId', authenticateToken, async (req, res) => {
   try {
     const { projectId } = req.params;
+    if (!projectId) {
+      return res.status(400).json(ResponseUtil.badRequest('Project ID is required'));
+    }
 
     // Verify project ownership
     const project = await prisma.project.findFirst({
@@ -91,6 +102,9 @@ router.post('/', authenticateToken, async (req, res) => {
 router.put('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
+    if (!id) {
+      return res.status(400).json(ResponseUtil.badRequest('Task ID is required'));
+    }
     const { title, status, priority, order } = req.body;
 
     // Find task and verify ownership through project
@@ -126,6 +140,9 @@ router.put('/:id', authenticateToken, async (req, res) => {
 router.delete('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
+    if (!id) {
+      return res.status(400).json(ResponseUtil.badRequest('Task ID is required'));
+    }
 
     // Find task and verify ownership through project
     const task = await prisma.task.findFirst({
@@ -154,6 +171,9 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 router.put('/:id/order', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
+    if (!id) {
+      return res.status(400).json(ResponseUtil.badRequest('Task ID is required'));
+    }
     const { order } = req.body;
 
     // Find task and verify ownership through project

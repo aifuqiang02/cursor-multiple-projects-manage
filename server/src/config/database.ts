@@ -8,8 +8,8 @@ export const databaseConfig = {
 }
 
 export const jwtConfig = {
-  secret: process.env.JWT_SECRET,
-  expire: process.env.JWT_EXPIRE,
+  secret: process.env.JWT_SECRET || 'fallback-secret-key-change-in-production',
+  expire: process.env.JWT_EXPIRE || '24h',
 }
 
 export const serverConfig = {

@@ -16,14 +16,22 @@ const projectInclude = {
 }
 
 // Middleware to verify JWT
-const authenticateToken = (req: any, res: any, next: any) => {
+const authenticateToken = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const token = req.headers.authorization?.replace('Bearer ', '')
   if (!token) {
     return res.status(401).json(ResponseUtil.noToken())
   }
 
+  if (!jwtConfig.secret) {
+    console.error('JWT_SECRET not configured')
+    return res.status(500).json(ResponseUtil.internalError())
+  }
+
   try {
     const decoded = jwt.verify(token, jwtConfig.secret) as any
+    if (!decoded.userId) {
+      return res.status(401).json(ResponseUtil.invalidToken())
+    }
     req.userId = decoded.userId
     next()
   } catch (error) {
@@ -74,6 +82,9 @@ router.post('/', authenticateToken, async (req, res) => {
 router.put('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params
+    if (!id) {
+      return res.status(400).json(ResponseUtil.badRequest('Project ID is required'))
+    }
     const { name, cursorKey, description, status } = req.body
 
     // Check if project belongs to user
@@ -110,6 +121,9 @@ router.put('/:id', authenticateToken, async (req, res) => {
 router.delete('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params
+    if (!id) {
+      return res.status(400).json(ResponseUtil.badRequest('Project ID is required'))
+    }
 
     // Check if project belongs to user
     const existingProject = await prisma.project.findFirst({
@@ -138,6 +152,9 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 router.get('/:id/details', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params
+    if (!id) {
+      return res.status(400).json(ResponseUtil.badRequest('Project ID is required'))
+    }
 
     const project = await prisma.project.findFirst({
       where: {
@@ -201,6 +218,9 @@ async function updateProjectAIStatus(
 // Update AI execution status for a project
 router.put('/:id/ai-status', authenticateToken, async (req, res) => {
   const { id } = req.params
+  if (!id) {
+    return res.status(400).json(ResponseUtil.badRequest('Project ID is required'))
+  }
   const { status, command, result, duration } = req.body
 
   const updateData: any = { aiStatus: status }
@@ -223,6 +243,9 @@ router.put('/:id/ai-status', authenticateToken, async (req, res) => {
 // Start AI execution for a project
 router.post('/:id/ai-status-start', async (req, res) => {
   const { id } = req.params
+  if (!id) {
+    return res.status(400).json(ResponseUtil.badRequest('Project ID is required'))
+  }
 
   const updateData = {
     aiStatus: 'running' as const,
@@ -236,6 +259,9 @@ router.post('/:id/ai-status-start', async (req, res) => {
 // Stop AI execution for a project
 router.post('/:id/ai-status-stop', async (req, res) => {
   const { id } = req.params
+  if (!id) {
+    return res.status(400).json(ResponseUtil.badRequest('Project ID is required'))
+  }
   const { status } = req.body // "completed" | "aborted" | "error"
 
   // Validate status
