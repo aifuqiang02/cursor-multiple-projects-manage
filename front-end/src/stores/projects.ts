@@ -1,6 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { projectService, type Project, type ProjectWithDetails, type CreateProjectData, type UpdateProjectData, type AIStatusUpdate } from '@/services/projects'
+import {
+  projectService,
+  type Project,
+  type ProjectWithDetails,
+  type CreateProjectData,
+  type UpdateProjectData,
+  type AIStatusUpdate,
+} from '@/services/projects'
 import { wsService } from '@/services/websocket'
 
 export const useProjectsStore = defineStore('projects', () => {
@@ -10,16 +17,12 @@ export const useProjectsStore = defineStore('projects', () => {
   const error = ref<string | null>(null)
 
   // Computed
-  const activeProjects = computed(() =>
-    projects.value.filter(p => p.status === 'active')
-  )
+  const activeProjects = computed(() => projects.value.filter((p) => p.status === 'active'))
 
-  const runningAIProjects = computed(() =>
-    projects.value.filter(p => p.aiStatus === 'running')
-  )
+  const runningAIProjects = computed(() => projects.value.filter((p) => p.aiStatus === 'running'))
 
   const totalTasks = computed(() =>
-    projects.value.reduce((sum, project) => sum + (project._count?.tasks || 0), 0)
+    projects.value.reduce((sum, project) => sum + (project._count?.tasks || 0), 0),
   )
 
   // Actions
@@ -36,6 +39,10 @@ export const useProjectsStore = defineStore('projects', () => {
       setLoading(true)
       setError(null)
       const data = await projectService.getProjects()
+      console.log('Fetched projects from backend:', data)
+      console.log('Total projects count:', data.length)
+      console.log('Active projects:', data.filter(p => p.status === 'active').length)
+      console.log('Hidden projects:', data.filter(p => p.status === 'hidden').length)
       projects.value = data
     } catch (err: any) {
       const message = err.response?.data?.error || 'Failed to fetch projects'
@@ -69,7 +76,7 @@ export const useProjectsStore = defineStore('projects', () => {
       const updatedProject = await projectService.updateProject(id, data)
 
       // Update in projects list
-      const index = projects.value.findIndex(p => p.id === id)
+      const index = projects.value.findIndex((p) => p.id === id)
       if (index !== -1) {
         projects.value[index] = { ...projects.value[index], ...updatedProject }
       }
@@ -94,7 +101,7 @@ export const useProjectsStore = defineStore('projects', () => {
       setLoading(true)
       setError(null)
       await projectService.deleteProject(id)
-      projects.value = projects.value.filter(p => p.id !== id)
+      projects.value = projects.value.filter((p) => p.id !== id)
 
       // Clear current project if it's the deleted one
       if (currentProject.value?.id === id) {
@@ -130,7 +137,7 @@ export const useProjectsStore = defineStore('projects', () => {
       const updatedProject = await projectService.updateAIStatus(id, data)
 
       // Update in projects list
-      const index = projects.value.findIndex(p => p.id === id)
+      const index = projects.value.findIndex((p) => p.id === id)
       if (index !== -1) {
         projects.value[index] = { ...projects.value[index], ...updatedProject }
       }
@@ -155,8 +162,8 @@ export const useProjectsStore = defineStore('projects', () => {
     try {
       const data = await projectService.getRunningAIProjects()
       // Update running status in projects list
-      data.forEach(runningProject => {
-        const index = projects.value.findIndex(p => p.id === runningProject.id)
+      data.forEach((runningProject) => {
+        const index = projects.value.findIndex((p) => p.id === runningProject.id)
         if (index !== -1) {
           projects.value[index].aiStatus = 'running'
         }
@@ -172,7 +179,7 @@ export const useProjectsStore = defineStore('projects', () => {
       const { projectId, ...statusData } = data
 
       // Update in projects list
-      const index = projects.value.findIndex(p => p.id === projectId)
+      const index = projects.value.findIndex((p) => p.id === projectId)
       if (index !== -1) {
         projects.value[index] = {
           ...projects.value[index],
@@ -180,8 +187,11 @@ export const useProjectsStore = defineStore('projects', () => {
           aiCommand: statusData.command,
           aiResult: statusData.result,
           aiDuration: statusData.duration,
-          aiStartedAt: statusData.status === 'running' ? new Date().toISOString() : projects.value[index].aiStartedAt,
-          aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null
+          aiStartedAt:
+            statusData.status === 'running'
+              ? new Date().toISOString()
+              : projects.value[index].aiStartedAt,
+          aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null,
         }
       }
 
@@ -193,8 +203,11 @@ export const useProjectsStore = defineStore('projects', () => {
           aiCommand: statusData.command,
           aiResult: statusData.result,
           aiDuration: statusData.duration,
-          aiStartedAt: statusData.status === 'running' ? new Date().toISOString() : currentProject.value.aiStartedAt,
-          aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null
+          aiStartedAt:
+            statusData.status === 'running'
+              ? new Date().toISOString()
+              : currentProject.value.aiStartedAt,
+          aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null,
         }
       }
     })
@@ -220,6 +233,6 @@ export const useProjectsStore = defineStore('projects', () => {
     fetchProjectDetails,
     updateAIStatus,
     fetchRunningAIProjects,
-    setupWebSocketListeners
+    setupWebSocketListeners,
   }
 })

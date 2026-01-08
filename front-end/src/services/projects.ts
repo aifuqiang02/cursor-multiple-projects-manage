@@ -7,7 +7,7 @@ export interface Project {
   uuid: string
   status: 'active' | 'hidden'
   description?: string
-  aiStatus?: 'idle' | 'running' | 'success' | 'failed' | 'warning'
+  aiStatus?: 'idle' | 'active' | 'running' | 'success' | 'failed' | 'warning'
   aiCommand?: string
   aiResult?: string
   aiDuration?: number
@@ -38,7 +38,7 @@ export interface UpdateProjectData {
 }
 
 export interface AIStatusUpdate {
-  status: 'idle' | 'running' | 'success' | 'failed' | 'warning'
+  status: 'idle' | 'active' | 'running' | 'success' | 'failed' | 'warning'
   command?: string
   result?: string
   duration?: number
@@ -47,17 +47,17 @@ export interface AIStatusUpdate {
 export const projectService = {
   async getProjects(): Promise<Project[]> {
     const response = await api.get('/projects')
-    return response.data.projects
+    return response.data.data
   },
 
   async createProject(data: CreateProjectData): Promise<Project> {
     const response = await api.post('/projects', data)
-    return response.data.project
+    return response.data.data
   },
 
   async updateProject(id: string, data: UpdateProjectData): Promise<Project> {
     const response = await api.put(`/projects/${id}`, data)
-    return response.data.project
+    return response.data.data
   },
 
   async deleteProject(id: string): Promise<void> {
@@ -77,5 +77,5 @@ export const projectService = {
   async getRunningAIProjects(): Promise<Project[]> {
     const response = await api.get('/projects/ai-status/running')
     return response.data.projects
-  }
+  },
 }

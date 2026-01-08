@@ -27,17 +27,17 @@ export interface UpdateTaskData {
 export const taskService = {
   async getTasksByProject(projectId: string): Promise<Task[]> {
     const response = await api.get(`/tasks/project/${projectId}`)
-    return response.data.tasks
+    return response.data.data
   },
 
   async createTask(data: CreateTaskData): Promise<Task> {
     const response = await api.post('/tasks', data)
-    return response.data.task
+    return response.data.data
   },
 
   async updateTask(id: string, data: UpdateTaskData): Promise<Task> {
     const response = await api.put(`/tasks/${id}`, data)
-    return response.data.task
+    return response.data.data
   },
 
   async deleteTask(id: string): Promise<void> {
@@ -46,6 +46,6 @@ export const taskService = {
 
   async updateTaskOrder(id: string, order: number): Promise<Task> {
     const response = await api.put(`/tasks/${id}/order`, { order })
-    return response.data.task
-  }
+    return response.data.data
+  },
 }

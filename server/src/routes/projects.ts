@@ -50,13 +50,14 @@ router.get('/', authenticateToken, async (req, res) => {
 // Create project
 router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { name, cursorKey, description } = req.body
+    const { name, cursorKey, description, status } = req.body
 
     const project = await prisma.project.create({
       data: {
         name,
         cursorKey,
         description,
+        status: status || 'active', // 默认为active
         userId: req.userId,
       },
       include: projectInclude,

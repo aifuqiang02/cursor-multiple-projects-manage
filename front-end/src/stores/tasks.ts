@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { taskService, type Task, type CreateTaskData, type UpdateTaskData } from '@/services/tasks'
+import { useProjectsStore } from '@/stores/projects'
 
 export const useTasksStore = defineStore('tasks', () => {
   const tasks = ref<Task[]>([])
@@ -21,10 +22,14 @@ export const useTasksStore = defineStore('tasks', () => {
       setLoading(true)
       setError(null)
       const data = await taskService.getTasksByProject(projectId)
-      tasks.value = data
+      // Remove existing tasks for this project and add new ones
+      tasks.value = tasks.value.filter((task) => task.projectId !== projectId)
+      tasks.value.push(...data)
       return data
-    } catch (err: any) {
-      const message = err.response?.data?.error || 'Failed to fetch tasks'
+    } catch (err) {
+      const message =
+        (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
+        'Failed to fetch tasks'
       setError(message)
       throw err
     } finally {
@@ -38,9 +43,28 @@ export const useTasksStore = defineStore('tasks', () => {
       setError(null)
       const newTask = await taskService.createTask(data)
       tasks.value.unshift(newTask)
+
+      // Update task count in projects store
+      const projectsStore = useProjectsStore()
+      const projectIndex = projectsStore.projects.findIndex((p) => p.id === data.projectId)
+      if (projectIndex !== -1) {
+        const project = projectsStore.projects[projectIndex]
+        if (project) {
+          if (project._count) {
+            project._count.tasks += 1
+          } else {
+            project._count = { tasks: 1 }
+          }
+        }
+      }
+
       return newTask
-    } catch (err: any) {
-      const message = err.response?.data?.error || 'Failed to create task'
+    } catch (err) {
+      const message =
+        (err as { response?: { data?: { error?: string } }; message?: string })?.response?.data
+          ?.error ||
+        (err as { message?: string })?.message ||
+        'Failed to create task'
       setError(message)
       throw err
     } finally {
@@ -55,14 +79,16 @@ export const useTasksStore = defineStore('tasks', () => {
       const updatedTask = await taskService.updateTask(id, data)
 
       // Update in tasks list
-      const index = tasks.value.findIndex(t => t.id === id)
+      const index = tasks.value.findIndex((t) => t.id === id)
       if (index !== -1) {
         tasks.value[index] = updatedTask
       }
 
       return updatedTask
-    } catch (err: any) {
-      const message = err.response?.data?.error || 'Failed to update task'
+    } catch (err) {
+      const message =
+        (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
+        'Failed to update task'
       setError(message)
       throw err
     } finally {
@@ -74,10 +100,31 @@ export const useTasksStore = defineStore('tasks', () => {
     try {
       setLoading(true)
       setError(null)
+
+      // Get the task before deleting it to know which project it belongs to
+      const taskToDelete = tasks.value.find((t) => t.id === id)
+      const projectId = taskToDelete?.projectId
+
       await taskService.deleteTask(id)
-      tasks.value = tasks.value.filter(t => t.id !== id)
-    } catch (err: any) {
-      const message = err.response?.data?.error || 'Failed to delete task'
+      tasks.value = tasks.value.filter((t) => t.id !== id)
+
+      // Update task count in projects store
+      if (projectId) {
+        const projectsStore = useProjectsStore()
+        const projectIndex = projectsStore.projects.findIndex((p) => p.id === projectId)
+        if (projectIndex !== -1) {
+          const project = projectsStore.projects[projectIndex]
+          if (project && project._count && project._count.tasks > 0) {
+            project._count.tasks -= 1
+          }
+        }
+      }
+    } catch (err) {
+      const message =
+        (err as { response?: { data?: { error?: string } }; message?: string })?.response?.data
+          ?.error ||
+        (err as { message?: string })?.message ||
+        'Failed to delete task'
       setError(message)
       throw err
     } finally {
@@ -90,23 +137,30 @@ export const useTasksStore = defineStore('tasks', () => {
       const updatedTask = await taskService.updateTaskOrder(id, order)
 
       // Update in tasks list
-      const index = tasks.value.findIndex(t => t.id === id)
+      const index = tasks.value.findIndex((t) => t.id === id)
       if (index !== -1) {
         tasks.value[index] = updatedTask
       }
 
       return updatedTask
-    } catch (err: any) {
-      const message = err.response?.data?.error || 'Failed to update task order'
+    } catch (err) {
+      const message =
+        (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
+        'Failed to update task order'
       setError(message)
       throw err
     }
   }
 
+  // Clear all tasks (useful when switching projects)
+  const clearTasks = () => {
+    tasks.value = []
+  }
+
   // Computed properties for filtering
-  const pendingTasks = () => tasks.value.filter(t => t.status === 'pending')
-  const inProgressTasks = () => tasks.value.filter(t => t.status === 'in_progress')
-  const completedTasks = () => tasks.value.filter(t => t.status === 'completed')
+  const pendingTasks = () => tasks.value.filter((t) => t.status === 'pending')
+  const inProgressTasks = () => tasks.value.filter((t) => t.status === 'in_progress')
+  const completedTasks = () => tasks.value.filter((t) => t.status === 'completed')
 
   // Sort tasks by priority and order
   const sortedTasks = () => {
@@ -141,6 +195,9 @@ export const useTasksStore = defineStore('tasks', () => {
     pendingTasks,
     inProgressTasks,
     completedTasks,
-    sortedTasks
+    sortedTasks,
+
+    // Utility methods
+    clearTasks,
   }
 })
