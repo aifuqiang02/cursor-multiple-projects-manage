@@ -33,8 +33,32 @@ const app = express()
 const server = createServer(app)
 const io = new Server(server, {
   cors: {
-    origin: serverConfig.corsOrigin,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (WebSocket connections, mobile apps, curl, etc.)
+      if (!origin) return callback(null, true)
+
+      // Allow localhost on any port during development
+      if (origin.startsWith('http://localhost:')) return callback(null, true)
+      if (origin.startsWith('http://127.0.0.1:')) return callback(null, true)
+
+      // Allow specific origins
+      const allowedOrigins = [
+        'http://localhost:5173',
+        'http://localhost:5176',
+        'http://127.0.0.1:5173',
+        'http://127.0.0.1:5176',
+        serverConfig.corsOrigin
+      ].filter(Boolean)
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true)
+      }
+
+      console.log('[WebSocket Server] CORS blocked origin:', origin)
+      return callback(new Error('Not allowed by CORS'))
+    },
     methods: ['GET', 'POST'],
+    credentials: true
   },
 })
 
@@ -112,6 +136,8 @@ app.get('/api/health/db', async (req, res) => {
 // Socket.IO connection handling
 io.on('connection', (socket) => {
   console.log('[WebSocket Server] Client connected:', socket.id)
+  console.log('[WebSocket Server] Client handshake origin:', socket.handshake.headers.origin)
+  console.log('[WebSocket Server] Client user agent:', socket.handshake.headers['user-agent'])
   console.log('[WebSocket Server] Total connected clients:', io.sockets.sockets.size)
 
   socket.on('disconnect', (reason) => {
@@ -125,6 +151,16 @@ io.on('connection', (socket) => {
     // Broadcast to all connected clients
     socket.broadcast.emit('ai-status-updated', data)
     console.log('[WebSocket Server] Broadcasted ai-status-updated to all clients')
+    console.log('[WebSocket Server] Connected sockets count:', io.sockets.sockets.size)
+  })
+
+  // Periodic connection status logging
+  const statusInterval = setInterval(() => {
+    console.log('[WebSocket Server] Connected sockets count:', io.sockets.sockets.size)
+  }, 30000) // Log every 30 seconds
+
+  socket.on('disconnect', () => {
+    clearInterval(statusInterval)
   })
 })
 
