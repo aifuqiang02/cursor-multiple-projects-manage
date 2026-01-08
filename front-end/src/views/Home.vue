@@ -85,7 +85,6 @@
                     <span v-else>AI</span>
                   </el-tag>
                 </div>
-
                 <div class="project-meta">
                   <span class="task-count">
                     <el-icon><Document /></el-icon>
@@ -124,30 +123,10 @@
                   </el-dropdown>
                 </div>
               </div>
-
-              <p class="project-desc" v-if="project.description">
-                {{ project.description }}
-              </p>
-
-              <!-- Quick Task Input -->
-              <div class="quick-task-input">
-                <el-input
-                  v-model="quickTaskInputs[project.id]"
-                  placeholder="输入任务内容，按回车创建"
-                  size="small"
-                  clearable
-                  type="textarea"
-                  :rows="1"
-                  :autosize="{ minRows: 1, maxRows: 4 }"
-                  @keyup.enter="createQuickTask(project)"
-                  :disabled="(loading as any).value"
-                >
-                  <template #suffix>
-                    <el-icon @click="createQuickTask(project)">
-                      <Plus />
-                    </el-icon>
-                  </template>
-                </el-input>
+              <div>
+                <p class="project-desc" v-if="project.description">
+                  {{ project.description }}
+                </p>
               </div>
 
               <!-- Project Tasks -->
@@ -201,13 +180,36 @@
                     </div>
                   </template>
                 </draggable>
+
+                <!-- Quick Task Input and More Tasks Row -->
                 <div
+                  class="task-input-row"
                   v-if="getProjectTasks(project.id).length > 3 && !isProjectExpanded(project.id)"
-                  class="more-tasks"
-                  @click="toggleProjectExpansion(project.id)"
                 >
-                  还有 {{ getProjectTasks(project.id).length - 3 }} 个任务...（点击展开）
+                  <div class="quick-task-input">
+                    <el-input
+                      v-model="quickTaskInputs[project.id]"
+                      placeholder="输入任务内容，按回车创建"
+                      size="small"
+                      clearable
+                      type="textarea"
+                      :rows="1"
+                      :autosize="{ minRows: 1, maxRows: 4 }"
+                      @keyup.enter="createQuickTask(project)"
+                      :disabled="(loading as any).value"
+                    >
+                      <template #suffix>
+                        <el-icon @click="createQuickTask(project)">
+                          <Plus />
+                        </el-icon>
+                      </template>
+                    </el-input>
+                  </div>
+                  <div class="expand-button" @click="toggleProjectExpansion(project.id)">
+                    展开 ({{ getProjectTasks(project.id).length - 3 }}) >>
+                  </div>
                 </div>
+
                 <div
                   v-if="isProjectExpanded(project.id)"
                   class="collapse-tasks"
@@ -485,7 +487,7 @@ const sortedProjects = computed(() =>
     const aTasks = a._count?.tasks || 0
     const bTasks = b._count?.tasks || 0
     return bTasks - aTasks // 任务多的排在前面
-  })
+  }),
 )
 // 使用直接导入的currentProject变量
 
@@ -1022,6 +1024,32 @@ watch(currentProject, async (newProject) => {
   color: #66b1ff;
 }
 
+.task-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.task-input-row .quick-task-input {
+  flex: 1;
+  margin: 0;
+}
+
+.expand-button {
+  font-size: 0.875rem;
+  color: #409eff;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.expand-button:hover {
+  background-color: #ecf5ff;
+}
+
 .task-count {
   display: flex;
   align-items: center;
@@ -1036,6 +1064,10 @@ watch(currentProject, async (newProject) => {
   color: #606266;
   font-size: 0.875rem;
   margin: 0.5rem 0;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 1.4;
 }
 
 .ai-status {
