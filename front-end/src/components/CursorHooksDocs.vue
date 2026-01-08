@@ -192,7 +192,7 @@ const generateShellExecutionScript = () => {
   return `#!/bin/bash
 
 # Configuration
-BLACKLIST_PATTERNS=("npm run" "npx tsx")
+BLACKLIST_PATTERNS=(".*npx tsx.*" ".*npm run.*" ".*npm start.*")
 
 # Log function
 log() {

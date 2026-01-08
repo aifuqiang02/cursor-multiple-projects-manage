@@ -42,7 +42,7 @@
 
           <div class="projects-grid">
             <el-card
-              v-for="project in allProjects"
+              v-for="project in sortedProjects"
               :key="project.id"
               class="project-card"
               :class="{ 'current-project': currentProject?.id === project.id }"
@@ -480,6 +480,13 @@ const projectRules = {
 
 // Computed
 const activatedProjects = computed(() => projects.value.filter((p) => p.aiStatus === 'active'))
+const sortedProjects = computed(() =>
+  [...allProjects.value].sort((a, b) => {
+    const aTasks = a._count?.tasks || 0
+    const bTasks = b._count?.tasks || 0
+    return bTasks - aTasks // 任务多的排在前面
+  })
+)
 // 使用直接导入的currentProject变量
 
 // 项目选择处理函数
