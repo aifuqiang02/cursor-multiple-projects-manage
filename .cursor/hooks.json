@@ -10,6 +10,11 @@
       {
         "command": "& 'C:\\Program Files\\Git\\bin\\bash.exe' /d/git-projects/cursor-multiple-projects-manage/.cursor/hooks/beforeSubmitPrompt.sh"
       }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "& 'C:\\Program Files\\Git\\bin\\bash.exe' /d/git-projects/cursor-multiple-projects-manage/.cursor/hooks/before_shell_execution.sh"
+      }
     ]
   }
 }

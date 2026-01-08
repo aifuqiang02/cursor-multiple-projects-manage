@@ -27,117 +27,41 @@
       {
         "command": "& 'C:\\\\Program Files\\\\Git\\\\bin\\\\bash.exe' /d/git-projects/cursor-multiple-projects-manage/.cursor/hooks/beforeSubmitPrompt.sh"
       }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "& 'C:\\\\Program Files\\\\Git\\\\bin\\\\bash.exe' /d/git-projects/cursor-multiple-projects-manage/.cursor/hooks/before_shell_execution.sh"
+      }
     ]
   }
 }`
     }}</code></pre>
 
     <h4>Hooks 脚本</h4>
-    <p>项目包含两个主要的hook脚本文件：</p>
+    <p>项目包含三个主要的hook脚本文件：</p>
 
     <h5>stop.sh - 停止AI执行</h5>
     <p>在Cursor停止时调用的脚本，负责停止AI执行：</p>
-    <pre><code>{{
-  `#!/bin/bash
-
-# Log function
-log() {
-    local message="$1"
-    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$timestamp] $message" >> "./cursor-hooks.log"
-}
-
-# Read JSON input from stdin
-json_input=$(cat)
-
-# Log to file (not stdout!)
-log "Hook executed: $json_input"
-log "Hook completed successfully"
-
-# Call API to stop AI execution
-log "Calling API to stop AI execution..."
-
-# Make API call and capture response
-response=$(curl -X POST "http://localhost:3000/api/projects/cmk45w91s000068rlzq35mz4v/ai-status-stop" \\
-  -H "Content-Type: application/json" \\
-  -d '{"status": "completed"}' \\
-  -s -w "\\nHTTP_STATUS:%{http_code}")
-
-# Extract HTTP status and response body
-http_status=$(echo "$response" | grep "HTTP_STATUS:" | cut -d: -f2)
-response_body=$(echo "$response" | sed '/HTTP_STATUS:/d')
-
-log "API Response - Status: $http_status, Body: $response_body"
-log "AI execution stop API called"
-log "Hook execution cycle finished"
-
-# Exit successfully without any stdout output
-exit 0`
-    }}</code></pre>
+    <pre><code>{{ stopScriptCode }}</code></pre>
 
     <h5>beforeSubmitPrompt.sh - 启动AI执行</h5>
     <p>在提交提示前调用的脚本，负责启动AI执行：</p>
-    <pre><code>{{
-  `#!/bin/bash
+    <pre><code>{{ startScriptCode }}</code></pre>
 
-# Log function
-log() {
-    local message="$1"
-    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$timestamp] $message" >> "./cursor-hooks.log"
-}
-
-# Read JSON input from stdin
-json_input=$(cat)
-
-# Log to file (not stdout!)
-log "BeforeSubmitPrompt Hook executed: $json_input"
-
-# Call API to start AI execution
-log "Calling API to start AI execution..."
-
-# Make API call and capture response
-response=$(curl -X POST "http://localhost:3000/api/projects/cmk5g3gyd0000qwrl3o13kyku/ai-status-start" \\
-  -H "Content-Type: application/json" \\
-  -s -w "\\nHTTP_STATUS:%{http_code}")
-
-# Extract HTTP status and response body
-http_status=$(echo "$response" | grep "HTTP_STATUS:" | cut -d: -f2)
-response_body=$(echo "$response" | sed '/HTTP_STATUS:/d')
-
-log "API Response - Status: $http_status, Body: $response_body"
-log "AI execution start API called"
-log "BeforeSubmitPrompt Hook execution cycle finished"
-
-# Exit successfully without any stdout output
-exit 0`
-    }}</code></pre>
-    <pre><code>{{
-  `#!/bin/bash
-
-# Log function
-log() {
-    local message="$1"
-    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$timestamp] $message" >> "./cursor-hooks.log"
-}
-
-# Read JSON input from stdin
-json_input=$(cat)
-
-# Log to file (not stdout!)
-log "Hook executed: $json_input"
-log "Hook completed successfully"
-log "Hook execution cycle finished"
-
-# Exit successfully without any stdout output
-exit 0`
-    }}</code></pre>
+    <h5>before_shell_execution.sh - Shell命令安全检查</h5>
+    <p>在执行shell命令前调用的脚本，进行命令安全检查和过滤。目前阻止以下命令：</p>
+    <ul>
+      <li><code>npm run ...</code> - 阻止npm脚本执行</li>
+      <li><code>npx tsx ...</code> - 阻止npx tsx执行</li>
+    </ul>
+    <p>黑名单配置在脚本顶部的 <code>BLACKLIST_PATTERNS</code> 数组中，可以方便地添加更多规则。</p>
+    <pre><code>{{ shellExecutionScriptCode }}</code></pre>
 
     <h4>Hook 类型</h4>
     <ul>
       <li><strong>stop</strong>：在Cursor停止时触发，调用停止AI执行的API</li>
       <li><strong>beforeSubmitPrompt</strong>：在提交提示前触发，调用启动AI执行的API</li>
+      <li><strong>beforeShellExecution</strong>：在执行shell命令前触发，进行命令安全检查</li>
     </ul>
 
     <h4>工作原理</h4>
@@ -167,8 +91,188 @@ exit 0`
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+
 // Cursor Hooks 文档组件
 // 展示 hooks 配置和使用的详细说明
+
+interface Props {
+  selectedProjectId?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  selectedProjectId: 'cmk45w91s000068rlzq35mz4v',
+})
+
+// 使用动态项目ID，如果未选择则使用默认值
+const stopProjectId = ref(props.selectedProjectId || 'cmk45w91s000068rlzq35mz4v')
+const startProjectId = ref(props.selectedProjectId || 'cmk5g3gyd0000qwrl3o13kyku')
+
+// 脚本代码模板
+const stopScriptCode = ref('')
+const startScriptCode = ref('')
+const shellExecutionScriptCode = ref('')
+
+// 生成脚本代码的函数
+const generateStopScript = (projectId: string) => {
+  return `#!/bin/bash
+
+# Log function
+log() {
+    local message="$1"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "[$timestamp] $message" >> "./cursor-hooks.log"
+}
+
+# Read JSON input from stdin
+json_input=$(cat)
+
+# Log to file (not stdout!)
+log "Hook executed: $json_input"
+log "Hook completed successfully"
+
+# Call API to stop AI execution
+log "Calling API to stop AI execution..."
+
+# Make API call and capture response
+response=$(curl -X POST "http://localhost:3000/api/projects/${projectId}/ai-status-stop" \\
+  -H "Content-Type: application/json" \\
+  -d '{"status": "completed"}' \\
+  -s -w "\\nHTTP_STATUS:%{http_code}")
+
+# Extract HTTP status and response body
+http_status=$(echo "$response" | grep "HTTP_STATUS:" | cut -d: -f2)
+response_body=$(echo "$response" | sed '/HTTP_STATUS:/d')
+
+log "API Response - Status: $http_status, Body: $response_body"
+log "AI execution stop API called"
+log "Hook execution cycle finished"
+
+# Exit successfully without any stdout output
+exit 0`
+}
+
+const generateStartScript = (projectId: string) => {
+  return `#!/bin/bash
+
+# Log function
+log() {
+    local message="$1"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "[$timestamp] $message" >> "./cursor-hooks.log"
+}
+
+# Read JSON input from stdin
+json_input=$(cat)
+
+# Log to file (not stdout!)
+log "BeforeSubmitPrompt Hook executed: $json_input"
+
+# Call API to start AI execution
+log "Calling API to start AI execution..."
+
+# Make API call and capture response
+response=$(curl -X POST "http://localhost:3000/api/projects/${projectId}/ai-status-start" \\
+  -H "Content-Type: application/json" \\
+  -s -w "\\nHTTP_STATUS:%{http_code}")
+
+# Extract HTTP status and response body
+http_status=$(echo "$response" | grep "HTTP_STATUS:" | cut -d: -f2)
+response_body=$(echo "$response" | sed '/HTTP_STATUS:/d')
+
+log "API Response - Status: $http_status, Body: $response_body"
+log "AI execution start API called"
+log "BeforeSubmitPrompt Hook execution cycle finished"
+
+# Exit successfully without any stdout output
+exit 0`
+}
+
+const generateShellExecutionScript = () => {
+  return `#!/bin/bash
+
+# Configuration
+BLACKLIST_PATTERNS=("npm run" "npx tsx")
+
+# Log function
+log() {
+    local message="$1"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "[$timestamp] $message" >> "./cursor-hooks.log"
+}
+
+# Check if command is in blacklist
+is_blacklisted_command() {
+    local command="$1"
+
+    # Normalize command (remove extra spaces)
+    local normalized_cmd=$(echo "$command" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+
+    # Check against configured blacklist patterns
+    for pattern in "\${BLACKLIST_PATTERNS[@]}"; do
+        if [[ "$normalized_cmd" =~ ^\$pattern[[:space:]] ]]; then
+            log "Command matches blacklist pattern: \$pattern"
+            return 0  # true - command is blacklisted
+        fi
+    done
+
+    return 1  # false - command is allowed
+}
+
+# Read JSON input from stdin
+json_input=$(cat)
+
+# Log to file (not stdout!)
+log "BeforeShellExecution Hook executed: $json_input"
+
+# Extract command from JSON input
+command=$(echo "$json_input" | grep -o '"command":"[^"]*"' | sed 's/"command":"//' | sed 's/"$//')
+
+log "Checking command: $command"
+
+# Check if command is blacklisted
+if is_blacklisted_command "$command"; then
+    log "Command blocked: $command"
+
+    # Return deny response
+    response='{
+        "continue": true,
+        "permission": "deny",
+        "userMessage": "⛔ Command blocked by security hook",
+        "agentMessage": "BLOCKED: Blacklisted command detected: '"$command"'"
+    }'
+    echo "$response"
+    exit 0
+else
+    log "Command allowed: $command"
+
+    # Return allow response
+    response='{
+        "continue": true,
+        "permission": "allow"
+    }'
+    echo "$response"
+    exit 0
+fi`
+}
+
+// 初始化脚本代码
+stopScriptCode.value = generateStopScript(stopProjectId.value)
+startScriptCode.value = generateStartScript(startProjectId.value)
+shellExecutionScriptCode.value = generateShellExecutionScript()
+
+// 监听项目ID变化，重新生成脚本代码
+watch(
+  () => props.selectedProjectId,
+  (newProjectId) => {
+    if (newProjectId) {
+      stopProjectId.value = newProjectId
+      startProjectId.value = newProjectId
+      stopScriptCode.value = generateStopScript(newProjectId)
+      startScriptCode.value = generateStartScript(newProjectId)
+    }
+  },
+)
 </script>
 
 <style scoped>

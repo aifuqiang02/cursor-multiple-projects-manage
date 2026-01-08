@@ -242,35 +242,10 @@
           <div class="docs-content">
             <h2>Cursor 接入文档</h2>
 
-            <!-- Cursor Hooks Documentation -->
-            <CursorHooksDocs />
-            <div class="docs-article">
-              <h3>如何接入 Cursor 项目管理器</h3>
-              <p>
-                Cursor 项目管理器是一个强大的项目管理工具，可以帮助您高效地管理多个 Cursor 项目。
-              </p>
-
-              <h4>主要功能</h4>
-              <ul>
-                <li><strong>项目管理</strong>：创建、编辑、删除项目，支持项目状态管理</li>
-                <li><strong>任务管理</strong>：为每个项目添加任务，支持任务状态跟踪</li>
-                <li><strong>AI 集成</strong>：支持 AI 自动执行任务</li>
-                <li><strong>拖拽排序</strong>：支持任务的拖拽排序功能</li>
-              </ul>
-
-              <h4>快速开始</h4>
-              <ol>
-                <li>点击"新建项目"创建您的第一个项目</li>
-                <li>为项目添加任务，设置任务优先级</li>
-                <li>使用拖拽功能调整任务顺序</li>
-                <li>启动 AI 执行来自动处理任务</li>
-              </ol>
-
-              <h4>API 文档</h4>
-              <p>详细的 API 文档请参考项目中的 README.md 文件。</p>
-
+            <!-- Project Selector -->
+            <div class="project-selector-section">
               <h4>项目选择器</h4>
-              <p>选择一个项目来查看对应的API调用示例：</p>
+              <p>选择一个项目来查看对应的API调用示例和hooks配置：</p>
               <div class="project-selector">
                 <el-select
                   v-model="selectedProjectId"
@@ -289,52 +264,10 @@
                   已选择项目 ID: <code>{{ selectedProjectId }}</code>
                 </span>
               </div>
-
-              <h4>AI 执行接口</h4>
-              <h5>启动 AI 执行</h5>
-              <pre><code>POST /api/projects/{{ selectedProjectId || '{projectId}' }}/ai-status-start
-
-请求参数：无（通过URL路径传递项目ID）
-
-响应示例：
-{
-  "code": 200,
-  "msg": "AI执行已启动",
-  "data": ""
-}</code></pre>
-
-              <h5>停止 AI 执行</h5>
-              <pre><code>POST /api/projects/{{ selectedProjectId || '{projectId}' }}/ai-status-stop
-
-请求体：
-{
-  "status": "completed"  // 可选值: "completed", "aborted", "error"
-}
-
-响应示例：
-{
-  "code": 200,
-  "msg": "AI执行已停止",
-  "data": ""
-}
-
-错误响应（无效状态值）：
-{
-  "code": 400,
-  "msg": "无效的执行结果状态",
-  "data": null
-}</code></pre>
-
-              <div class="api-notes">
-                <strong>注意事项：</strong>
-                <ul>
-                  <li>这两个接口无需 JWT 认证即可调用</li>
-                  <li>启动接口会将项目的 AI 状态设置为 "running"</li>
-                  <li>停止接口支持三种状态：completed（完成）、aborted（中止）、error（错误）</li>
-                  <li>接口只返回简单的成功消息，不包含项目详细信息</li>
-                </ul>
-              </div>
             </div>
+
+            <!-- Cursor Hooks Documentation -->
+            <CursorHooksDocs :selected-project-id="selectedProjectId" />
           </div>
         </div>
       </div>
@@ -1477,6 +1410,15 @@ watch(currentProject, async (newProject) => {
 }
 
 /* 项目选择器样式 */
+.project-selector-section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: #fff3cd;
+  border-radius: 8px;
+  border: 1px solid #ffeaa7;
+  border-left: 4px solid #f39c12;
+}
+
 .project-selector {
   margin: 1rem 0;
   padding: 1rem;

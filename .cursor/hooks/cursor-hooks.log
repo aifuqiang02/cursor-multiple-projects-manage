@@ -1,0 +1,20 @@
+[2026-01-08 22:57:48] BeforeShellExecution Hook executed: {"command":"npm run dev"}
+[2026-01-08 22:57:48] Checking command: npm run dev
+[2026-01-08 22:57:48] Command blocked: npm run dev
+[2026-01-08 22:58:12] BeforeShellExecution Hook executed: {"command":"ls -la"}
+[2026-01-08 22:58:12] Checking command: ls -la
+[2026-01-08 22:58:12] Command allowed: ls -la
+[2026-01-08 22:58:22] BeforeShellExecution Hook executed: {"command":"npx tsx index.ts"}
+[2026-01-08 22:58:22] Checking command: npx tsx index.ts
+[2026-01-08 22:58:22] Command blocked: npx tsx index.ts
+[2026-01-08 22:59:43] BeforeShellExecution Hook executed: {"command":"npm run build"}
+[2026-01-08 22:59:43] Checking command: npm run build
+[2026-01-08 22:59:43] Command matches blacklist pattern: npm run
+[2026-01-08 22:59:43] Command blocked: npm run build
+[2026-01-08 22:59:54] BeforeShellExecution Hook executed: {"command":"git status"}
+[2026-01-08 22:59:55] Checking command: git status
+[2026-01-08 22:59:55] Command allowed: git status
+[2026-01-08 23:00:54] BeforeShellExecution Hook executed: {"command":"npm run test"}
+[2026-01-08 23:00:54] Checking command: npm run test
+[2026-01-08 23:00:54] Command matches blacklist pattern: npm run
+[2026-01-08 23:00:54] Command blocked: npm run test
