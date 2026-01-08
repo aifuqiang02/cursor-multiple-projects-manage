@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '../lib/prisma.js';
 import { jwtConfig } from '../config/database.js';
 import { ResponseUtil } from '../lib/response.js';
+import { emitWebSocketEvent } from '../lib/websocket.js';
 const router = express.Router();
 // Common include for project queries
 const projectInclude = {
@@ -75,7 +76,9 @@ router.put('/:id', authenticateToken, async (req, res) => {
     try {
         const { id } = req.params;
         if (!id) {
-            return res.status(400).json(ResponseUtil.badRequest('Project ID is required'));
+            return res
+                .status(400)
+                .json(ResponseUtil.badRequest('Project ID is required'));
         }
         const { name, cursorKey, description, status } = req.body;
         // Check if project belongs to user
@@ -110,7 +113,9 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     try {
         const { id } = req.params;
         if (!id) {
-            return res.status(400).json(ResponseUtil.badRequest('Project ID is required'));
+            return res
+                .status(400)
+                .json(ResponseUtil.badRequest('Project ID is required'));
         }
         // Check if project belongs to user
         const existingProject = await prisma.project.findFirst({
@@ -137,7 +142,9 @@ router.get('/:id/details', authenticateToken, async (req, res) => {
     try {
         const { id } = req.params;
         if (!id) {
-            return res.status(400).json(ResponseUtil.badRequest('Project ID is required'));
+            return res
+                .status(400)
+                .json(ResponseUtil.badRequest('Project ID is required'));
         }
         const project = await prisma.project.findFirst({
             where: {
@@ -176,9 +183,14 @@ async function updateProjectAIStatus(projectId, updateData, req, res, successMes
         if (!existingProject) {
             return res.status(404).json(ResponseUtil.projectNotFound());
         }
-        await prisma.project.update({
+        const updatedProject = await prisma.project.update({
             where: { id: projectId },
             data: updateData,
+        });
+        // Send WebSocket notification to update frontend
+        emitWebSocketEvent('ai-status-updated', {
+            projectId,
+            ...updateData,
         });
         res.json(ResponseUtil.success('', successMessage));
     }
@@ -191,7 +203,9 @@ async function updateProjectAIStatus(projectId, updateData, req, res, successMes
 router.put('/:id/ai-status', authenticateToken, async (req, res) => {
     const { id } = req.params;
     if (!id) {
-        return res.status(400).json(ResponseUtil.badRequest('Project ID is required'));
+        return res
+            .status(400)
+            .json(ResponseUtil.badRequest('Project ID is required'));
     }
     const { status, command, result, duration } = req.body;
     const updateData = { aiStatus: status };
@@ -215,7 +229,9 @@ router.put('/:id/ai-status', authenticateToken, async (req, res) => {
 router.post('/:id/ai-status-start', async (req, res) => {
     const { id } = req.params;
     if (!id) {
-        return res.status(400).json(ResponseUtil.badRequest('Project ID is required'));
+        return res
+            .status(400)
+            .json(ResponseUtil.badRequest('Project ID is required'));
     }
     const updateData = {
         aiStatus: 'running',
@@ -228,7 +244,9 @@ router.post('/:id/ai-status-start', async (req, res) => {
 router.post('/:id/ai-status-stop', async (req, res) => {
     const { id } = req.params;
     if (!id) {
-        return res.status(400).json(ResponseUtil.badRequest('Project ID is required'));
+        return res
+            .status(400)
+            .json(ResponseUtil.badRequest('Project ID is required'));
     }
     const { status } = req.body; // "completed" | "aborted" | "error"
     // Validate status

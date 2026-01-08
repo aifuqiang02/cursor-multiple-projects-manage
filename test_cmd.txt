@@ -1,0 +1,1 @@
+cd D:\git-projects\cursor-multiple-projects-manage\front-end && npm run dev

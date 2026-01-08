@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-BLACKLIST_PATTERNS=(".*npx tsx.*" ".*npm run.*" ".*npm start.*")
+BLACKLIST_PATTERNS=(".*npx tsx.*" ".*npm run dev.*" ".*npm run start.*" ".*npm start.*")
 
 # Log function
 log() {
@@ -19,7 +19,7 @@ is_blacklisted_command() {
 
     # Check against configured blacklist patterns
     for pattern in "${BLACKLIST_PATTERNS[@]}"; do
-        if [[ "$normalized_cmd" =~ ^$pattern[[:space:]] ]]; then
+        if [[ "$normalized_cmd" =~ $pattern ]]; then
             log "Command matches blacklist pattern: $pattern"
             return 0  # true - command is blacklisted
         fi

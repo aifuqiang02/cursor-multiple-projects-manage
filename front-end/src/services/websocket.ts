@@ -9,8 +9,11 @@ class WebSocketService {
 
   connect(): Socket {
     if (this.socket?.connected) {
+      console.log('[WebSocket Client] Already connected, returning existing socket')
       return this.socket
     }
+
+    console.log('[WebSocket Client] Connecting to:', WS_BASE_URL)
 
     this.socket = io(WS_BASE_URL, {
       transports: ['websocket', 'polling'],
@@ -19,7 +22,8 @@ class WebSocketService {
     })
 
     this.socket.on('connect', () => {
-      console.log('WebSocket connected')
+      console.log('[WebSocket Client] Successfully connected to server')
+      console.log('[WebSocket Client] Socket ID:', this.socket?.id)
       this.reconnectAttempts = 0
     })
 

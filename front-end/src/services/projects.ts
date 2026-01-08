@@ -24,7 +24,7 @@ export interface Project {
   aiResult?: string
   aiDuration?: number
   aiStartedAt?: string
-  aiCompletedAt?: string
+  aiCompletedAt?: string | null
   createdAt: string
   updatedAt: string
   _count?: {
@@ -224,7 +224,7 @@ export const projectService = {
     data.forEach((runningProject) => {
       if (!runningProject) return
       const index = projects.value.findIndex((p) => p.id === runningProject.id)
-      if (index !== -1) {
+      if (index !== -1 && projects.value[index]) {
         projects.value[index].aiStatus = 'running'
       }
     })
@@ -252,30 +252,68 @@ export const projectService = {
 
   // WebSocket listeners
   setupWebSocketListeners() {
+    console.log('[WebSocket] Setting up WebSocket listeners for AI status updates')
+
     wsService.on('ai-status-updated', (data) => {
+      console.log('[WebSocket] Received ai-status-updated event:', data)
+
       const { projectId, ...statusData } = data
+      console.log('[WebSocket] Extracted projectId:', projectId)
+      console.log('[WebSocket] Status data:', statusData)
 
       // Update in projects list
       const index = projects.value.findIndex((p) => p.id === projectId)
-      if (index !== -1) {
+      console.log('[WebSocket] Found project at index:', index, 'in projects list')
+
+      if (index !== -1 && projects.value[index]) {
+        const project = projects.value[index]
+        console.log(
+          '[WebSocket] Updating project in list:',
+          project.name,
+          'from status:',
+          project.aiStatus,
+          'to:',
+          statusData.status,
+        )
+
+        const oldProject = { ...project }
         projects.value[index] = {
-          ...projects.value[index],
+          ...project,
           aiStatus: statusData.status,
           aiCommand: statusData.command,
           aiResult: statusData.result,
           aiDuration: statusData.duration,
           aiStartedAt:
-            statusData.status === 'running'
-              ? new Date().toISOString()
-              : projects.value[index].aiStartedAt,
+            statusData.status === 'running' ? new Date().toISOString() : project.aiStartedAt,
           aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null,
         }
+
+        console.log(
+          '[WebSocket] Project updated successfully. Old state:',
+          oldProject.aiStatus,
+          'New state:',
+          projects.value[index].aiStatus,
+        )
+      } else {
+        console.warn(
+          '[WebSocket] Project not found in projects list or index is invalid:',
+          projectId,
+          index,
+        )
       }
 
       // Update current project if it's the same
-      if (currentProject.value?.id === projectId) {
-        currentProject.value = {
-          ...currentProject.value,
+      if (currentProject.value && currentProject.value.id === projectId) {
+        console.log('[WebSocket] Updating current project:', currentProject.value.name)
+        console.log(
+          '[WebSocket] Current project status before update:',
+          currentProject.value.aiStatus,
+        )
+
+        const oldCurrentStatus = currentProject.value.aiStatus
+
+        // Only update the fields that are being changed, preserve tasks and other fields
+        Object.assign(currentProject.value, {
           aiStatus: statusData.status,
           aiCommand: statusData.command,
           aiResult: statusData.result,
@@ -285,9 +323,34 @@ export const projectService = {
               ? new Date().toISOString()
               : currentProject.value.aiStartedAt,
           aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null,
+        })
+
+        console.log(
+          '[WebSocket] Current project updated successfully. Status changed from:',
+          oldCurrentStatus,
+          'to:',
+          currentProject.value.aiStatus,
+        )
+      } else {
+        console.log(
+          '[WebSocket] Current project does not match updated project or no current project set',
+        )
+        if (currentProject.value) {
+          console.log(
+            '[WebSocket] Current project ID:',
+            currentProject.value.id,
+            'Updated project ID:',
+            projectId,
+          )
+        } else {
+          console.log('[WebSocket] No current project is set')
         }
       }
+
+      console.log('[WebSocket] AI status update processing completed for project:', projectId)
     })
+
+    console.log('[WebSocket] WebSocket listeners setup completed')
   },
 }
 

@@ -33,7 +33,7 @@
           <el-button
             type="primary"
             size="large"
-            :loading="loading.value"
+            :loading="loading"
             @click="handleLogin"
             class="w-full"
           >
@@ -92,7 +92,7 @@
           <el-button
             type="primary"
             size="large"
-            :loading="loading.value"
+            :loading="loading"
             native-type="submit"
             class="w-full"
           >
@@ -176,11 +176,12 @@ const handleRegister = async () => {
     ElMessage.success('注册成功')
     showRegister.value = false
     router.push('/')
-  } catch (error) {
-    console.error('Register error:', error)
+  } catch (err) {
+    console.error('Register error:', err)
     // 显示错误信息
-    if (error.value) {
-      ElMessage.error(error.value)
+    const errorMessage = error.value
+    if (errorMessage) {
+      ElMessage.error(errorMessage)
     } else {
       ElMessage.error('注册失败，请稍后重试')
     }

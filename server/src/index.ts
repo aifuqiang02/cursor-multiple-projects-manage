@@ -12,6 +12,7 @@ import authRoutes from './routes/auth.js'
 import projectRoutes from './routes/projects.js'
 import taskRoutes from './routes/tasks.js'
 import { ResponseUtil } from './lib/response.js'
+import { setWebSocketServer } from './lib/websocket.js'
 
 // Database connection test
 async function testDatabaseConnection() {
@@ -36,6 +37,9 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
   },
 })
+
+// Set WebSocket server for global access
+setWebSocketServer(io)
 
 // Middleware
 app.use(helmet())
@@ -107,14 +111,20 @@ app.get('/api/health/db', async (req, res) => {
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {
-  socket.on('disconnect', () => {
-    // Client disconnected
+  console.log('[WebSocket Server] Client connected:', socket.id)
+  console.log('[WebSocket Server] Total connected clients:', io.sockets.sockets.size)
+
+  socket.on('disconnect', (reason) => {
+    console.log('[WebSocket Server] Client disconnected:', socket.id, 'Reason:', reason)
+    console.log('[WebSocket Server] Remaining connected clients:', io.sockets.sockets.size - 1)
   })
 
   // AI status updates
   socket.on('ai-status-update', (data) => {
+    console.log('[WebSocket Server] Received ai-status-update from client:', socket.id, 'Data:', data)
     // Broadcast to all connected clients
     socket.broadcast.emit('ai-status-updated', data)
+    console.log('[WebSocket Server] Broadcasted ai-status-updated to all clients')
   })
 })
 
