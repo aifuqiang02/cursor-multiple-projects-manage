@@ -1,0 +1,83 @@
+[2026-01-08 20:43:30] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"0aeb7f93-b780-42b3-8603-71a0fabd8da2","model":"gpt-5.2","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 20:43:30] Hook completed successfully
+[2026-01-08 20:43:30] Hook execution cycle finished
+[2026-01-08 20:43:51] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"d4d98f03-37c9-434b-bb5b-5bb5748ad79e","model":"gpt-5.2","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 20:43:51] Hook completed successfully
+[2026-01-08 20:43:51] Hook execution cycle finished
+[2026-01-08 20:44:20] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"fad40aea-9b21-41b5-8756-e43c425c8c7f","model":"gpt-5.2","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 20:44:20] Hook completed successfully
+[2026-01-08 20:44:20] Hook execution cycle finished
+[2026-01-08 20:44:34] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"03e6ffcd-e128-4143-92f0-1ae9b90ae3b3","model":"gpt-5.2","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 20:44:34] Hook completed successfully
+[2026-01-08 20:44:34] Hook execution cycle finished
+[2026-01-08 20:45:01] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"ad348540-c2db-4661-a7cd-c01d51019313","model":"gpt-5.2","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 20:45:01] Hook completed successfully
+[2026-01-08 20:45:01] Hook execution cycle finished
+[2026-01-08 20:50:06] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"5017af83-2fba-4e6e-a4bb-e0b2c74bd29c","model":"gpt-5.2","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 20:50:06] Hook completed successfully
+[2026-01-08 20:50:06] Hook execution cycle finished
+[2026-01-08 21:24:01] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"8deea9b7-74ff-40a7-976d-51d7f051cf3b","model":"gpt-5.2","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:24:01] Hook completed successfully
+[2026-01-08 21:24:01] Calling API to stop AI execution...
+[2026-01-08 21:24:01] AI execution stop API called
+[2026-01-08 21:24:01] Hook execution cycle finished
+[2026-01-08 21:26:03] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"05334956-e88d-4618-872c-70528613b8b7","model":"gpt-5.2","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:26:03] Hook completed successfully
+[2026-01-08 21:26:03] Calling API to stop AI execution...
+[2026-01-08 21:26:03] AI execution stop API called
+[2026-01-08 21:26:03] Hook execution cycle finished
+[2026-01-08 21:27:12] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"17e461b0-c3a0-44a5-981a-6728c643ab9d","model":"gpt-5.2","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:27:12] Hook completed successfully
+[2026-01-08 21:27:12] Calling API to stop AI execution...
+[2026-01-08 21:27:13] AI execution stop API called
+[2026-01-08 21:27:13] Hook execution cycle finished
+[2026-01-08 21:27:58] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"d8fffdaf-514f-4395-92e0-7093902062b1","model":"gpt-5.2","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:27:58] Hook completed successfully
+[2026-01-08 21:27:58] Calling API to stop AI execution...
+[2026-01-08 21:27:58] AI execution stop API called
+[2026-01-08 21:27:58] Hook execution cycle finished
+[2026-01-08 21:28:32] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"2938d7b3-d16b-4304-a902-a4be9485533a","model":"gpt-5.2","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:28:32] Hook completed successfully
+[2026-01-08 21:28:32] Calling API to stop AI execution...
+[2026-01-08 21:28:32] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-08 21:28:32] AI execution stop API called
+[2026-01-08 21:28:32] Hook execution cycle finished
+[2026-01-08 21:34:03] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"f578cdbe-ef0d-4103-8346-8f5beeafda64","model":"gpt-5.2","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:34:03] Hook completed successfully
+[2026-01-08 21:34:03] Calling API to stop AI execution...
+[2026-01-08 21:34:03] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-08 21:34:03] AI execution stop API called
+[2026-01-08 21:34:03] Hook execution cycle finished
+[2026-01-08 21:35:58] BeforeSubmitPrompt Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"7ac05ecf-6078-4895-8f79-010ba72794d0","model":"gpt-5.2","prompt":"好像这下没问题了","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\.cursor\\hooks.json"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\.cursor\\hooks\\beforeSubmitPrompt.sh"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\components\\CursorHooksDocs.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:35:58] Calling API to start AI execution...
+[2026-01-08 21:35:58] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-08 21:35:58] AI execution start API called
+[2026-01-08 21:35:58] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-08 21:36:10] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"7ac05ecf-6078-4895-8f79-010ba72794d0","model":"gpt-5.2","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:36:10] Hook completed successfully
+[2026-01-08 21:36:10] Calling API to stop AI execution...
+[2026-01-08 21:36:10] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-08 21:36:10] AI execution stop API called
+[2026-01-08 21:36:10] Hook execution cycle finished
+[2026-01-08 21:36:48] BeforeSubmitPrompt Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"0937a9d4-f964-48ed-8db7-e88048340d8f","model":"gpt-5.2","prompt":"不错不错","attachments":[{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:36:48] Calling API to start AI execution...
+[2026-01-08 21:36:48] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-08 21:36:48] AI execution start API called
+[2026-01-08 21:36:48] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-08 21:37:02] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"0937a9d4-f964-48ed-8db7-e88048340d8f","model":"gpt-5.2","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:37:02] Hook completed successfully
+[2026-01-08 21:37:02] Calling API to stop AI execution...
+[2026-01-08 21:37:02] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-08 21:37:02] AI execution stop API called
+[2026-01-08 21:37:02] Hook execution cycle finished
+[2026-01-08 21:40:20] BeforeSubmitPrompt Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"9353595b-cce8-4496-88b4-840336a19e0c","model":"gpt-5.2","prompt":"你很棒","attachments":[{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:40:20] Calling API to start AI execution...
+[2026-01-08 21:40:21] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-08 21:40:21] AI execution start API called
+[2026-01-08 21:40:21] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-08 21:40:35] Hook executed: {"conversation_id":"93c9d9fb-7a74-424a-8009-c14d5fcd52f8","generation_id":"9353595b-cce8-4496-88b4-840336a19e0c","model":"gpt-5.2","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"635104032@qq.com"}
+[2026-01-08 21:40:35] Hook completed successfully
+[2026-01-08 21:40:35] Calling API to stop AI execution...
+[2026-01-08 21:40:35] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-08 21:40:35] AI execution stop API called
+[2026-01-08 21:40:35] Hook execution cycle finished

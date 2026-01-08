@@ -241,6 +241,9 @@
         <div v-if="currentView === 'docs'" class="docs-section">
           <div class="docs-content">
             <h2>Cursor 接入文档</h2>
+
+            <!-- Cursor Hooks Documentation -->
+            <CursorHooksDocs />
             <div class="docs-article">
               <h3>如何接入 Cursor 项目管理器</h3>
               <p>
@@ -462,6 +465,7 @@ import {
   Document,
 } from '@element-plus/icons-vue'
 import { logout } from '@/services/auth'
+import CursorHooksDocs from '@/components/CursorHooksDocs.vue'
 import {
   projects,
   currentProject,
