@@ -257,9 +257,17 @@ export const projectService = {
     wsService.on('ai-status-updated', (data) => {
       console.log('[WebSocket] Received ai-status-updated event:', data)
 
-      const { projectId, ...statusData } = data
+      const { projectId, aiStatus, aiStartedAt, aiCompletedAt, aiCommand, aiResult, aiDuration } =
+        data
       console.log('[WebSocket] Extracted projectId:', projectId)
-      console.log('[WebSocket] Status data:', statusData)
+      console.log(
+        '[WebSocket] AI status:',
+        aiStatus,
+        'Started:',
+        aiStartedAt,
+        'Completed:',
+        aiCompletedAt,
+      )
 
       // Update in projects list
       const index = projects.value.findIndex((p) => p.id === projectId)
@@ -273,19 +281,18 @@ export const projectService = {
           'from status:',
           project.aiStatus,
           'to:',
-          statusData.status,
+          aiStatus,
         )
 
         const oldProject = { ...project }
         projects.value[index] = {
           ...project,
-          aiStatus: statusData.status,
-          aiCommand: statusData.command,
-          aiResult: statusData.result,
-          aiDuration: statusData.duration,
-          aiStartedAt:
-            statusData.status === 'running' ? new Date().toISOString() : project.aiStartedAt,
-          aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null,
+          aiStatus,
+          aiCommand,
+          aiResult,
+          aiDuration,
+          aiStartedAt,
+          aiCompletedAt,
         }
 
         console.log(
@@ -314,15 +321,12 @@ export const projectService = {
 
         // Only update the fields that are being changed, preserve tasks and other fields
         Object.assign(currentProject.value, {
-          aiStatus: statusData.status,
-          aiCommand: statusData.command,
-          aiResult: statusData.result,
-          aiDuration: statusData.duration,
-          aiStartedAt:
-            statusData.status === 'running'
-              ? new Date().toISOString()
-              : currentProject.value.aiStartedAt,
-          aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null,
+          aiStatus,
+          aiCommand,
+          aiResult,
+          aiDuration,
+          aiStartedAt,
+          aiCompletedAt,
         })
 
         console.log(
