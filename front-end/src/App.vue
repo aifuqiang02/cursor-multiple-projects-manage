@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { isAuthenticated } from '@/services/auth'
 import { wsService } from '@/services/websocket'
-
-const authStore = useAuthStore()
 
 onMounted(() => {
   // Initialize WebSocket connection when app starts
-  if (authStore.isAuthenticated) {
+  if (isAuthenticated.value) {
     wsService.connect()
   }
 })

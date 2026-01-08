@@ -1,4 +1,7 @@
 import api from './api'
+import { ref, computed } from 'vue'
+import { wsService } from '@/services/websocket'
+import type { Task } from '@/services/tasks'
 
 export interface Project {
   id: string
@@ -7,7 +10,16 @@ export interface Project {
   uuid: string
   status: 'active' | 'hidden'
   description?: string
-  aiStatus?: 'idle' | 'active' | 'running' | 'success' | 'failed' | 'warning'
+  aiStatus?:
+    | 'idle'
+    | 'active'
+    | 'running'
+    | 'success'
+    | 'failed'
+    | 'warning'
+    | 'completed'
+    | 'aborted'
+    | 'error'
   aiCommand?: string
   aiResult?: string
   aiDuration?: number
@@ -38,13 +50,46 @@ export interface UpdateProjectData {
 }
 
 export interface AIStatusUpdate {
-  status: 'idle' | 'active' | 'running' | 'success' | 'failed' | 'warning'
+  status:
+    | 'idle'
+    | 'active'
+    | 'running'
+    | 'success'
+    | 'failed'
+    | 'warning'
+    | 'completed'
+    | 'aborted'
+    | 'error'
   command?: string
   result?: string
   duration?: number
 }
 
+// State management
+const projects = ref<Project[]>([])
+const currentProject = ref<ProjectWithDetails | null>(null)
+const loading = ref(false)
+const error = ref<string | null>(null)
+
+// Computed
+const activeProjects = computed(() => projects.value.filter((p) => p.status === 'active'))
+const allProjects = computed(() => projects.value)
+const runningAIProjects = computed(() => projects.value.filter((p) => p.aiStatus === 'running'))
+const totalTasks = computed(() =>
+  projects.value.reduce((sum, project) => sum + (project._count?.tasks || 0), 0),
+)
+
+// Actions
+const setLoading = (value: boolean) => {
+  loading.value = value
+}
+
+const setError = (message: string | null) => {
+  error.value = message
+}
+
 export const projectService = {
+  // API methods
   async getProjects(): Promise<Project[]> {
     const response = await api.get('/projects')
     return response.data.data
@@ -78,4 +123,209 @@ export const projectService = {
     const response = await api.get('/projects/ai-status/running')
     return response.data.projects
   },
+
+  async startAIExecution(id: string): Promise<Project> {
+    const response = await api.post(`/projects/${id}/ai-status-start`)
+    return response.data.data
+  },
+
+  async stopAIExecution(id: string, status: 'completed' | 'aborted' | 'error'): Promise<Project> {
+    const response = await api.post(`/projects/${id}/ai-status-stop`, { status })
+    return response.data.data
+  },
+
+  // Business logic methods
+  async fetchProjects() {
+    setLoading(true)
+    setError(null)
+    const data = await this.getProjects()
+    console.log('Fetched projects from backend:', data)
+    console.log('Total projects count:', data.length)
+    console.log('Active projects:', data.filter((p) => p.status === 'active').length)
+    console.log('Hidden projects:', data.filter((p) => p.status === 'hidden').length)
+    projects.value = data
+    setLoading(false)
+  },
+
+  async createProjectWithState(data: CreateProjectData) {
+    setLoading(true)
+    setError(null)
+    const newProject = await this.createProject(data)
+    projects.value.unshift(newProject)
+    setLoading(false)
+    return newProject
+  },
+
+  async updateProjectWithState(id: string, data: UpdateProjectData) {
+    setLoading(true)
+    setError(null)
+    const updatedProject = await this.updateProject(id, data)
+
+    // Update in projects list
+    const index = projects.value.findIndex((p) => p.id === id)
+    if (index !== -1) {
+      projects.value[index] = { ...projects.value[index], ...updatedProject }
+    }
+
+    // Update current project if it's the same
+    if (currentProject.value?.id === id) {
+      currentProject.value = { ...currentProject.value, ...updatedProject }
+    }
+
+    setLoading(false)
+    return updatedProject
+  },
+
+  async deleteProjectWithState(id: string) {
+    setLoading(true)
+    setError(null)
+    await this.deleteProject(id)
+    projects.value = projects.value.filter((p) => p.id !== id)
+
+    // Clear current project if it's the deleted one
+    if (currentProject.value?.id === id) {
+      currentProject.value = null
+    }
+    setLoading(false)
+  },
+
+  async fetchProjectDetailsWithState(id: string) {
+    setLoading(true)
+    setError(null)
+    const project = await this.getProjectDetails(id)
+    currentProject.value = project
+    setLoading(false)
+    return project
+  },
+
+  async updateAIStatusWithState(id: string, data: AIStatusUpdate) {
+    const updatedProject = await this.updateAIStatus(id, data)
+
+    // Update in projects list
+    const index = projects.value.findIndex((p) => p.id === id)
+    if (index !== -1) {
+      projects.value[index] = { ...projects.value[index], ...updatedProject }
+    }
+
+    // Update current project if it's the same
+    if (currentProject.value?.id === id) {
+      currentProject.value = { ...currentProject.value, ...updatedProject }
+    }
+
+    // Broadcast via WebSocket
+    wsService.emit('ai-status-update', { projectId: id, ...data })
+
+    return updatedProject
+  },
+
+  async fetchRunningAIProjectsWithState() {
+    const data = await this.getRunningAIProjects()
+    // Update running status in projects list
+    data.forEach((runningProject) => {
+      if (!runningProject) return
+      const index = projects.value.findIndex((p) => p.id === runningProject.id)
+      if (index !== -1) {
+        projects.value[index].aiStatus = 'running'
+      }
+    })
+  },
+
+  async startAIExecutionWithState(id: string) {
+    const updatedProject = await this.startAIExecution(id)
+    // Update project in the list
+    const index = projects.value.findIndex((p) => p.id === id)
+    if (index !== -1) {
+      projects.value[index] = { ...projects.value[index], ...updatedProject }
+    }
+    return updatedProject
+  },
+
+  async stopAIExecutionWithState(id: string, status: 'completed' | 'aborted' | 'error') {
+    const updatedProject = await this.stopAIExecution(id, status)
+    // Update project in the list
+    const index = projects.value.findIndex((p) => p.id === id)
+    if (index !== -1) {
+      projects.value[index] = { ...projects.value[index], ...updatedProject }
+    }
+    return updatedProject
+  },
+
+  // WebSocket listeners
+  setupWebSocketListeners() {
+    wsService.on('ai-status-updated', (data) => {
+      const { projectId, ...statusData } = data
+
+      // Update in projects list
+      const index = projects.value.findIndex((p) => p.id === projectId)
+      if (index !== -1) {
+        projects.value[index] = {
+          ...projects.value[index],
+          aiStatus: statusData.status,
+          aiCommand: statusData.command,
+          aiResult: statusData.result,
+          aiDuration: statusData.duration,
+          aiStartedAt:
+            statusData.status === 'running'
+              ? new Date().toISOString()
+              : projects.value[index].aiStartedAt,
+          aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null,
+        }
+      }
+
+      // Update current project if it's the same
+      if (currentProject.value?.id === projectId) {
+        currentProject.value = {
+          ...currentProject.value,
+          aiStatus: statusData.status,
+          aiCommand: statusData.command,
+          aiResult: statusData.result,
+          aiDuration: statusData.duration,
+          aiStartedAt:
+            statusData.status === 'running'
+              ? new Date().toISOString()
+              : currentProject.value.aiStartedAt,
+          aiCompletedAt: statusData.status !== 'running' ? new Date().toISOString() : null,
+        }
+      }
+    })
+  },
+}
+
+// Create aliases for easier importing
+const fetchProjects = projectService.fetchProjects.bind(projectService)
+const createProject = projectService.createProjectWithState.bind(projectService)
+const updateProject = projectService.updateProjectWithState.bind(projectService)
+const deleteProject = projectService.deleteProjectWithState.bind(projectService)
+const fetchProjectDetails = projectService.fetchProjectDetailsWithState.bind(projectService)
+const updateAIStatus = projectService.updateAIStatusWithState.bind(projectService)
+const fetchRunningAIProjects = projectService.fetchRunningAIProjectsWithState.bind(projectService)
+const startAIExecution = projectService.startAIExecutionWithState.bind(projectService)
+const stopAIExecution = projectService.stopAIExecutionWithState.bind(projectService)
+const setupWebSocketListeners = projectService.setupWebSocketListeners.bind(projectService)
+
+// Export everything
+export {
+  // State
+  projects,
+  currentProject,
+  loading,
+  error,
+
+  // Getters
+  activeProjects,
+  allProjects,
+  runningAIProjects,
+  totalTasks,
+
+  // Actions
+  fetchProjects,
+  createProject,
+  updateProject,
+  deleteProject,
+  fetchProjectDetails,
+  updateAIStatus,
+  fetchRunningAIProjects,
+  startAIExecution,
+  stopAIExecution,
+  setupWebSocketListeners,
 }

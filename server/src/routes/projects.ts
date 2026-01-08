@@ -166,17 +166,19 @@ router.get('/:id/details', authenticateToken, async (req, res) => {
   }
 })
 
-// Update AI execution status for a project
-router.put('/:id/ai-status', authenticateToken, async (req, res) => {
+// Helper function to update AI status for a project
+async function updateProjectAIStatus(
+  projectId: string,
+  updateData: any,
+  req: any,
+  res: any,
+  successMessage: string
+) {
   try {
-    const { id } = req.params
-    const { status, command, result, duration } = req.body
-
-    // Check if project belongs to user
+    // Check if project exists
     const existingProject = await prisma.project.findFirst({
       where: {
-        id,
-        userId: req.userId,
+        id: projectId,
       },
     })
 
@@ -184,40 +186,69 @@ router.put('/:id/ai-status', authenticateToken, async (req, res) => {
       return res.status(404).json(ResponseUtil.projectNotFound())
     }
 
-    const updateData: any = { aiStatus: status }
-
-    if (command !== undefined) updateData.aiCommand = command
-    if (result !== undefined) updateData.aiResult = result
-    if (duration !== undefined) updateData.aiDuration = duration
-
-    // Set timestamps based on status
-    if (status === 'running') {
-      updateData.aiStartedAt = new Date()
-      updateData.aiCompletedAt = null
-    } else if (status !== 'idle') {
-      updateData.aiCompletedAt = new Date()
-    }
-
-    const project = await prisma.project.update({
-      where: { id },
+    await prisma.project.update({
+      where: { id: projectId },
       data: updateData,
-      select: {
-        id: true,
-        name: true,
-        aiStatus: true,
-        aiCommand: true,
-        aiResult: true,
-        aiDuration: true,
-        aiStartedAt: true,
-        aiCompletedAt: true,
-      },
     })
 
-    res.json(ResponseUtil.success(project, '项目更新成功'))
+    res.json(ResponseUtil.success('', successMessage))
   } catch (error) {
     console.error('Update AI status error:', error)
     res.status(500).json(ResponseUtil.internalError())
   }
+}
+
+// Update AI execution status for a project
+router.put('/:id/ai-status', authenticateToken, async (req, res) => {
+  const { id } = req.params
+  const { status, command, result, duration } = req.body
+
+  const updateData: any = { aiStatus: status }
+
+  if (command !== undefined) updateData.aiCommand = command
+  if (result !== undefined) updateData.aiResult = result
+  if (duration !== undefined) updateData.aiDuration = duration
+
+  // Set timestamps based on status
+  if (status === 'running') {
+    updateData.aiStartedAt = new Date()
+    updateData.aiCompletedAt = null
+  } else if (status !== 'idle') {
+    updateData.aiCompletedAt = new Date()
+  }
+
+  await updateProjectAIStatus(id, updateData, req, res, '项目更新成功')
+})
+
+// Start AI execution for a project
+router.post('/:id/ai-status-start', async (req, res) => {
+  const { id } = req.params
+
+  const updateData = {
+    aiStatus: 'running' as const,
+    aiStartedAt: new Date(),
+    aiCompletedAt: null,
+  }
+
+  await updateProjectAIStatus(id, updateData, req, res, 'AI执行已启动')
+})
+
+// Stop AI execution for a project
+router.post('/:id/ai-status-stop', async (req, res) => {
+  const { id } = req.params
+  const { status } = req.body // "completed" | "aborted" | "error"
+
+  // Validate status
+  if (!['completed', 'aborted', 'error'].includes(status)) {
+    return res.status(400).json(ResponseUtil.badRequest('无效的执行结果状态'))
+  }
+
+  const updateData = {
+    aiStatus: status,
+    aiCompletedAt: new Date(),
+  }
+
+  await updateProjectAIStatus(id, updateData, req, res, 'AI执行已停止')
 })
 
 // Get running AI executions for current user

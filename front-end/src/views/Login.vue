@@ -33,7 +33,7 @@
           <el-button
             type="primary"
             size="large"
-            :loading="authStore.loading"
+            :loading="loading.value"
             @click="handleLogin"
             class="w-full"
           >
@@ -92,7 +92,7 @@
           <el-button
             type="primary"
             size="large"
-            :loading="authStore.loading"
+            :loading="loading.value"
             native-type="submit"
             class="w-full"
           >
@@ -109,10 +109,10 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Message, Lock, User } from '@element-plus/icons-vue'
-import { useAuthStore } from '@/stores/auth'
+import { loading, login, register, error, isAuthenticated } from '@/services/auth'
 
 const router = useRouter()
-const authStore = useAuthStore()
+// Auth is now handled directly through imported functions and state
 
 // 登录表单
 const loginFormRef = ref()
@@ -159,7 +159,7 @@ const registerRules = {
 // 处理登录
 const handleLogin = async () => {
   await loginFormRef.value?.validate()
-  const result = await authStore.login(form)
+  const result = await login(form)
   if (result.code == 200) {
     ElMessage.success('登录成功')
     router.push('/')
@@ -172,15 +172,15 @@ const handleLogin = async () => {
 const handleRegister = async () => {
   try {
     await registerFormRef.value?.validate()
-    await authStore.register(registerForm)
+    await register(registerForm)
     ElMessage.success('注册成功')
     showRegister.value = false
     router.push('/')
   } catch (error) {
     console.error('Register error:', error)
     // 显示错误信息
-    if (authStore.error) {
-      ElMessage.error(authStore.error)
+    if (error.value) {
+      ElMessage.error(error.value)
     } else {
       ElMessage.error('注册失败，请稍后重试')
     }
@@ -189,7 +189,7 @@ const handleRegister = async () => {
 
 onMounted(() => {
   // 如果已经登录，重定向到首页
-  if (authStore.isAuthenticated) {
+  if (isAuthenticated.value) {
     router.push('/')
   }
 })

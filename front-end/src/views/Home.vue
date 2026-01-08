@@ -2,8 +2,19 @@
   <div class="home-container">
     <!-- Header -->
     <header class="header" v-if="showHeader">
-      <div class="header-content">
-        <h1 class="title">Cursor项目管理器</h1>
+      <div class="header-content-full">
+        <div class="header-left">
+          <h1 class="title">Cursor项目管理器</h1>
+          <el-menu
+            :default-active="activeMenu"
+            class="header-menu"
+            mode="horizontal"
+            @select="handleMenuSelect"
+          >
+            <el-menu-item index="home">首页</el-menu-item>
+            <el-menu-item index="docs">Cursor 接入文档</el-menu-item>
+          </el-menu>
+        </div>
         <div class="header-actions">
           <el-button type="primary" @click="showCreateProject = true">
             <el-icon><Plus /></el-icon>
@@ -17,8 +28,8 @@
     <!-- Main Content -->
     <main class="main-content">
       <div class="content-wrapper">
-        <!-- Projects List -->
-        <div class="projects-section">
+        <!-- Home View -->
+        <div v-if="currentView === 'home'" class="projects-section">
           <div class="section-header" v-if="showHeader">
             <h2>项目列表</h2>
             <div class="stats">
@@ -48,7 +59,7 @@
                     {{ getProjectStatusText(project) }}
                   </el-tag>
                   <el-tag
-                    type=""
+                    :type="getAIStatusType(project.aiStatus)"
                     size="small"
                     style="cursor: pointer"
                     @click="toggleAIExecution(project)"
@@ -129,7 +140,7 @@
                   :rows="1"
                   :autosize="{ minRows: 1, maxRows: 4 }"
                   @keyup.enter="createQuickTask(project)"
-                  :disabled="tasksStore.loading"
+                  :disabled="(loading as any).value"
                 >
                   <template #suffix>
                     <el-icon @click="createQuickTask(project)">
@@ -225,6 +236,104 @@
             </el-card>
           </div>
         </div>
+
+        <!-- Docs View -->
+        <div v-if="currentView === 'docs'" class="docs-section">
+          <div class="docs-content">
+            <h2>Cursor 接入文档</h2>
+            <div class="docs-article">
+              <h3>如何接入 Cursor 项目管理器</h3>
+              <p>
+                Cursor 项目管理器是一个强大的项目管理工具，可以帮助您高效地管理多个 Cursor 项目。
+              </p>
+
+              <h4>主要功能</h4>
+              <ul>
+                <li><strong>项目管理</strong>：创建、编辑、删除项目，支持项目状态管理</li>
+                <li><strong>任务管理</strong>：为每个项目添加任务，支持任务状态跟踪</li>
+                <li><strong>AI 集成</strong>：支持 AI 自动执行任务</li>
+                <li><strong>拖拽排序</strong>：支持任务的拖拽排序功能</li>
+              </ul>
+
+              <h4>快速开始</h4>
+              <ol>
+                <li>点击"新建项目"创建您的第一个项目</li>
+                <li>为项目添加任务，设置任务优先级</li>
+                <li>使用拖拽功能调整任务顺序</li>
+                <li>启动 AI 执行来自动处理任务</li>
+              </ol>
+
+              <h4>API 文档</h4>
+              <p>详细的 API 文档请参考项目中的 README.md 文件。</p>
+
+              <h4>项目选择器</h4>
+              <p>选择一个项目来查看对应的API调用示例：</p>
+              <div class="project-selector">
+                <el-select
+                  v-model="selectedProjectId"
+                  placeholder="请选择项目"
+                  style="width: 300px"
+                  @change="onProjectSelected"
+                >
+                  <el-option
+                    v-for="project in allProjects"
+                    :key="project.id"
+                    :label="project.name"
+                    :value="project.id"
+                  />
+                </el-select>
+                <span v-if="selectedProjectId" class="selected-project-info">
+                  已选择项目 ID: <code>{{ selectedProjectId }}</code>
+                </span>
+              </div>
+
+              <h4>AI 执行接口</h4>
+              <h5>启动 AI 执行</h5>
+              <pre><code>POST /api/projects/{{ selectedProjectId || '{projectId}' }}/ai-status-start
+
+请求参数：无（通过URL路径传递项目ID）
+
+响应示例：
+{
+  "code": 200,
+  "msg": "AI执行已启动",
+  "data": ""
+}</code></pre>
+
+              <h5>停止 AI 执行</h5>
+              <pre><code>POST /api/projects/{{ selectedProjectId || '{projectId}' }}/ai-status-stop
+
+请求体：
+{
+  "status": "completed"  // 可选值: "completed", "aborted", "error"
+}
+
+响应示例：
+{
+  "code": 200,
+  "msg": "AI执行已停止",
+  "data": ""
+}
+
+错误响应（无效状态值）：
+{
+  "code": 400,
+  "msg": "无效的执行结果状态",
+  "data": null
+}</code></pre>
+
+              <div class="api-notes">
+                <strong>注意事项：</strong>
+                <ul>
+                  <li>这两个接口无需 JWT 认证即可调用</li>
+                  <li>启动接口会将项目的 AI 状态设置为 "running"</li>
+                  <li>停止接口支持三种状态：completed（完成）、aborted（中止）、error（错误）</li>
+                  <li>接口只返回简单的成功消息，不包含项目详细信息</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -260,7 +369,7 @@
 
       <template #footer>
         <el-button @click="showCreateProject = false">取消</el-button>
-        <el-button type="primary" :loading="projectsStore.loading" @click="handleCreateProject">
+        <el-button type="primary" :loading="(loading as any).value" @click="handleCreateProject">
           创建
         </el-button>
       </template>
@@ -310,7 +419,7 @@
 
       <template #footer>
         <el-button @click="showEditProject = false">取消</el-button>
-        <el-button type="primary" :loading="projectsStore.loading" @click="handleEditProject">
+        <el-button type="primary" :loading="(loading as any).value" @click="handleEditProject">
           更新
         </el-button>
       </template>
@@ -350,17 +459,40 @@ import {
   Check,
   Close,
   Warning,
+  Document,
 } from '@element-plus/icons-vue'
-import { useAuthStore } from '@/stores/auth'
-import { useProjectsStore } from '@/stores/projects'
-import { useTasksStore } from '@/stores/tasks'
+import { logout } from '@/services/auth'
+import {
+  projects,
+  currentProject,
+  allProjects,
+  runningAIProjects,
+  totalTasks,
+  fetchProjects,
+  createProject,
+  updateProject,
+  deleteProject,
+  startAIExecution,
+  stopAIExecution,
+  setupWebSocketListeners,
+} from '@/services/projects'
+import {
+  tasks,
+  loading,
+  createTask,
+  fetchTasksByProject,
+  deleteTask,
+  updateTask,
+  updateTaskOrder,
+  clearTasks,
+} from '@/services/tasks'
 import type { Task } from '@/services/tasks'
 import type { Project } from '@/services/projects'
 
 const router = useRouter()
-const authStore = useAuthStore()
-const projectsStore = useProjectsStore()
-const tasksStore = useTasksStore()
+// Auth is now handled directly through imported functions
+// 使用直接导入的响应式变量和函数
+// 使用直接导入的函数和变量
 
 // Reactive data
 const showCreateProject = ref(false)
@@ -368,6 +500,9 @@ const showEditProject = ref(false)
 const quickTaskInputs = ref<Record<string, string>>({})
 const expandedProjects = ref<Set<string>>(new Set()) // 存储展开的项目ID
 const showHeader = ref(true) // 控制头部显示状态
+const activeMenu = ref('home') // 当前激活的菜单项
+const currentView = ref('home') // 当前显示的视图：'home' 或 'docs'
+const selectedProjectId = ref('') // 文档中选择的项目ID
 
 // Task statuses
 const taskStatuses = [
@@ -407,14 +542,14 @@ const projectRules = {
 }
 
 // Computed
-const activeProjects = computed(() => projectsStore.activeProjects)
-const allProjects = computed(() => projectsStore.projects)
-const activatedProjects = computed(() =>
-  projectsStore.projects.filter((p) => p.aiStatus === 'active'),
-)
-const runningAIProjects = computed(() => projectsStore.runningAIProjects)
-const totalTasks = computed(() => projectsStore.totalTasks)
-const currentProject = computed(() => projectsStore.currentProject)
+const activatedProjects = computed(() => projects.value.filter((p) => p.aiStatus === 'active'))
+// 使用直接导入的currentProject变量
+
+// 项目选择处理函数
+const onProjectSelected = (projectId: string) => {
+  selectedProjectId.value = projectId
+  // 可以在这里添加其他逻辑，比如更新API示例等
+}
 
 // 快速创建任务
 const createQuickTask = async (project: Project) => {
@@ -425,7 +560,7 @@ const createQuickTask = async (project: Project) => {
   }
 
   try {
-    await tasksStore.createTask({
+    await createTask({
       title: taskTitle,
       projectId: project.id,
       priority: 3, // 默认中等优先级
@@ -437,7 +572,7 @@ const createQuickTask = async (project: Project) => {
     quickTaskInputs.value[project.id] = ''
 
     // 刷新项目的任务数据以更新统计
-    await tasksStore.fetchTasksByProject(project.id)
+    await fetchTasksByProject(project.id)
   } catch (error) {
     console.error('Failed to create quick task:', error)
     ElMessage.error('创建任务失败')
@@ -446,7 +581,7 @@ const createQuickTask = async (project: Project) => {
 
 // Methods
 const getProjectTasks = (projectId: string) => {
-  return tasksStore.tasks.filter((task) => task.projectId === projectId)
+  return tasks.value.filter((task) => task.projectId === projectId)
 }
 
 const getDisplayedTasks = (projectId: string) => {
@@ -471,14 +606,14 @@ const updateTaskStatus = async (task: Task, command: string) => {
   try {
     if (command === 'delete') {
       // Delete task
-      await tasksStore.deleteTask(task.id)
+      await deleteTask(task.id)
       ElMessage.success('任务已删除')
 
       // 重新获取项目任务数据以更新统计
-      await tasksStore.fetchTasksByProject(task.projectId)
+      await fetchTasksByProject(task.projectId)
     } else {
       // Update task status
-      await tasksStore.updateTask(task.id, {
+      await updateTask(task.id, {
         status: command as 'pending' | 'in_progress' | 'completed',
       })
       ElMessage.success('任务状态已更新')
@@ -527,10 +662,6 @@ const getAIStatusType = (status?: string) => {
   }
 }
 
-const getAIStatusText = (status?: string) => {
-  return 'AI'
-}
-
 const getProjectStatusType = (project: Project) => {
   return project.status === 'active' ? 'success' : 'info'
 }
@@ -557,14 +688,14 @@ const editProject = (project: Project) => {
   showEditProject.value = true
 }
 
-const deleteProject = async (project: Project) => {
+const handleDeleteProject = async (project: Project) => {
   try {
-    await projectsStore.deleteProject(project.id)
+    await deleteProject(project.id)
     ElMessage.success('项目已删除')
 
     // 如果删除的是当前项目，清空任务列表
     if (currentProject.value?.id === project.id) {
-      tasksStore.clearTasks()
+      clearTasks()
     }
   } catch (error) {
     if (error !== 'cancel') {
@@ -583,7 +714,7 @@ const handleProjectAction = async (project: Project, action: string) => {
       await toggleProjectStatus(project)
       break
     case 'delete':
-      await deleteProject(project)
+      await handleDeleteProject(project)
       break
   }
 }
@@ -591,7 +722,7 @@ const handleProjectAction = async (project: Project, action: string) => {
 const toggleProjectStatus = async (project: Project) => {
   try {
     const newStatus = project.status === 'active' ? 'hidden' : 'active'
-    await projectsStore.updateProject(project.id, { status: newStatus })
+    await updateProject(project.id, { status: newStatus })
     ElMessage.success(`项目已${newStatus === 'active' ? '显示' : '隐藏'}`)
   } catch (error) {
     console.error('Failed to toggle project status:', error)
@@ -599,71 +730,33 @@ const toggleProjectStatus = async (project: Project) => {
   }
 }
 
-const toggleAIStatus = async (project: Project) => {
-  try {
-    const newAIStatus = project.aiStatus === 'active' ? 'idle' : 'active'
-    await projectsStore.updateAIStatus(project.id, { status: newAIStatus })
-    ElMessage.success(`项目已${newAIStatus === 'active' ? '激活' : '设为空闲'}`)
-  } catch (error) {
-    console.error('Failed to toggle AI status:', error)
-    ElMessage.error('操作失败')
-  }
-}
-
 const toggleProjectActivation = async (project: Project) => {
-  try {
-    // 项目激活状态切换：使用 aiStatus 字段来表示激活状态 ('active'/'idle')
-    // 注意：这里我们不改变项目的 status 字段，以免影响项目显示
-    const targetAIStatus = project.aiStatus === 'active' ? 'idle' : 'active'
-    console.log(`Switching project activation from ${project.aiStatus} to ${targetAIStatus}`)
-
-    // 先更新本地状态，确保UI立即响应
-    project.aiStatus = targetAIStatus
-
-    // 使用 updateAIStatus API 更新项目激活状态
-    const updatedProject = await projectsStore.updateAIStatus(project.id, {
-      status: targetAIStatus,
-    })
-    console.log('Updated project:', updatedProject)
-
-    // 如果API调用失败，回滚本地状态
-    if (!updatedProject) {
-      project.aiStatus = project.aiStatus === 'active' ? 'idle' : 'active'
-    }
-
-    ElMessage.success(`项目已${targetAIStatus === 'active' ? '激活' : '设为空闲'}`)
-  } catch (error) {
-    console.error('Failed to toggle project activation:', error)
-    // 如果API调用失败，回滚本地状态
-    project.aiStatus = project.aiStatus === 'active' ? 'idle' : 'active'
-    ElMessage.error('操作失败')
-  }
+  const newStatus = project.status === 'active' ? 'hidden' : 'active'
+  project.status = newStatus
+  await updateProject(project.id, { status: newStatus })
+  ElMessage.success(`项目已${newStatus === 'active' ? '激活' : '隐藏'}`)
 }
 
 const toggleAIExecution = async (project: Project) => {
   try {
-    // AI执行状态切换：基于项目的 aiStatus 字段 ('running'/'idle')
-    const targetStatus = project.aiStatus === 'running' ? 'idle' : 'running'
-    console.log(`Switching AI status from ${project.aiStatus} to ${targetStatus}`)
-
-    // 先更新本地状态，确保UI立即响应
-    project.aiStatus = targetStatus
-
-    // 使用 updateAIStatus API 更新AI状态
-    const updatedProject = await projectsStore.updateAIStatus(project.id, { status: targetStatus })
-    console.log('Updated project:', updatedProject)
-
-    // 如果API调用失败，回滚本地状态
-    if (!updatedProject) {
+    if (project.aiStatus === 'running') {
+      // Stop AI execution - default to 'completed' status
+      await stopAIExecution(project.id, 'completed')
+      project.aiStatus = 'completed'
+      ElMessage.success('AI执行已完成')
+    } else {
+      // Start AI execution
+      await startAIExecution(project.id)
+      project.aiStatus = 'running'
+      ElMessage.success('AI开始执行')
+    }
+  } catch (error) {
+    console.error('Toggle AI execution error:', error)
+    ElMessage.error('操作失败，请重试')
+    // Revert optimistic update on error
+    if (project.aiStatus === 'running') {
       project.aiStatus = project.aiStatus === 'running' ? 'idle' : 'running'
     }
-
-    ElMessage.success(`AI已${targetStatus === 'running' ? '开始执行' : '停止执行'}`)
-  } catch (error) {
-    console.error('Failed to toggle AI execution:', error)
-    // 如果API调用失败，回滚本地状态
-    project.aiStatus = project.aiStatus === 'running' ? 'idle' : 'running'
-    ElMessage.error('操作失败')
   }
 }
 
@@ -671,7 +764,7 @@ const handleEditProject = async () => {
   try {
     await editProjectFormRef.value?.validate()
     const { id, ...updateData } = editProjectForm
-    await projectsStore.updateProject(id, updateData)
+    await updateProject(id, updateData)
     ElMessage.success('项目更新成功')
     showEditProject.value = false
   } catch (error) {
@@ -689,7 +782,7 @@ const handleCreateProject = async () => {
       status: 'active' as const,
     }
 
-    await projectsStore.createProject(projectData)
+    await createProject(projectData)
 
     ElMessage.success('项目创建成功')
     showCreateProject.value = false
@@ -724,7 +817,15 @@ const copyTaskTitle = async (title: string) => {
 }
 
 // VueDraggable functionality
-const onTaskOrderChange = async (event: any, projectId: string) => {
+interface TaskOrderEvent {
+  moved?: {
+    element: Record<string, unknown>
+    newIndex: number
+    oldIndex: number
+  }
+}
+
+const onTaskOrderChange = async (event: TaskOrderEvent, projectId: string) => {
   if (!event.moved) return
 
   try {
@@ -732,14 +833,12 @@ const onTaskOrderChange = async (event: any, projectId: string) => {
     const allTasks = getProjectTasks(projectId).filter((task) => task.status !== 'completed')
 
     // Update order for all tasks based on new positions
-    const updatePromises = allTasks.map((task, index) =>
-      tasksStore.updateTaskOrder(task.id, index + 1),
-    )
+    const updatePromises = allTasks.map((task, index) => updateTaskOrder(task.id, index + 1))
 
     await Promise.all(updatePromises)
 
     // Refresh tasks for this project
-    await tasksStore.fetchTasksByProject(projectId)
+    await fetchTasksByProject(projectId)
 
     ElMessage.success('任务排序已更新')
   } catch {
@@ -747,22 +846,28 @@ const onTaskOrderChange = async (event: any, projectId: string) => {
   }
 }
 
+const handleMenuSelect = (key: string) => {
+  console.log('handleMenuSelect', key)
+  activeMenu.value = key
+  currentView.value = key
+}
+
 const handleLogout = () => {
-  authStore.logout()
+  logout()
   router.push('/login')
 }
 
 // Lifecycle
 onMounted(async () => {
   try {
-    await projectsStore.fetchProjects()
-    projectsStore.setupWebSocketListeners()
+    await fetchProjects()
+    setupWebSocketListeners()
 
     // 为所有项目获取任务数据，以便在卡片中显示
-    const projects = projectsStore.projects
-    for (const project of projects) {
+    const projectsList = projects.value
+    for (const project of projectsList) {
       try {
-        await tasksStore.fetchTasksByProject(project.id)
+        await fetchTasksByProject(project.id)
       } catch (error) {
         console.error(`Failed to fetch tasks for project ${project.id}:`, error)
       }
@@ -776,7 +881,7 @@ onMounted(async () => {
 watch(currentProject, async (newProject) => {
   if (newProject) {
     try {
-      await tasksStore.fetchTasksByProject(newProject.id)
+      await fetchTasksByProject(newProject.id)
     } catch (error) {
       console.error('Failed to load tasks:', error)
     }
@@ -813,13 +918,36 @@ watch(currentProject, async (newProject) => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-.header-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem 2rem;
+.header-content-full {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  padding: 1rem 2rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header-menu {
+  background: transparent;
+  border-bottom: none;
+}
+
+.header-menu .el-menu-item {
+  border-bottom: none;
+}
+
+.header-menu .el-menu-item:hover {
+  background-color: rgba(64, 158, 255, 0.1);
+}
+
+.header-menu .el-menu-item.is-active {
+  color: #409eff;
+  border-bottom: 2px solid #409eff;
 }
 
 .title {
@@ -1292,5 +1420,86 @@ watch(currentProject, async (newProject) => {
   .projects-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Docs View Styles */
+.docs-section {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding: 2rem 1rem;
+}
+
+.docs-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.docs-content h2 {
+  color: #303133;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #409eff;
+  padding-bottom: 0.5rem;
+}
+
+.docs-article {
+  line-height: 1.6;
+  color: #606266;
+}
+
+.docs-article h3 {
+  color: #303133;
+  margin: 2rem 0 1rem 0;
+}
+
+.docs-article h4 {
+  color: #303133;
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.docs-article p {
+  margin-bottom: 1rem;
+}
+
+.docs-article ul,
+.docs-article ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.docs-article li {
+  margin-bottom: 0.5rem;
+}
+
+.docs-article strong {
+  color: #303133;
+}
+
+/* 项目选择器样式 */
+.project-selector {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e4e7ed;
+}
+
+.project-selector .el-select {
+  margin-right: 1rem;
+}
+
+.selected-project-info {
+  color: #67c23a;
+  font-weight: 500;
+}
+
+.selected-project-info code {
+  background-color: #f0f9ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
 }
 </style>
