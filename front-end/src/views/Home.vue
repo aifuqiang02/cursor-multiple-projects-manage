@@ -181,41 +181,42 @@
                   </template>
                 </draggable>
 
-                <!-- Quick Task Input and More Tasks Row -->
-                <div
-                  class="task-input-row"
-                  v-if="getProjectTasks(project.id).length > 3 && !isProjectExpanded(project.id)"
-                >
-                  <div class="quick-task-input">
-                    <el-input
-                      v-model="quickTaskInputs[project.id]"
-                      placeholder="输入任务内容，按回车创建"
-                      size="small"
-                      clearable
-                      type="textarea"
-                      :rows="1"
-                      :autosize="{ minRows: 1, maxRows: 4 }"
-                      @keyup.enter="createQuickTask(project)"
-                      :disabled="(loading as any).value"
-                    >
-                      <template #suffix>
-                        <el-icon @click="createQuickTask(project)">
-                          <Plus />
-                        </el-icon>
-                      </template>
-                    </el-input>
-                  </div>
-                  <div class="expand-button" @click="toggleProjectExpansion(project.id)">
-                    展开 ({{ getProjectTasks(project.id).length - 3 }}) >>
-                  </div>
-                </div>
-
                 <div
                   v-if="isProjectExpanded(project.id)"
                   class="collapse-tasks"
                   @click="toggleProjectExpansion(project.id)"
                 >
                   收起任务列表
+                </div>
+              </div>
+
+              <!-- Quick Task Input and More Tasks Row -->
+              <div class="task-input-row">
+                <div class="quick-task-input">
+                  <el-input
+                    v-model="quickTaskInputs[project.id]"
+                    placeholder="输入任务内容，按回车创建"
+                    size="small"
+                    clearable
+                    type="textarea"
+                    :rows="1"
+                    :autosize="{ minRows: 1, maxRows: 4 }"
+                    @keyup.enter="createQuickTask(project)"
+                    :disabled="(loading as any).value"
+                  >
+                    <template #suffix>
+                      <el-icon @click="createQuickTask(project)">
+                        <Plus />
+                      </el-icon>
+                    </template>
+                  </el-input>
+                </div>
+                <div
+                  v-if="getProjectTasks(project.id).length > 3 && !isProjectExpanded(project.id)"
+                  class="expand-button"
+                  @click="toggleProjectExpansion(project.id)"
+                >
+                  展开 ({{ getProjectTasks(project.id).length - 3 }}) >>
                 </div>
               </div>
 
