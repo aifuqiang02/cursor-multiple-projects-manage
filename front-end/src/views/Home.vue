@@ -738,25 +738,19 @@ const toggleProjectActivation = async (project: Project) => {
 }
 
 const toggleAIExecution = async (project: Project) => {
-  try {
-    if (project.aiStatus === 'running') {
-      // Stop AI execution - default to 'completed' status
-      await stopAIExecution(project.id, 'completed')
-      project.aiStatus = 'completed'
-      ElMessage.success('AI执行已完成')
-    } else {
-      // Start AI execution
-      await startAIExecution(project.id)
-      project.aiStatus = 'running'
-      ElMessage.success('AI开始执行')
-    }
-  } catch (error) {
-    console.error('Toggle AI execution error:', error)
-    ElMessage.error('操作失败，请重试')
-    // Revert optimistic update on error
-    if (project.aiStatus === 'running') {
-      project.aiStatus = project.aiStatus === 'running' ? 'idle' : 'running'
-    }
+  if (project.aiStatus === 'running') {
+    // Stop AI execution - default to 'completed' status
+    project.aiStatus = 'completed'
+    await stopAIExecution(project.id, 'completed')
+    // 不要直接修改状态，等待WebSocket更新或API响应
+    ElMessage.success('AI执行已完成')
+  } else {
+    // Start AI execution
+    project.aiStatus = 'running'
+    await startAIExecution(project.id)
+
+    // 不要直接修改状态，等待WebSocket更新或API响应
+    ElMessage.success('AI开始执行')
   }
 }
 
