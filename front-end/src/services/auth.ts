@@ -37,7 +37,7 @@ const user = ref<User | null>(null)
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const isAuthenticated = computed(() => !!token.value && !!user.value)
+const isAuthenticated = computed(() => !!token.value)
 
 // Actions
 const setToken = (newToken: string | null) => {

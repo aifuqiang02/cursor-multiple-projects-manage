@@ -5,6 +5,7 @@ import { wsService } from '@/services/websocket'
 
 onMounted(() => {
   // Initialize WebSocket connection when app starts
+  console.log('App mounted')
   if (isAuthenticated.value) {
     wsService.connect()
   }
@@ -24,9 +25,11 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

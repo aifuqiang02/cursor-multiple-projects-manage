@@ -36,7 +36,7 @@
               <el-tag type="success">{{ activatedProjects.length }} 个激活项目</el-tag>
               <el-tag type="warning">{{ runningAIProjects.length }} 个AI运行中</el-tag>
               <el-tag type="info">{{ allProjects.length }} 个项目</el-tag>
-              <el-tag type="primary">{{ totalTasks }} 个任务</el-tag>
+              <el-tag type="primary">{{ totalTasksOverride }} 个任务</el-tag>
             </div>
           </div>
 
@@ -88,7 +88,11 @@
                 <div class="project-meta">
                   <span class="task-count">
                     <el-icon><Document /></el-icon>
-                    {{ project._count?.tasks || 0 }} 个任务
+                    {{
+                      getProjectTasks(project.id).filter((task) => task.status !== 'completed')
+                        .length
+                    }}
+                    个任务
                   </span>
                   <span class="cursor-key" v-if="project.cursorKey">
                     密钥: {{ project.cursorKey.slice(0, 8) }}...
@@ -130,7 +134,13 @@
               </div>
 
               <!-- Project Tasks -->
-              <div class="project-tasks" v-if="getProjectTasks(project.id).length > 0">
+              <div
+                class="project-tasks"
+                v-if="
+                  getProjectTasks(project.id).filter((task) => task.status !== 'completed').length >
+                  0
+                "
+              >
                 <div class="tasks-divider"></div>
                 <draggable
                   :list="getDisplayedTasks(project.id)"
@@ -146,36 +156,56 @@
                       <div class="drag-handle">
                         <el-icon><Rank /></el-icon>
                       </div>
-                      <span class="task-title" @click="copyTaskTitle(task.title)">{{
-                        task.title
-                      }}</span>
-                      <div class="task-meta">
-                        <el-dropdown
-                          @command="(status: string) => updateTaskStatus(task, status)"
-                          class="task-status-dropdown"
-                        >
-                          <span class="task-status">
-                            {{ getStatusText(task.status) }}
-                            <el-icon class="el-icon--right">
-                              <arrow-down />
-                            </el-icon>
-                          </span>
-                          <template #dropdown>
-                            <el-dropdown-menu>
-                              <el-dropdown-item
-                                v-for="status in taskStatuses.filter((s) => s.value !== 'delete')"
-                                :key="status.value"
-                                :command="status.value"
-                                :class="{ 'is-active': task.status === status.value }"
-                              >
-                                {{ status.label }}
-                              </el-dropdown-item>
-                              <el-dropdown-item :command="'delete'" class="delete-item">
-                                {{ taskStatuses.find((s) => s.value === 'delete')?.label }}
-                              </el-dropdown-item>
-                            </el-dropdown-menu>
-                          </template>
-                        </el-dropdown>
+                      <div class="task-content">
+                        <span class="task-title" @click="copyTaskTitle(task.title)">{{
+                          task.title
+                        }}</span>
+                        <div class="task-status-row">
+                          <el-dropdown
+                            @command="(status: string) => updateTaskStatus(task, status)"
+                            class="task-status-dropdown"
+                          >
+                            <span class="task-status-text">
+                              {{ getStatusText(task.status) }}
+                              <el-icon class="el-icon--right">
+                                <arrow-down />
+                              </el-icon>
+                            </span>
+                            <template #dropdown>
+                              <el-dropdown-menu>
+                                <el-dropdown-item
+                                  v-for="status in taskStatuses.filter((s) => s.value !== 'delete')"
+                                  :key="status.value"
+                                  :command="status.value"
+                                  :class="{ 'is-active': task.status === status.value }"
+                                >
+                                  {{ status.label }}
+                                </el-dropdown-item>
+                                <el-dropdown-item :command="'delete'" class="delete-item">
+                                  {{ taskStatuses.find((s) => s.value === 'delete')?.label }}
+                                </el-dropdown-item>
+                              </el-dropdown-menu>
+                            </template>
+                          </el-dropdown>
+                          <div class="task-action">
+                            <el-button
+                              v-if="task.status === 'pending'"
+                              size="small"
+                              type="primary"
+                              @click="updateTaskStatus(task, 'in_progress')"
+                            >
+                              开始处理
+                            </el-button>
+                            <el-button
+                              v-else-if="task.status === 'in_progress'"
+                              size="small"
+                              type="success"
+                              @click="updateTaskStatus(task, 'completed')"
+                            >
+                              处理完成
+                            </el-button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </template>
@@ -212,11 +242,17 @@
                   </el-input>
                 </div>
                 <div
-                  v-if="getProjectTasks(project.id).length > 3 && !isProjectExpanded(project.id)"
+                  v-if="
+                    getProjectTasks(project.id).filter((task) => task.status !== 'completed')
+                      .length > 3 && !isProjectExpanded(project.id)
+                  "
                   class="expand-button"
                   @click="toggleProjectExpansion(project.id)"
                 >
-                  展开 ({{ getProjectTasks(project.id).length - 3 }}) >>
+                  展开 ({{
+                    getProjectTasks(project.id).filter((task) => task.status !== 'completed')
+                      .length - 3
+                  }}) >>
                 </div>
               </div>
 
@@ -485,11 +521,31 @@ const projectRules = {
 const activatedProjects = computed(() => projects.value.filter((p) => p.aiStatus === 'active'))
 const sortedProjects = computed(() =>
   [...allProjects.value].sort((a, b) => {
-    const aTasks = a._count?.tasks || 0
-    const bTasks = b._count?.tasks || 0
-    return bTasks - aTasks // 任务多的排在前面
+    // 计算活跃任务数量（待处理 + 进行中）
+    const aActiveTasks = getProjectTasks(a.id).filter(
+      (task) => task.status === 'pending' || task.status === 'in_progress',
+    ).length
+    const bActiveTasks = getProjectTasks(b.id).filter(
+      (task) => task.status === 'pending' || task.status === 'in_progress',
+    ).length
+
+    // 首先按活跃任务数量排序
+    if (bActiveTasks !== aActiveTasks) {
+      return bActiveTasks - aActiveTasks
+    }
+
+    // 如果活跃任务数量相同，按总任务数量排序
+    const aTotalTasks = a._count?.tasks || 0
+    const bTotalTasks = b._count?.tasks || 0
+    return bTotalTasks - aTotalTasks
   }),
 )
+// 重新定义totalTasks，只统计未完成任务
+const totalTasksOverride = computed(() => {
+  return projects.value.reduce((sum, project) => {
+    return sum + getProjectTasks(project.id).filter((task) => task.status !== 'completed').length
+  }, 0)
+})
 // 使用直接导入的currentProject变量
 
 // 项目选择处理函数
@@ -532,7 +588,7 @@ const getProjectTasks = (projectId: string) => {
 }
 
 const getDisplayedTasks = (projectId: string) => {
-  const tasks = getProjectTasks(projectId)
+  const tasks = getProjectTasks(projectId).filter((task) => task.status !== 'completed')
   return isProjectExpanded(projectId) ? tasks : tasks.slice(0, 3)
 }
 
@@ -1118,6 +1174,42 @@ watch(currentProject, async (newProject) => {
 
 .drag-handle:hover {
   color: #409eff;
+}
+
+.task-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.task-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.task-status-text {
+  font-size: 0.75rem;
+  color: #909399;
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  background-color: #f5f7fa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.task-status-text:hover {
+  background-color: #e4e7ed;
+}
+
+.task-action {
+  display: flex;
+  align-items: center;
 }
 
 /* VueDraggable styles */

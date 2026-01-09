@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { showToast } from "vant";
+import { ref, onMounted } from "vue";
+import { showToast, showLoadingToast, closeToast } from "vant";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { fetchProjects, projects, activeProjects } from "@/services/projects";
 
 // 响应式数据
 const searchValue = ref("");
@@ -11,37 +12,6 @@ const activeTabBar = ref(0);
 
 const router = useRouter();
 const authStore = useAuthStore();
-
-// 模拟数据
-const projects = ref([
-  {
-    id: 1,
-    name: "Cursor项目管理器",
-    desc: "一个强大的项目管理工具",
-    thumb: "https://fastly.picsum.photos/id/1/100/100",
-  },
-  {
-    id: 2,
-    name: "移动端应用",
-    desc: "基于Vue3的移动端项目",
-    thumb: "https://fastly.picsum.photos/id/2/100/100",
-  },
-]);
-
-const tasks = ref([
-  {
-    id: 1,
-    title: "完成登录功能",
-    desc: "实现用户登录和注册",
-    status: "已完成",
-  },
-  {
-    id: 2,
-    title: "添加项目管理",
-    desc: "实现项目CRUD操作",
-    status: "进行中",
-  },
-]);
 
 // 方法
 const onSearch = (value: string) => {
@@ -56,6 +26,11 @@ const handleLogout = () => {
   authStore.logout();
   showToast("已退出登录");
   router.push("/login");
+};
+
+// 点击项目跳转到任务列表
+const handleProjectClick = (project: any) => {
+  router.push(`/projects/${project.id}/tasks`);
 };
 
 // 底部导航切换
@@ -83,6 +58,22 @@ const onTabBarChange = (index: number) => {
       break;
   }
 };
+
+// 生命周期
+onMounted(async () => {
+  try {
+    showLoadingToast({
+      message: '加载项目中...',
+      forbidClick: true,
+    });
+
+    await fetchProjects();
+    closeToast();
+  } catch (error) {
+    closeToast();
+    showToast('加载项目失败');
+  }
+});
 </script>
 
 <template>
@@ -101,17 +92,35 @@ const onTabBarChange = (index: number) => {
     <div class="tab-content">
       <!-- 项目标签页 -->
       <div v-if="activeTab === 'projects'" class="tab-pane">
-        <van-card
-          v-for="project in projects"
-          :key="project.id"
-          :title="project.name"
-          :desc="project.desc"
-          :thumb="project.thumb"
+        <van-cell-group v-if="activeProjects.length > 0">
+          <van-cell
+            v-for="project in activeProjects"
+            :key="project.id"
+            :title="project.name"
+            :label="project.description || '暂无描述'"
+            :value="`${project._count?.tasks || 0} 个任务`"
+            clickable
+            @click="handleProjectClick(project)"
+          >
+            <template #icon>
+              <van-icon name="orders-o" />
+            </template>
+            <template #right-icon>
+              <van-icon name="arrow" />
+            </template>
+          </van-cell>
+        </van-cell-group>
+
+        <!-- 空状态 -->
+        <van-empty
+          v-else
+          description="暂无项目"
+          image="search"
         >
-          <template #footer>
-            <van-button size="mini" type="primary">查看详情</van-button>
-          </template>
-        </van-card>
+          <van-button round type="primary" class="bottom-button">
+            创建项目
+          </van-button>
+        </van-empty>
       </div>
 
       <!-- 任务标签页 -->
@@ -185,7 +194,7 @@ const onTabBarChange = (index: number) => {
 
     <!-- 底部导航 -->
     <van-tabbar v-model="activeTabBar" @change="onTabBarChange">
-      <van-tabbar-item icon="home-o">首页</van-tabbar-item>
+      <van-tabbar-item icon="home-o">项目</van-tabbar-item>
       <van-tabbar-item icon="search">搜索</van-tabbar-item>
       <van-tabbar-item icon="friends-o">好友</van-tabbar-item>
       <van-tabbar-item icon="setting-o">设置</van-tabbar-item>

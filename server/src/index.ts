@@ -47,7 +47,7 @@ const io = new Server(server, {
         'http://localhost:5176',
         'http://127.0.0.1:5173',
         'http://127.0.0.1:5176',
-        serverConfig.corsOrigin
+        serverConfig.corsOrigin,
       ].filter(Boolean)
 
       if (allowedOrigins.includes(origin)) {
@@ -58,7 +58,7 @@ const io = new Server(server, {
       return callback(new Error('Not allowed by CORS'))
     },
     methods: ['GET', 'POST'],
-    credentials: true
+    credentials: true,
   },
 })
 
@@ -135,28 +135,58 @@ app.get('/api/health/db', async (req, res) => {
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {
-  console.log('[WebSocket Server] Client connected:', socket.id)
-  console.log('[WebSocket Server] Client handshake origin:', socket.handshake.headers.origin)
-  console.log('[WebSocket Server] Client user agent:', socket.handshake.headers['user-agent'])
-  console.log('[WebSocket Server] Total connected clients:', io.sockets.sockets.size)
+  console.error('[WebSocket Server] Client connected:', socket.id)
+  console.log(
+    '[WebSocket Server] Client handshake origin:',
+    socket.handshake.headers.origin
+  )
+  console.log(
+    '[WebSocket Server] Client user agent:',
+    socket.handshake.headers['user-agent']
+  )
+  console.log(
+    '[WebSocket Server] Total connected clients:',
+    io.sockets.sockets.size
+  )
 
   socket.on('disconnect', (reason) => {
-    console.log('[WebSocket Server] Client disconnected:', socket.id, 'Reason:', reason)
-    console.log('[WebSocket Server] Remaining connected clients:', io.sockets.sockets.size - 1)
+    console.log(
+      '[WebSocket Server] Client disconnected:',
+      socket.id,
+      'Reason:',
+      reason
+    )
+    console.log(
+      '[WebSocket Server] Remaining connected clients:',
+      io.sockets.sockets.size - 1
+    )
   })
 
   // AI status updates
   socket.on('ai-status-update', (data) => {
-    console.log('[WebSocket Server] Received ai-status-update from client:', socket.id, 'Data:', data)
+    console.log(
+      '[WebSocket Server] Received ai-status-update from client:',
+      socket.id,
+      'Data:',
+      data
+    )
     // Broadcast to all connected clients
     socket.broadcast.emit('ai-status-updated', data)
-    console.log('[WebSocket Server] Broadcasted ai-status-updated to all clients')
-    console.log('[WebSocket Server] Connected sockets count:', io.sockets.sockets.size)
+    console.log(
+      '[WebSocket Server] Broadcasted ai-status-updated to all clients'
+    )
+    console.log(
+      '[WebSocket Server] Connected sockets count:',
+      io.sockets.sockets.size
+    )
   })
 
   // Periodic connection status logging
   const statusInterval = setInterval(() => {
-    console.log('[WebSocket Server] Connected sockets count:', io.sockets.sockets.size)
+    console.log(
+      '[WebSocket Server] Connected sockets count:',
+      io.sockets.sockets.size
+    )
   }, 30000) // Log every 30 seconds
 
   socket.on('disconnect', () => {
