@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { connectWebSocket, disconnectWebSocket } from "@/services/websocket";
 
 const authStore = useAuthStore();
 
-// 在应用启动时检查认证状态
+// 在应用启动时检查认证状态并连接WebSocket
 onMounted(async () => {
   await authStore.checkAuth();
+
+  // 连接WebSocket
+  connectWebSocket();
+});
+
+// 在应用卸载时断开WebSocket连接
+onUnmounted(() => {
+  disconnectWebSocket();
 });
 </script>
 

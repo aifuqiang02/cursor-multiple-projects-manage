@@ -10,6 +10,7 @@ import { serverConfig, databaseConfig } from './config/database.js';
 import authRoutes from './routes/auth.js';
 import projectRoutes from './routes/projects.js';
 import taskRoutes from './routes/tasks.js';
+import userTodosRoutes from './routes/usertodos.js';
 import { ResponseUtil } from './lib/response.js';
 import { setWebSocketServer } from './lib/websocket.js';
 // Database connection test
@@ -28,8 +29,9 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: serverConfig.corsOrigin,
+        origin: true, // Allow all origins
         methods: ['GET', 'POST'],
+        credentials: true,
     },
 });
 // Set WebSocket server for global access
@@ -39,33 +41,14 @@ app.use(helmet());
 app.use(express.json({ limit: '10mb', strict: false }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cors({
-    origin: (origin, callback) => {
-        // Allow requests with no origin (mobile apps, curl, etc.)
-        if (!origin)
-            return callback(null, true);
-        // Allow localhost on any port during development
-        if (origin.startsWith('http://localhost:'))
-            return callback(null, true);
-        if (origin.startsWith('http://127.0.0.1:'))
-            return callback(null, true);
-        // Allow specific origins
-        const allowedOrigins = [
-            'http://localhost:5173',
-            'http://localhost:5176',
-            'http://127.0.0.1:5173',
-            'http://127.0.0.1:5176',
-        ];
-        if (allowedOrigins.includes(origin)) {
-            return callback(null, true);
-        }
-        return callback(new Error('Not allowed by CORS'));
-    },
+    origin: true, // Allow all origins
     credentials: true,
 }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/usertodos', userTodosRoutes);
 // Basic health check
 app.get('/api/health', (req, res) => {
     res.json(ResponseUtil.success({
@@ -94,7 +77,9 @@ app.get('/api/health/db', async (req, res) => {
 });
 // Socket.IO connection handling
 io.on('connection', (socket) => {
-    console.log('[WebSocket Server] Client connected:', socket.id);
+    console.error('[WebSocket Server] Client connected:', socket.id);
+    console.log('[WebSocket Server] Client handshake origin:', socket.handshake.headers.origin);
+    console.log('[WebSocket Server] Client user agent:', socket.handshake.headers['user-agent']);
     console.log('[WebSocket Server] Total connected clients:', io.sockets.sockets.size);
     socket.on('disconnect', (reason) => {
         console.log('[WebSocket Server] Client disconnected:', socket.id, 'Reason:', reason);
@@ -106,6 +91,14 @@ io.on('connection', (socket) => {
         // Broadcast to all connected clients
         socket.broadcast.emit('ai-status-updated', data);
         console.log('[WebSocket Server] Broadcasted ai-status-updated to all clients');
+        console.log('[WebSocket Server] Connected sockets count:', io.sockets.sockets.size);
+    });
+    // Periodic connection status logging
+    const statusInterval = setInterval(() => {
+        console.log('[WebSocket Server] Connected sockets count:', io.sockets.sockets.size);
+    }, 30000); // Log every 30 seconds
+    socket.on('disconnect', () => {
+        clearInterval(statusInterval);
     });
 });
 // Error handling middleware
@@ -147,7 +140,7 @@ process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 // Try to start server with retry logic
 function startServer(retryCount = 0) {
-    server.listen(serverConfig.port, async () => {
+    server.listen(serverConfig.port, '0.0.0.0', async () => {
         console.log(`Server running on port ${serverConfig.port}`);
         console.log(`Environment: ${serverConfig.nodeEnv}`);
         // Test database connection on startup

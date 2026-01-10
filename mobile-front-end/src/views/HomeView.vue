@@ -52,7 +52,10 @@ const onTabBarChange = (index: number) => {
       activeTab.value = "projects";
       // 不显示toast，避免干扰用户体验
       break;
-    case 1: // 设置
+    case 1: // 待办任务
+      router.push("/todos");
+      break;
+    case 2: // 设置
       activeTab.value = "settings";
       showToast("进入设置页面");
       break;
@@ -92,7 +95,6 @@ onMounted(async () => {
     <!-- 导航栏 -->
     <van-nav-bar title="移动端项目管理器" right-text="退出" @click-right="handleLogout" />
 
-
     <!-- 标签页内容 -->
     <div class="tab-content">
       <!-- 项目标签页 -->
@@ -112,7 +114,7 @@ onMounted(async () => {
             <template #right-icon>
               <div class="task-count-wrapper">
                 <van-badge :content="getActiveTaskCount(project.id)" />
-                <van-icon name="arrow" style="margin-left: 8px;" />
+                <van-icon name="arrow" style="margin-left: 8px" />
               </div>
             </template>
           </van-cell>
@@ -123,7 +125,6 @@ onMounted(async () => {
           <van-button round type="primary" class="bottom-button">创建项目</van-button>
         </van-empty>
       </div>
-
 
       <!-- 设置标签页 -->
       <div v-else-if="activeTab === 'settings'" class="tab-pane">
@@ -137,26 +138,12 @@ onMounted(async () => {
           </van-cell-group>
         </div>
       </div>
-
-      <!-- 默认显示项目标签页 -->
-      <div v-else class="tab-pane">
-        <van-card
-          v-for="project in projects"
-          :key="project.id"
-          :title="project.name"
-          :desc="project.desc"
-          :thumb="project.thumb"
-        >
-          <template #footer>
-            <van-button size="mini" type="primary">查看详情</van-button>
-          </template>
-        </van-card>
-      </div>
     </div>
 
     <!-- 底部导航 -->
     <van-tabbar v-model="activeTabBar" @change="onTabBarChange">
       <van-tabbar-item icon="home-o">项目</van-tabbar-item>
+      <van-tabbar-item icon="todo-list-o">待办</van-tabbar-item>
       <van-tabbar-item icon="setting-o">设置</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -194,7 +181,6 @@ onMounted(async () => {
   margin-bottom: 16px;
   border-radius: 8px;
 }
-
 
 /* 标签页样式 */
 :deep(.van-tabs) {

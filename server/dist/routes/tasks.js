@@ -46,8 +46,8 @@ router.get('/project/:projectId', authenticateToken, async (req, res) => {
         const tasks = await prisma.task.findMany({
             where: { projectId },
             orderBy: [
-                { priority: 'asc' },
                 { order: 'asc' },
+                { priority: 'asc' },
                 { createdAt: 'desc' }
             ]
         });
@@ -72,11 +72,18 @@ router.post('/', authenticateToken, async (req, res) => {
         if (!project) {
             return res.status(404).json(ResponseUtil.projectNotFound());
         }
+        // Get the maximum order value for this project and add 1
+        const maxOrderResult = await prisma.task.aggregate({
+            where: { projectId },
+            _max: { order: true }
+        });
+        const nextOrder = (maxOrderResult._max.order || 0) + 1;
         const task = await prisma.task.create({
             data: {
                 title,
                 projectId,
-                priority
+                priority,
+                order: nextOrder
             }
         });
         res.status(201).json(ResponseUtil.success(task, '任务创建成功'));
@@ -173,6 +180,39 @@ router.put('/:id/order', authenticateToken, async (req, res) => {
     }
     catch (error) {
         console.error('Update task order error:', error);
+        res.status(500).json(ResponseUtil.internalError());
+    }
+});
+// Get all active tasks (not completed) for all user's projects
+router.get('/active', authenticateToken, async (req, res) => {
+    try {
+        const activeTasks = await prisma.task.findMany({
+            where: {
+                status: {
+                    not: 'completed'
+                },
+                project: {
+                    userId: req.userId
+                }
+            },
+            include: {
+                project: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            },
+            orderBy: [
+                { order: 'asc' },
+                { priority: 'asc' },
+                { createdAt: 'desc' }
+            ]
+        });
+        res.json(ResponseUtil.success(activeTasks));
+    }
+    catch (error) {
+        console.error('Get active tasks error:', error);
         res.status(500).json(ResponseUtil.internalError());
     }
 });

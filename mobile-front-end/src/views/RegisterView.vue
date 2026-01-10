@@ -32,16 +32,12 @@ const handleRegister = async () => {
   });
 
   try {
-    const result = await authStore.register(form.value);
-    if (result.code == 200) {
-      showToast({
-        message: "注册成功",
-        icon: "success",
-      });
-      router.push("/home");
-    } else {
-      showToast(result.msg || "注册失败");
-    }
+    await authStore.register(form.value);
+    showToast({
+      message: "注册成功",
+      icon: "success",
+    });
+    router.push("/home");
   } catch (error) {
     console.error("Register error:", error);
     showToast("注册失败，请稍后重试");

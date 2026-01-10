@@ -33,6 +33,12 @@ const router = createRouter({
       component: () => import("../views/RegisterView.vue"),
     },
     {
+      path: "/todos",
+      name: "todos",
+      component: () => import("../views/UserTodosView.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/about",
       name: "about",
       // route level code-splitting

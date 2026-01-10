@@ -4,6 +4,8 @@ import { prisma } from '../lib/prisma.js';
 import { jwtConfig } from '../config/database.js';
 import { ResponseUtil } from '../lib/response.js';
 import { emitWebSocketEvent } from '../lib/websocket.js';
+import { PortAllocator, PortAllocationError } from '../lib/portAllocator.js';
+import { portConfig } from '../config/ports.js';
 const router = express.Router();
 // Common include for project queries
 const projectInclude = {
@@ -68,43 +70,6 @@ router.post('/', authenticateToken, async (req, res) => {
     }
     catch (error) {
         console.error('Create project error:', error);
-        res.status(500).json(ResponseUtil.internalError());
-    }
-});
-// Update project
-router.put('/:id', authenticateToken, async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (!id) {
-            return res
-                .status(400)
-                .json(ResponseUtil.badRequest('Project ID is required'));
-        }
-        const { name, cursorKey, description, status } = req.body;
-        // Check if project belongs to user
-        const existingProject = await prisma.project.findFirst({
-            where: {
-                id,
-                userId: req.userId,
-            },
-        });
-        if (!existingProject) {
-            return res.status(404).json(ResponseUtil.projectNotFound());
-        }
-        const project = await prisma.project.update({
-            where: { id },
-            data: {
-                name,
-                cursorKey,
-                description,
-                status,
-            },
-            include: projectInclude,
-        });
-        res.json(ResponseUtil.success(project, '项目更新成功'));
-    }
-    catch (error) {
-        console.error('Update project error:', error);
         res.status(500).json(ResponseUtil.internalError());
     }
 });
@@ -181,7 +146,8 @@ async function updateProjectAIStatus(projectId, updateData, req, res, successMes
             },
         });
         if (!existingProject) {
-            return res.status(404).json(ResponseUtil.projectNotFound());
+            res.status(404).json(ResponseUtil.projectNotFound());
+            return false;
         }
         const updatedProject = await prisma.project.update({
             where: { id: projectId },
@@ -193,10 +159,12 @@ async function updateProjectAIStatus(projectId, updateData, req, res, successMes
             ...updateData,
         });
         res.json(ResponseUtil.success('', successMessage));
+        return true;
     }
     catch (error) {
         console.error('Update AI status error:', error);
         res.status(500).json(ResponseUtil.internalError());
+        return false;
     }
 }
 // Update AI execution status for a project
@@ -233,6 +201,21 @@ router.post('/:id/ai-status-start', async (req, res) => {
             .status(400)
             .json(ResponseUtil.badRequest('Project ID is required'));
     }
+    // Check if project exists and get user ID
+    const existingProject = await prisma.project.findFirst({
+        where: { id },
+        select: { userId: true }
+    });
+    if (!existingProject) {
+        return res.status(404).json(ResponseUtil.projectNotFound());
+    }
+    // Delete all existing todos for this project
+    await prisma.userTodo.deleteMany({
+        where: {
+            projectId: id,
+            userId: existingProject.userId,
+        },
+    });
     const updateData = {
         aiStatus: 'running',
         aiStartedAt: new Date(),
@@ -257,7 +240,56 @@ router.post('/:id/ai-status-stop', async (req, res) => {
         aiStatus: status,
         aiCompletedAt: new Date(),
     };
-    await updateProjectAIStatus(id, updateData, req, res, 'AI执行已停止');
+    const result = await updateProjectAIStatus(id, updateData, req, res, 'AI执行已停止');
+    // If AI execution completed successfully, create a user todo
+    if (status === 'completed' && result) {
+        try {
+            // Get the project details to include in the todo
+            const project = await prisma.project.findUnique({
+                where: { id },
+                select: {
+                    id: true,
+                    name: true,
+                    aiCommand: true,
+                    aiResult: true,
+                    userId: true,
+                },
+            });
+            if (project) {
+                // Delete existing todos for this project
+                await prisma.userTodo.deleteMany({
+                    where: {
+                        projectId: project.id,
+                        userId: project.userId,
+                    },
+                });
+                // Create a todo task for the user based on the AI execution result
+                const todoTitle = `AI执行完成 - ${project.name}`;
+                const todoDescription = `项目"${project.name}"的AI执行已完成。请检查执行结果并进行后续处理。`;
+                await prisma.userTodo.create({
+                    data: {
+                        title: todoTitle,
+                        description: todoDescription,
+                        priority: 2, // Medium priority
+                        projectId: project.id,
+                        aiCommand: project.aiCommand,
+                        aiResult: project.aiResult,
+                        userId: project.userId,
+                    },
+                });
+                // Send WebSocket notification about new todo
+                emitWebSocketEvent('user-todo-created', {
+                    userId: project.userId,
+                    message: 'AI执行完成后创建了新的待办任务',
+                    projectId: project.id,
+                });
+            }
+        }
+        catch (todoError) {
+            console.error('Failed to create user todo after AI completion:', todoError);
+            // Don't fail the main request if todo creation fails
+        }
+    }
 });
 // Get running AI executions for current user
 router.get('/ai-status/running', authenticateToken, async (req, res) => {
@@ -281,6 +313,67 @@ router.get('/ai-status/running', authenticateToken, async (req, res) => {
         console.error('Get running AI status error:', error);
         res.status(500).json(ResponseUtil.internalError());
     }
+});
+// Allocate ports for a project
+router.post('/:id/allocate-ports', authenticateToken, async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!id) {
+            return res.status(400).json(ResponseUtil.badRequest('项目ID是必需的'));
+        }
+        // Check if project belongs to user
+        const existingProject = await prisma.project.findFirst({
+            where: {
+                id,
+                userId: req.userId,
+            },
+        });
+        if (!existingProject) {
+            return res.status(404).json(ResponseUtil.projectNotFound());
+        }
+        // Get allocation count from request body, default to config
+        const { count = portConfig.defaultCount } = req.body;
+        // Validate count
+        if (typeof count !== 'number' || count <= 0) {
+            return res
+                .status(400)
+                .json(ResponseUtil.badRequest('端口数量必须是正整数'));
+        }
+        const portAllocator = new PortAllocator(prisma);
+        try {
+            const allocatedPorts = await portAllocator.allocatePorts(id, count);
+            res.json(ResponseUtil.success(allocatedPorts, `成功分配${allocatedPorts.length}个端口`));
+        }
+        catch (error) {
+            if (error instanceof PortAllocationError) {
+                let statusCode = 400;
+                if (error.code === 'INSUFFICIENT_PORTS') {
+                    statusCode = 409; // Conflict
+                }
+                else if (error.code === 'PROJECT_NOT_FOUND') {
+                    statusCode = 404;
+                }
+                return res
+                    .status(statusCode)
+                    .json(ResponseUtil.badRequest(error.message));
+            }
+            throw error;
+        }
+    }
+    catch (error) {
+        console.error('Allocate ports error:', error);
+        res.status(500).json(ResponseUtil.internalError('端口分配失败'));
+    }
+});
+// Update project
+router.put('/:id', authenticateToken, async (req, res) => {
+    const { id } = req.params;
+    const project = await prisma.project.update({
+        where: { id: id },
+        data: req.body,
+        include: projectInclude,
+    });
+    res.json(ResponseUtil.success(project, '项目更新成功'));
 });
 export default router;
 //# sourceMappingURL=projects.js.map

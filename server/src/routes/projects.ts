@@ -173,7 +173,8 @@ async function updateProjectAIStatus(
     })
 
     if (!existingProject) {
-      return res.status(404).json(ResponseUtil.projectNotFound())
+      res.status(404).json(ResponseUtil.projectNotFound())
+      return false
     }
 
     const updatedProject = await prisma.project.update({
@@ -188,9 +189,11 @@ async function updateProjectAIStatus(
     })
 
     res.json(ResponseUtil.success('', successMessage))
+    return true
   } catch (error) {
     console.error('Update AI status error:', error)
     res.status(500).json(ResponseUtil.internalError())
+    return false
   }
 }
 
@@ -230,6 +233,24 @@ router.post('/:id/ai-status-start', async (req, res) => {
       .json(ResponseUtil.badRequest('Project ID is required'))
   }
 
+  // Check if project exists and get user ID
+  const existingProject = await prisma.project.findFirst({
+    where: { id },
+    select: { userId: true },
+  })
+
+  if (!existingProject) {
+    return res.status(404).json(ResponseUtil.projectNotFound())
+  }
+
+  // Delete all existing todos for this project
+  await prisma.userTodo.deleteMany({
+    where: {
+      projectId: id,
+      userId: existingProject.userId,
+    },
+  })
+
   const updateData = {
     aiStatus: 'running' as const,
     aiStartedAt: new Date(),
@@ -259,7 +280,69 @@ router.post('/:id/ai-status-stop', async (req, res) => {
     aiCompletedAt: new Date(),
   }
 
-  await updateProjectAIStatus(id, updateData, req, res, 'AI执行已停止')
+  const result = await updateProjectAIStatus(
+    id,
+    updateData,
+    req,
+    res,
+    'AI执行已停止'
+  )
+
+  // If AI execution completed successfully, create a user todo
+  if (status === 'completed' && result) {
+    try {
+      // Get the project details to include in the todo
+      const project = await prisma.project.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          name: true,
+          aiCommand: true,
+          aiResult: true,
+          userId: true,
+        },
+      })
+
+      if (project) {
+        // Delete existing todos for this project
+        await prisma.userTodo.deleteMany({
+          where: {
+            projectId: project.id,
+            userId: project.userId,
+          },
+        })
+
+        // Create a todo task for the user based on the AI execution result
+        const todoTitle = `AI执行完成 - ${project.name}`
+        const todoDescription = `项目"${project.name}"的AI执行已完成。请检查执行结果并进行后续处理。`
+
+        await prisma.userTodo.create({
+          data: {
+            title: todoTitle,
+            description: todoDescription,
+            priority: 2, // Medium priority
+            projectId: project.id,
+            aiCommand: project.aiCommand,
+            aiResult: project.aiResult,
+            userId: project.userId,
+          },
+        })
+
+        // Send WebSocket notification about new todo
+        emitWebSocketEvent('user-todo-created', {
+          userId: project.userId,
+          message: 'AI执行完成后创建了新的待办任务',
+          projectId: project.id,
+        })
+      }
+    } catch (todoError) {
+      console.error(
+        'Failed to create user todo after AI completion:',
+        todoError
+      )
+      // Don't fail the main request if todo creation fails
+    }
+  }
 })
 
 // Get running AI executions for current user

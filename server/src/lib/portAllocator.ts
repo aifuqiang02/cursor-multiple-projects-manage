@@ -149,7 +149,7 @@ export class PortAllocator {
       await tx.project.update({
         where: { id: projectId },
         data: {
-          ports: allocatedPorts
+          ports: JSON.parse(JSON.stringify(allocatedPorts))
         }
       })
 
