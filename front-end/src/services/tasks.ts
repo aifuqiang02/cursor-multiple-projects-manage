@@ -75,9 +75,11 @@ export const taskService = {
     setLoading(true)
     setError(null)
     const data = await this.getTasksByProject(projectId)
-    // Remove existing tasks for this project and add new ones
-    tasks.value = tasks.value.filter((task) => task.projectId !== projectId)
-    tasks.value.push(...data)
+    // Replace tasks for this project with new data, keeping other projects' tasks
+    tasks.value = [
+      ...tasks.value.filter((task) => task.projectId !== projectId),
+      ...data
+    ]
     setLoading(false)
     return data
   },

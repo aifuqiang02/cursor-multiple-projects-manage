@@ -135,9 +135,11 @@
               >
                 <div class="tasks-divider"></div>
                 <draggable
-                  :list="getDisplayedTasks(project.id)"
+                  :list="projectTasksMap[project.id] || []"
                   :group="{ name: 'tasks', pull: false, put: false }"
                   @change="onTaskOrderChange($event, project.id)"
+                  @start="onDragStart"
+                  @end="onDragEnd"
                   :animation="200"
                   handle=".drag-handle"
                   class="tasks-list"
@@ -487,7 +489,6 @@ import {
   currentProject,
   allProjects,
   runningAIProjects,
-  totalTasks,
   fetchProjects,
   createProject,
   updateProject,
@@ -518,6 +519,9 @@ const router = useRouter()
 const getActiveTaskCount = (projectId: string) => {
   return tasks.value.filter((task) => task.projectId === projectId).length
 }
+
+// 创建一个响应式的任务列表映射
+const projectTasksMap = reactive<Record<string, Task[]>>({})
 
 // 使用直接导入的函数和变量
 
@@ -644,11 +648,6 @@ const createQuickTask = async (project: Project) => {
 // Methods
 const getProjectTasks = (projectId: string) => {
   return tasks.value.filter((task) => task.projectId === projectId)
-}
-
-const getDisplayedTasks = (projectId: string) => {
-  const tasks = getProjectTasks(projectId).filter((task) => task.status !== 'completed')
-  return isProjectExpanded(projectId) ? tasks : tasks.slice(0, 3)
 }
 
 const isProjectExpanded = (projectId: string) => {
@@ -912,16 +911,14 @@ const onTaskOrderChange = async (event: TaskOrderEvent, projectId: string) => {
   if (!event.moved) return
 
   try {
-    // Get all tasks for this project that are not completed
-    const allTasks = getProjectTasks(projectId).filter((task) => task.status !== 'completed')
+    console.log('onTaskOrderChange', event, projectId)
+    // Get the reordered list from projectTasksMap
+    const reorderedTasks = projectTasksMap[projectId] || []
 
-    // Update order for all tasks based on new positions
-    const updatePromises = allTasks.map((task, index) => updateTaskOrder(task.id, index + 1))
+    // Update order for all tasks based on their new positions
+    const updatePromises = reorderedTasks.map((task, index) => updateTaskOrder(task.id, index + 1))
 
     await Promise.all(updatePromises)
-
-    // Refresh tasks for this project
-    await fetchTasksByProject(projectId)
 
     ElMessage.success('任务排序已更新')
   } catch {
@@ -949,6 +946,10 @@ onMounted(async () => {
     // 一次性获取所有活跃任务（待处理和进行中），大幅提升性能
     try {
       await fetchActiveTasks()
+      // 初始化所有项目的任务列表
+      allProjects.value.forEach((project) => {
+        initProjectTasks(project.id)
+      })
     } catch (error) {
       console.error('Failed to fetch active tasks:', error)
     }
@@ -957,16 +958,57 @@ onMounted(async () => {
   }
 })
 
+// 初始化项目的任务列表
+const initProjectTasks = (projectId: string) => {
+  const projectTasks = tasks.value
+    .filter((task) => task.projectId === projectId && task.status !== 'completed')
+    .sort((a, b) => {
+      if (a.order !== b.order) {
+        return (a.order || 0) - (b.order || 0)
+      }
+      if (a.priority !== b.priority) {
+        return a.priority - b.priority
+      }
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
+  projectTasksMap[projectId] = projectTasks
+}
+
 // Watch for current project changes
 watch(currentProject, async (newProject) => {
   if (newProject) {
     try {
       await fetchTasksByProject(newProject.id)
+      initProjectTasks(newProject.id)
     } catch (error) {
       console.error('Failed to load tasks:', error)
     }
   }
 })
+
+// Watch for tasks changes and update projectTasksMap (skip during drag operations)
+let isDragging = false
+
+const onDragStart = () => {
+  isDragging = true
+}
+const onDragEnd = () => {
+  isDragging = false
+}
+
+// Watch for tasks changes and update projectTasksMap
+watch(
+  tasks,
+  () => {
+    if (!isDragging) {
+      // Update all project task lists
+      allProjects.value.forEach((project) => {
+        initProjectTasks(project.id)
+      })
+    }
+  },
+  { deep: true },
+)
 </script>
 
 <style scoped>

@@ -53,8 +53,8 @@ router.get('/project/:projectId', authenticateToken, async (req, res) => {
     const tasks = await prisma.task.findMany({
       where: { projectId },
       orderBy: [
-        { priority: 'asc' },
         { order: 'asc' },
+        { priority: 'asc' },
         { createdAt: 'desc' }
       ]
     });
@@ -83,11 +83,19 @@ router.post('/', authenticateToken, async (req, res) => {
       return res.status(404).json(ResponseUtil.projectNotFound());
     }
 
+    // Get the maximum order value for this project and add 1
+    const maxOrderResult = await prisma.task.aggregate({
+      where: { projectId },
+      _max: { order: true }
+    });
+    const nextOrder = (maxOrderResult._max.order || 0) + 1;
+
     const task = await prisma.task.create({
       data: {
         title,
         projectId,
-        priority
+        priority,
+        order: nextOrder
       }
     });
 
@@ -221,8 +229,8 @@ router.get('/active', authenticateToken, async (req, res) => {
         }
       },
       orderBy: [
-        { priority: 'asc' },
         { order: 'asc' },
+        { priority: 'asc' },
         { createdAt: 'desc' }
       ]
     });
