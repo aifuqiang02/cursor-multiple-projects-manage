@@ -1712,3 +1712,65 @@
 [2026-01-10 14:35:09] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
 [2026-01-10 14:35:09] AI execution start API called
 [2026-01-10 14:35:09] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 14:36:06] Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"f7fc46d8-530e-45df-bb60-4ed3af9a29f3","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:36:06] Hook completed successfully
+[2026-01-10 14:36:06] Calling API to stop AI execution...
+[2026-01-10 14:36:32] BeforeSubmitPrompt Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"7a1aac86-599f-4c94-8558-5912f7534549","model":"claude-4.5-opus-high-thinking","prompt":"Access to XMLHttpRequest at 'http://110.42.111.221:1966/api/auth/login' from origin 'http://110.42.111.221:1617' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.\napi.ts:33 API Error: AxiosError {message: 'Network Error', name: 'AxiosError', code: 'ERR_NETWORK', config: {…}, request: XMLHttpRequest, …}\n（匿名） @ api.ts:33\nPromise.then\n_request @ Axios.js:163\nrequest @ Axios.js:40\nhttpMethod @ Axios.js:224\nwrap @ bind.js:12\nlogin @ auth.ts:35\nlogin @ auth.ts:39\nwrappedAction @ pinia.mjs:1400\nstore.<computed> @ pinia.mjs:955\nhandleLogin @ LoginView.vue:29\ncallWithErrorHandling @ runtime-core.esm-bundler.js:199\ncallWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206\nemit @ runtime-core.esm-bundler.js:4380\n（匿名） @ runtime-core.esm-bundler.js:8232\n（匿名） @ Form.mjs:125\nPromise.then\nsubmit @ Form.mjs:125\nonSubmit @ Form.mjs:143\ncallWithErrorHandling @ runtime-core.esm-bundler.js:199\ncallWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206\ninvoker @ runtime-dom.esm-bundler.js:730\nLoginView.vue:40 Login error: AxiosError {message: 'Network Error', name: 'AxiosError', code: 'ERR_NETWORK', config: {…}, request: XMLHttpRequest, …}\nhandleLogin @ LoginView.vue:40\nawait in handleLogin\ncallWithErrorHandling @ runtime-core.esm-bundler.js:199\ncallWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206\nemit @ runtime-core.esm-bundler.js:4380\n（匿名） @ runtime-core.esm-bundler.js:8232\n（匿名） @ Form.mjs:125\nPromise.then\nsubmit @ Form.mjs:125\nonSubmit @ Form.mjs:143\ncallWithErrorHandling @ runtime-core.esm-bundler.js:199\ncallWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206\ninvoker @ runtime-dom.esm-bundler.js:730\nauth.ts:35  POST http://110.42.111.221:1966/api/auth/login net::ERR_FAILED","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\index.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\vite.config.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\vite.config.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:36:32] Calling API to start AI execution...
+[2026-01-10 14:37:25] API Response - Status: 500, Body: 
+[2026-01-10 14:37:25] AI execution start API called
+[2026-01-10 14:37:25] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 14:37:36] BeforeShellExecution Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"7a1aac86-599f-4c94-8558-5912f7534549","model":"claude-4.5-opus-high-thinking","command":"cd server && npm run dev","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:37:36] Checking command: cd server && npm run dev
+[2026-01-10 14:37:36] Command matches blacklist pattern: .*npm run dev.*
+[2026-01-10 14:37:36] Command blocked: cd server && npm run dev
+[2026-01-10 14:37:43] BeforeShellExecution Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"7a1aac86-599f-4c94-8558-5912f7534549","model":"claude-4.5-opus-high-thinking","command":"cat server/.env","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:37:43] Checking command: cat server/.env
+[2026-01-10 14:37:43] Command allowed: cat server/.env
+[2026-01-10 14:37:53] BeforeShellExecution Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"7a1aac86-599f-4c94-8558-5912f7534549","model":"claude-4.5-opus-high-thinking","command":"cd /d/git-projects/cursor-multiple-projects-manage/server && cat .env","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:37:53] Checking command: cd /d/git-projects/cursor-multiple-projects-manage/server && cat .env
+[2026-01-10 14:37:53] Command allowed: cd /d/git-projects/cursor-multiple-projects-manage/server && cat .env
+[2026-01-10 14:38:05] BeforeShellExecution Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"7a1aac86-599f-4c94-8558-5912f7534549","model":"claude-4.5-opus-high-thinking","command":"echo \"PORT=1966\" > server/.env","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:38:05] Checking command: echo \
+[2026-01-10 14:38:05] Command allowed: echo \
+[2026-01-10 14:38:12] BeforeShellExecution Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"7a1aac86-599f-4c94-8558-5912f7534549","model":"claude-4.5-opus-high-thinking","command":"echo \"PORT=1966\" > server/.env","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:38:13] Checking command: echo \
+[2026-01-10 14:38:13] Command allowed: echo \
+[2026-01-10 14:38:19] Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"7a1aac86-599f-4c94-8558-5912f7534549","model":"claude-4.5-opus-high-thinking","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:38:19] Hook completed successfully
+[2026-01-10 14:38:19] Calling API to stop AI execution...
+[2026-01-10 14:38:43] API Response - Status: 500, Body: 
+[2026-01-10 14:38:43] AI execution stop API called
+[2026-01-10 14:38:43] Hook execution cycle finished
+[2026-01-10 14:38:58] BeforeSubmitPrompt Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"8edc522e-9a6f-4655-a2c1-eb07a9a9a5a8","model":"claude-4.5-opus-high-thinking","prompt":"别修改端口了，现在是跨域问题，允许所有的访问即可。","attachments":[{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:38:58] Calling API to start AI execution...
+[2026-01-10 14:39:20] API Response - Status: 000, Body: 
+[2026-01-10 14:39:20] AI execution start API called
+[2026-01-10 14:39:20] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 14:39:49] Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"8edc522e-9a6f-4655-a2c1-eb07a9a9a5a8","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:39:49] Hook completed successfully
+[2026-01-10 14:39:49] Calling API to stop AI execution...
+[2026-01-10 14:40:11] API Response - Status: 000, Body: 
+[2026-01-10 14:40:11] AI execution stop API called
+[2026-01-10 14:40:11] Hook execution cycle finished
+[2026-01-10 14:42:01] API Response - Status: 500, Body: 
+[2026-01-10 14:42:01] AI execution stop API called
+[2026-01-10 14:42:01] Hook execution cycle finished
+[2026-01-10 14:43:47] BeforeSubmitPrompt Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"dc67e66b-3eb4-45c1-9660-ebedf2ec00e3","model":"claude-4.5-opus-high-thinking","prompt":"@server/src/index.ts:207-219 0.0.0.0","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\index.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:43:47] Calling API to start AI execution...
+[2026-01-10 14:46:52] BeforeSubmitPrompt Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"27f3aac5-88d3-4d53-a052-4d72e77cf736","model":"claude-4.5-opus-high-thinking","prompt":"@server/src/index.ts:207-219 0.0.0.0","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\index.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:46:52] Calling API to start AI execution...
+[2026-01-10 14:47:19] API Response - Status: 500, Body: 
+[2026-01-10 14:47:19] AI execution start API called
+[2026-01-10 14:47:19] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 14:47:40] Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"27f3aac5-88d3-4d53-a052-4d72e77cf736","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:47:40] Hook completed successfully
+[2026-01-10 14:47:40] Calling API to stop AI execution...
+[2026-01-10 14:48:35] API Response - Status: 500, Body: 
+[2026-01-10 14:48:35] AI execution start API called
+[2026-01-10 14:48:35] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 14:48:40] Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"27f3aac5-88d3-4d53-a052-4d72e77cf736","model":"claude-4.5-opus-high-thinking","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:48:40] Hook completed successfully
+[2026-01-10 14:48:40] Calling API to stop AI execution...
+[2026-01-10 14:48:51] BeforeSubmitPrompt Hook executed: {"conversation_id":"79e44e03-698b-4f1d-ad09-b3e77d9dfeec","generation_id":"40969c05-042f-485d-97b5-80d4043331e8","model":"claude-4.5-opus-high-thinking","prompt":"Error: listen EADDRINUSE: address already in use 0.0.0.0:1012","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\index.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:48:51] Calling API to start AI execution...

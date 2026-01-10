@@ -33,30 +33,7 @@ const app = express()
 const server = createServer(app)
 const io = new Server(server, {
   cors: {
-    origin: (origin, callback) => {
-      // Allow requests with no origin (WebSocket connections, mobile apps, curl, etc.)
-      if (!origin) return callback(null, true)
-
-      // Allow localhost on any port during development
-      if (origin.startsWith('http://localhost:')) return callback(null, true)
-      if (origin.startsWith('http://127.0.0.1:')) return callback(null, true)
-
-      // Allow specific origins
-      const allowedOrigins = [
-        'http://localhost:5173',
-        'http://localhost:5176',
-        'http://127.0.0.1:5173',
-        'http://127.0.0.1:5176',
-        serverConfig.corsOrigin,
-      ].filter(Boolean)
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true)
-      }
-
-      console.log('[WebSocket Server] CORS blocked origin:', origin)
-      return callback(new Error('Not allowed by CORS'))
-    },
+    origin: true, // Allow all origins
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -72,28 +49,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (mobile apps, curl, etc.)
-      if (!origin) return callback(null, true)
-
-      // Allow localhost on any port during development
-      if (origin.startsWith('http://localhost:')) return callback(null, true)
-      if (origin.startsWith('http://127.0.0.1:')) return callback(null, true)
-
-      // Allow specific origins
-      const allowedOrigins = [
-        'http://localhost:5173',
-        'http://localhost:5176',
-        'http://127.0.0.1:5173',
-        'http://127.0.0.1:5176',
-      ]
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true)
-      }
-
-      return callback(new Error('Not allowed by CORS'))
-    },
+    origin: true, // Allow all origins
     credentials: true,
   })
 )
@@ -250,7 +206,7 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'))
 
 // Try to start server with retry logic
 function startServer(retryCount = 0) {
-  server.listen(serverConfig.port, async () => {
+  server.listen(serverConfig.port, '0.0.0.0', async () => {
     console.log(`Server running on port ${serverConfig.port}`)
     console.log(`Environment: ${serverConfig.nodeEnv}`)
 
