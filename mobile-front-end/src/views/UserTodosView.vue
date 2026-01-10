@@ -137,6 +137,13 @@ const handleUserTodoDeleted = (event: Event) => {
   fetchUserTodos(); // 刷新待办任务列表
 };
 
+const handleAiExecutionStarted = (event: Event) => {
+  const customEvent = event as CustomEvent;
+  console.log("AI执行开始通知:", customEvent.detail);
+  // 当AI开始执行时，刷新待办任务列表（因为旧任务已被删除）
+  fetchUserTodos();
+};
+
 // 生命周期
 onMounted(async () => {
   await fetchUserTodos();
@@ -146,6 +153,7 @@ onMounted(async () => {
   window.addEventListener("user-todo-updated", handleUserTodoUpdated);
   window.addEventListener("user-todo-completed", handleUserTodoCompleted);
   window.addEventListener("user-todo-deleted", handleUserTodoDeleted);
+  window.addEventListener("ai-execution-started", handleAiExecutionStarted);
 
   // 启动时间更新定时器，每秒更新一次
   timeUpdateInterval = setInterval(() => {
@@ -159,6 +167,7 @@ onUnmounted(() => {
   window.removeEventListener("user-todo-updated", handleUserTodoUpdated);
   window.removeEventListener("user-todo-completed", handleUserTodoCompleted);
   window.removeEventListener("user-todo-deleted", handleUserTodoDeleted);
+  window.removeEventListener("ai-execution-started", handleAiExecutionStarted);
 
   // 清除时间更新定时器
   if (timeUpdateInterval) {

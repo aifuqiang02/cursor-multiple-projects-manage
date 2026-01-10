@@ -258,6 +258,13 @@ router.post('/:id/ai-status-start', async (req, res) => {
   }
 
   await updateProjectAIStatus(id, updateData, req, res, 'AI执行已启动')
+
+  // Send WebSocket notification about AI execution started
+  emitWebSocketEvent('ai-execution-started', {
+    projectId: id,
+    userId: existingProject.userId,
+    message: 'AI执行已开始',
+  })
 })
 
 // Stop AI execution for a project

@@ -47,6 +47,12 @@ export function connectWebSocket() {
     window.dispatchEvent(new CustomEvent('user-todo-deleted', { detail: data }));
   });
 
+  // 监听AI执行相关事件
+  socket.on('ai-execution-started', (data) => {
+    console.log('[WebSocket Mobile] AI execution started:', data);
+    window.dispatchEvent(new CustomEvent('ai-execution-started', { detail: data }));
+  });
+
   return socket;
 }
 

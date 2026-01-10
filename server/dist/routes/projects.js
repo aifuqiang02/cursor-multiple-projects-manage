@@ -204,7 +204,7 @@ router.post('/:id/ai-status-start', async (req, res) => {
     // Check if project exists and get user ID
     const existingProject = await prisma.project.findFirst({
         where: { id },
-        select: { userId: true }
+        select: { userId: true },
     });
     if (!existingProject) {
         return res.status(404).json(ResponseUtil.projectNotFound());
@@ -222,6 +222,12 @@ router.post('/:id/ai-status-start', async (req, res) => {
         aiCompletedAt: null,
     };
     await updateProjectAIStatus(id, updateData, req, res, 'AI执行已启动');
+    // Send WebSocket notification about AI execution started
+    emitWebSocketEvent('ai-execution-started', {
+        projectId: id,
+        userId: existingProject.userId,
+        message: 'AI执行已开始',
+    });
 });
 // Stop AI execution for a project
 router.post('/:id/ai-status-stop', async (req, res) => {
