@@ -33,4 +33,15 @@ export default defineConfig({
   //     ],
   //   },
   // },
+  server: {
+    host: "0.0.0.0",
+    port: 1011,
+    proxy: {
+      "/api": {
+        target: "http://localhost:1012",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

@@ -135,7 +135,7 @@ log "Hook completed successfully"
 log "Calling API to stop AI execution..."
 
 # Make API call and capture response
-response=$(curl -X POST "http://localhost:3000/api/projects/${projectId}/ai-status-stop" \\
+response=$(curl -X POST "http://110.42.111.221:1966/api/projects/${projectId}/ai-status-stop" \\
   -H "Content-Type: application/json" \\
   -d '{"status": "completed"}' \\
   -s -w "\\nHTTP_STATUS:%{http_code}")
@@ -172,7 +172,7 @@ log "BeforeSubmitPrompt Hook executed: $json_input"
 log "Calling API to start AI execution..."
 
 # Make API call and capture response
-response=$(curl -X POST "http://localhost:3000/api/projects/${projectId}/ai-status-start" \\
+response=$(curl -X POST "http://110.42.111.221:1966/api/projects/${projectId}/ai-status-start" \\
   -H "Content-Type: application/json" \\
   -s -w "\\nHTTP_STATUS:%{http_code}")
 

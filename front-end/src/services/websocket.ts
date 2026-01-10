@@ -1,10 +1,11 @@
 import { io, Socket } from 'socket.io-client'
 
 // WebSocket URL - 优先使用环境变量，否则根据当前页面URL推断服务器地址
-const WS_BASE_URL = import.meta.env.VITE_WS_BASE_URL ||
+const WS_BASE_URL =
+  import.meta.env.VITE_WS_BASE_URL ||
   (window.location.hostname === 'localhost'
-    ? 'http://localhost:3000'
-    : `${window.location.protocol}//${window.location.hostname}:3000`)
+    ? 'http://localhost:1012'
+    : 'http://110.42.111.221:1966')
 
 console.log('[WebSocket Client] WS_BASE_URL determined as:', WS_BASE_URL)
 
@@ -26,7 +27,7 @@ class WebSocketService {
       transports: ['websocket', 'polling'],
       timeout: 20000,
       forceNew: true,
-      autoConnect: true
+      autoConnect: true,
     })
 
     this.socket.on('connect', () => {
