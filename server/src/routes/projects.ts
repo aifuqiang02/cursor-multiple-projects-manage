@@ -4,6 +4,9 @@ import { prisma } from '../lib/prisma.js'
 import { jwtConfig } from '../config/database.js'
 import { ResponseUtil } from '../lib/response.js'
 import { emitWebSocketEvent } from '../lib/websocket.js'
+import { PortAllocator, PortAllocationError } from '../lib/portAllocator.js'
+import type { AllocatedPort } from '../lib/portAllocator.js'
+import { portConfig } from '../config/ports.js'
 
 const router = express.Router()
 
@@ -79,47 +82,6 @@ router.post('/', authenticateToken, async (req, res) => {
     res.status(201).json(ResponseUtil.success(project, '项目创建成功'))
   } catch (error) {
     console.error('Create project error:', error)
-    res.status(500).json(ResponseUtil.internalError())
-  }
-})
-
-// Update project
-router.put('/:id', authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params
-    if (!id) {
-      return res
-        .status(400)
-        .json(ResponseUtil.badRequest('Project ID is required'))
-    }
-    const { name, cursorKey, description, status } = req.body
-
-    // Check if project belongs to user
-    const existingProject = await prisma.project.findFirst({
-      where: {
-        id,
-        userId: req.userId,
-      },
-    })
-
-    if (!existingProject) {
-      return res.status(404).json(ResponseUtil.projectNotFound())
-    }
-
-    const project = await prisma.project.update({
-      where: { id },
-      data: {
-        name,
-        cursorKey,
-        description,
-        status,
-      },
-      include: projectInclude,
-    })
-
-    res.json(ResponseUtil.success(project, '项目更新成功'))
-  } catch (error) {
-    console.error('Update project error:', error)
     res.status(500).json(ResponseUtil.internalError())
   }
 })
@@ -322,6 +284,80 @@ router.get('/ai-status/running', authenticateToken, async (req, res) => {
     console.error('Get running AI status error:', error)
     res.status(500).json(ResponseUtil.internalError())
   }
+})
+
+// Allocate ports for a project
+router.post('/:id/allocate-ports', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params
+    if (!id) {
+      return res.status(400).json(ResponseUtil.badRequest('项目ID是必需的'))
+    }
+
+    // Check if project belongs to user
+    const existingProject = await prisma.project.findFirst({
+      where: {
+        id,
+        userId: req.userId,
+      },
+    })
+
+    if (!existingProject) {
+      return res.status(404).json(ResponseUtil.projectNotFound())
+    }
+
+    // Get allocation count from request body, default to config
+    const { count = portConfig.defaultCount } = req.body
+
+    // Validate count
+    if (typeof count !== 'number' || count <= 0) {
+      return res
+        .status(400)
+        .json(ResponseUtil.badRequest('端口数量必须是正整数'))
+    }
+
+    const portAllocator = new PortAllocator(prisma)
+
+    try {
+      const allocatedPorts = await portAllocator.allocatePorts(id, count)
+      res.json(
+        ResponseUtil.success(
+          allocatedPorts,
+          `成功分配${allocatedPorts.length}个端口`
+        )
+      )
+    } catch (error) {
+      if (error instanceof PortAllocationError) {
+        let statusCode = 400
+        if (error.code === 'INSUFFICIENT_PORTS') {
+          statusCode = 409 // Conflict
+        } else if (error.code === 'PROJECT_NOT_FOUND') {
+          statusCode = 404
+        }
+
+        return res
+          .status(statusCode)
+          .json(ResponseUtil.badRequest(error.message))
+      }
+      throw error
+    }
+  } catch (error) {
+    console.error('Allocate ports error:', error)
+    res.status(500).json(ResponseUtil.internalError('端口分配失败'))
+  }
+})
+
+// Update project
+router.put('/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params
+
+  const project = await prisma.project.update({
+    where: { id: id! },
+    data: req.body,
+    include: projectInclude,
+  })
+
+  res.json(ResponseUtil.success(project, '项目更新成功'))
 })
 
 export default router

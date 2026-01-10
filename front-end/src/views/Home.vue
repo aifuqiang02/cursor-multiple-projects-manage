@@ -88,10 +88,7 @@
                 <div class="project-meta">
                   <span class="task-count">
                     <el-icon><Document /></el-icon>
-                    {{
-                      getProjectTasks(project.id).filter((task) => task.status !== 'completed')
-                        .length
-                    }}
+                    {{ getActiveTaskCount(project.id) }}
                     个任务
                   </span>
                   <span class="cursor-key" v-if="project.cursorKey">
@@ -126,11 +123,6 @@
                     </template>
                   </el-dropdown>
                 </div>
-              </div>
-              <div>
-                <p class="project-desc" v-if="project.description">
-                  {{ project.description }}
-                </p>
               </div>
 
               <!-- Project Tasks -->
@@ -225,13 +217,13 @@
                 <div class="quick-task-input">
                   <el-input
                     v-model="quickTaskInputs[project.id]"
-                    placeholder="输入任务内容，按回车创建"
+                    placeholder="输入任务内容，Ctrl+回车创建"
                     size="small"
                     clearable
                     type="textarea"
                     :rows="1"
                     :autosize="{ minRows: 1, maxRows: 4 }"
-                    @keyup.enter="createQuickTask(project)"
+                    @keydown.ctrl.enter="createQuickTask(project)"
                     :disabled="(loading as any).value"
                   >
                     <template #suffix>
@@ -299,9 +291,6 @@
                     :value="project.id"
                   />
                 </el-select>
-                <span v-if="selectedProjectId" class="selected-project-info">
-                  已选择项目 ID: <code>{{ selectedProjectId }}</code>
-                </span>
               </div>
             </div>
 
@@ -390,12 +379,66 @@
             <el-radio label="hidden">隐藏</el-radio>
           </el-radio-group>
         </el-form-item>
+
+        <!-- 分配端口按钮 -->
+        <el-form-item>
+          <el-button type="info" @click="showAllocatePortsDialog = true">
+            <el-icon><Setting /></el-icon>
+            分配端口
+          </el-button>
+        </el-form-item>
+
+        <!-- 显示已分配的端口 -->
+        <el-form-item
+          v-if="editProjectForm.ports && editProjectForm.ports.length > 0"
+          label="已分配端口"
+        >
+          <div class="allocated-ports-display">
+            <div v-for="port in editProjectForm.ports" :key="port.port" class="port-item">
+              <span class="port-number">{{ port.port }}</span>
+              <el-input
+                v-model="port.remark"
+                placeholder="端口备注"
+                size="small"
+                style="width: 200px; margin-left: 10px"
+              />
+            </div>
+          </div>
+        </el-form-item>
       </el-form>
 
       <template #footer>
         <el-button @click="showEditProject = false">取消</el-button>
         <el-button type="primary" :loading="(loading as any).value" @click="handleEditProject">
           更新
+        </el-button>
+      </template>
+    </el-dialog>
+
+    <!-- Allocate Ports Dialog -->
+    <el-dialog
+      v-model="showAllocatePortsDialog"
+      title="分配端口"
+      width="400px"
+      :close-on-click-modal="false"
+    >
+      <el-form :model="allocatePortsForm" label-width="80px">
+        <el-form-item label="端口数量">
+          <el-input-number
+            v-model="allocatePortsForm.count"
+            :min="1"
+            :max="50"
+            controls-position="right"
+            placeholder="请输入端口数量"
+          />
+          <div class="form-tip">默认分配 10 个端口，范围：1000-2000</div>
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <el-button @click="showAllocatePortsDialog = false">取消</el-button>
+        <el-button type="primary" :loading="allocatingPorts" @click="handleAllocatePorts">
+          分配端口
         </el-button>
       </template>
     </el-dialog>
@@ -435,6 +478,7 @@ import {
   Close,
   Warning,
   Document,
+  Setting,
 } from '@element-plus/icons-vue'
 import { logout } from '@/services/auth'
 import CursorHooksDocs from '@/components/CursorHooksDocs.vue'
@@ -451,12 +495,14 @@ import {
   startAIExecution,
   stopAIExecution,
   setupWebSocketListeners,
+  allocatePorts,
 } from '@/services/projects'
 import {
   tasks,
   loading,
   createTask,
   fetchTasksByProject,
+  fetchActiveTasks,
   deleteTask,
   updateTask,
   updateTaskOrder,
@@ -468,11 +514,18 @@ import type { Project } from '@/services/projects'
 const router = useRouter()
 // Auth is now handled directly through imported functions
 // 使用直接导入的响应式变量和函数
+// 计算每个项目的未完成任务数量（基于一次性获取的未完成任务数据）
+const getActiveTaskCount = (projectId: string) => {
+  return tasks.value.filter((task) => task.projectId === projectId).length
+}
+
 // 使用直接导入的函数和变量
 
 // Reactive data
 const showCreateProject = ref(false)
 const showEditProject = ref(false)
+const showAllocatePortsDialog = ref(false)
+const allocatingPorts = ref(false)
 const quickTaskInputs = ref<Record<string, string>>({})
 const expandedProjects = ref<Set<string>>(new Set()) // 存储展开的项目ID
 const showHeader = ref(true) // 控制头部显示状态
@@ -511,6 +564,12 @@ const editProjectForm = reactive({
   cursorKey: '',
   description: '',
   status: 'active' as 'active' | 'hidden',
+  ports: [] as Array<{ port: number; remark: string; allocatedAt: Date }>,
+})
+
+// Allocate ports form
+const allocatePortsForm = reactive({
+  count: 10,
 })
 
 const projectRules = {
@@ -688,6 +747,14 @@ const editProject = (project: Project) => {
   editProjectForm.cursorKey = project.cursorKey || ''
   editProjectForm.description = project.description || ''
   editProjectForm.status = project.status
+
+  // 处理端口数据，确保 allocatedAt 是 Date 对象
+  editProjectForm.ports = (project.ports || []).map((port) => ({
+    ...port,
+    allocatedAt:
+      typeof port.allocatedAt === 'string' ? new Date(port.allocatedAt) : port.allocatedAt,
+  }))
+
   showEditProject.value = true
 }
 
@@ -766,6 +833,25 @@ const handleEditProject = async () => {
     showEditProject.value = false
   } catch (error) {
     console.error('Failed to update project:', error)
+  }
+}
+
+// 分配端口
+const handleAllocatePorts = async () => {
+  try {
+    allocatingPorts.value = true
+    const result = await allocatePorts(editProjectForm.id, allocatePortsForm.count)
+
+    // 更新表单中的端口数据
+    editProjectForm.ports = result
+
+    ElMessage.success(`成功分配 ${result.length} 个端口`)
+    showAllocatePortsDialog.value = false
+  } catch (error) {
+    console.error('Failed to allocate ports:', error)
+    ElMessage.error('端口分配失败')
+  } finally {
+    allocatingPorts.value = false
   }
 }
 
@@ -860,14 +946,11 @@ onMounted(async () => {
     await fetchProjects()
     setupWebSocketListeners()
 
-    // 为所有项目获取任务数据，以便在卡片中显示
-    const projectsList = projects.value
-    for (const project of projectsList) {
-      try {
-        await fetchTasksByProject(project.id)
-      } catch (error) {
-        console.error(`Failed to fetch tasks for project ${project.id}:`, error)
-      }
+    // 一次性获取所有活跃任务（待处理和进行中），大幅提升性能
+    try {
+      await fetchActiveTasks()
+    } catch (error) {
+      console.error('Failed to fetch active tasks:', error)
     }
   } catch (error) {
     console.error('Failed to load projects:', error)
@@ -1115,16 +1198,6 @@ watch(currentProject, async (newProject) => {
 
 .cursor-key {
   font-family: monospace;
-}
-
-.project-desc {
-  color: #606266;
-  font-size: 0.875rem;
-  margin: 0.5rem 0;
-  word-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
-  line-height: 1.4;
 }
 
 .ai-status {
@@ -1563,15 +1636,31 @@ watch(currentProject, async (newProject) => {
   margin-right: 1rem;
 }
 
-.selected-project-info {
-  color: #67c23a;
-  font-weight: 500;
+/* 端口分配相关样式 */
+.allocated-ports-display {
+  max-height: 200px;
+  overflow-y: auto;
 }
 
-.selected-project-info code {
-  background-color: #f0f9ff;
-  padding: 2px 6px;
+.port-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px;
+  background-color: #f8f9fa;
   border-radius: 4px;
-  font-family: 'Courier New', monospace;
+}
+
+.port-number {
+  font-family: monospace;
+  font-weight: bold;
+  color: #409eff;
+  min-width: 60px;
+}
+
+.form-tip {
+  font-size: 12px;
+  color: #909399;
+  margin-top: 4px;
 }
 </style>

@@ -1,184 +1,186 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { showToast, showConfirmDialog, showLoadingToast, closeToast } from 'vant'
-import {
-  tasks,
-  fetchTasksByProject,
-  createTask,
-  updateTask,
-  deleteTask,
-  pendingTasks,
-  inProgressTasks,
-} from '@/services/tasks'
-import { fetchProjects, projects } from '@/services/projects'
-import type { Task } from '@/services/tasks'
+import { ref, computed, onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
+import { showToast, showLoadingToast, closeToast } from "vant";
+import { tasks, fetchTasksByProject, createTask, updateTask } from "@/services/tasks";
+import { fetchProjects, projects } from "@/services/projects";
+import type { Task } from "@/services/tasks";
+import type { Project } from "@/services/projects";
 
 // 路由和导航
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
 
 // Props
-const projectId = route.params.id as string
+const projectId = route.params.id as string;
 
 // 响应式数据
-const showAddTask = ref(false)
-const newTaskTitle = ref('')
-const currentProject = ref(null)
-const activeTab = ref('active') // 'active' 或 'completed'
+const newTaskTitle = ref("");
+const currentProject = ref<Project | null>(null);
+const activeTab = ref("active"); // 'active' 或 'completed'
+const editingTask = ref<Task | null>(null);
+const editTaskTitle = ref("");
+const showEditDialog = ref(false);
+const showAddDialog = ref(false);
 
 // 计算属性
-const projectTasks = computed(() => tasks.value.filter(task => task.projectId === projectId))
-const activeTasks = computed(() => projectTasks.value.filter(task =>
-  task.status === 'pending' || task.status === 'in_progress'
-))
-const completedTasks = computed(() => projectTasks.value.filter(task => task.status === 'completed'))
+const projectTasks = computed(() => tasks.value.filter((task) => task.projectId === projectId));
+const activeTasks = computed(() =>
+  projectTasks.value.filter((task) => task.status === "pending" || task.status === "in_progress")
+);
+const completedTasks = computed(() =>
+  projectTasks.value.filter((task) => task.status === "completed")
+);
 
 const sortedActiveTasks = computed(() => {
   return [...activeTasks.value].sort((a, b) => {
     // 首先按状态排序：进行中 > 待处理
     if (a.status !== b.status) {
-      return a.status === 'in_progress' ? -1 : 1
+      return a.status === "in_progress" ? -1 : 1;
     }
     // 然后按优先级排序
     if (a.priority !== b.priority) {
-      return a.priority - b.priority
+      return a.priority - b.priority;
     }
     // 最后按创建时间排序
-    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  })
-})
+    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+  });
+});
 
 // 获取项目信息
 const getProjectInfo = () => {
-  return projects.value.find(p => p.id === projectId)
-}
+  return projects.value.find((p) => p.id === projectId);
+};
 
 // 获取任务状态文本
 const getTaskStatusText = (status: string) => {
   const statusMap = {
-    pending: '待处理',
-    in_progress: '进行中',
-    completed: '已完成'
-  }
-  return statusMap[status as keyof typeof statusMap] || status
-}
+    pending: "待处理",
+    in_progress: "进行中",
+    completed: "已完成",
+  };
+  return statusMap[status as keyof typeof statusMap] || status;
+};
 
 // 获取任务状态颜色
 const getTaskStatusColor = (status: string) => {
   switch (status) {
-    case 'pending':
-      return '#909399'
-    case 'in_progress':
-      return '#1989fa'
-    case 'completed':
-      return '#07c160'
+    case "pending":
+      return "#909399";
+    case "in_progress":
+      return "#1989fa";
+    case "completed":
+      return "#07c160";
     default:
-      return '#909399'
+      return "#909399";
   }
-}
+};
 
 // 创建新任务
 const handleCreateTask = async () => {
-  const title = newTaskTitle.value.trim()
+  const title = newTaskTitle.value.trim();
   if (!title) {
-    showToast('请输入任务内容')
-    return
+    showToast("请输入任务内容");
+    return;
   }
 
   try {
     showLoadingToast({
-      message: '创建中...',
+      message: "创建中...",
       forbidClick: true,
-    })
+    });
 
     await createTask({
       title,
       projectId,
       priority: 3, // 默认中等优先级
-    })
+    });
 
-    closeToast()
-    showToast('任务创建成功')
-    newTaskTitle.value = ''
-    showAddTask.value = false
-  } catch (error) {
-    closeToast()
-    showToast('创建任务失败')
-  }
-}
-
-// 更新任务状态
-const handleUpdateTaskStatus = async (task: Task, newStatus: 'pending' | 'in_progress' | 'completed') => {
-  try {
-    await updateTask(task.id, { status: newStatus })
-
-    const actionText = newStatus === 'in_progress' ? '开始处理' :
-                      newStatus === 'completed' ? '完成' : '标记为待处理'
-    showToast(`${actionText}成功`)
-  } catch (error) {
-    showToast('更新任务状态失败')
-  }
-}
-
-// 删除任务
-const handleDeleteTask = async (task: Task) => {
-  try {
-    await showConfirmDialog({
-      title: '确认删除',
-      message: `确定要删除任务"${task.title}"吗？`,
-    })
-
-    await deleteTask(task.id)
-    showToast('任务已删除')
-  } catch (error) {
-    // 用户取消删除
-  }
-}
-
-// 复制任务标题
-const handleCopyTask = async (task: Task) => {
-  try {
-    await navigator.clipboard.writeText(task.title)
-    showToast('任务内容已复制')
+    closeToast();
+    showToast("任务创建成功");
+    newTaskTitle.value = "";
+    showAddDialog.value = false;
   } catch {
-    showToast('复制失败')
+    closeToast();
+    showToast("创建任务失败");
   }
-}
+};
+
+// 取消新增任务
+const handleCancelAdd = () => {
+  showAddDialog.value = false;
+  newTaskTitle.value = "";
+};
+
+// 编辑任务内容
+const handleEditTask = (task: Task) => {
+  editingTask.value = task;
+  editTaskTitle.value = task.title;
+  showEditDialog.value = true;
+};
+
+// 保存编辑后的任务
+const handleSaveEdit = async () => {
+  if (!editingTask.value || !editTaskTitle.value.trim()) {
+    showToast("请输入任务内容");
+    return;
+  }
+
+  try {
+    await updateTask(editingTask.value.id, { title: editTaskTitle.value.trim() });
+    showToast("任务修改成功");
+    showEditDialog.value = false;
+    editingTask.value = null;
+    editTaskTitle.value = "";
+  } catch {
+    showToast("修改任务失败");
+  }
+};
+
+// 取消编辑
+const handleCancelEdit = () => {
+  showEditDialog.value = false;
+  editingTask.value = null;
+  editTaskTitle.value = "";
+};
 
 // 生命周期
 onMounted(async () => {
   try {
     showLoadingToast({
-      message: '加载中...',
+      message: "加载中...",
       forbidClick: true,
-    })
+    });
 
     // 获取项目信息
-    await fetchProjects()
-    currentProject.value = getProjectInfo()
+    await fetchProjects();
+    const projectInfo = getProjectInfo();
+    currentProject.value = projectInfo || null;
 
     // 获取任务列表
-    await fetchTasksByProject(projectId)
+    await fetchTasksByProject(projectId);
 
-    closeToast()
-  } catch (error) {
-    closeToast()
-    showToast('加载失败')
+    closeToast();
+  } catch {
+    closeToast();
+    showToast("加载失败");
   }
-})
+});
 
 // 监听路由变化
-watch(() => route.params.id, async (newId) => {
-  if (newId && newId !== projectId) {
-    try {
-      await fetchTasksByProject(newId as string)
-      currentProject.value = getProjectInfo()
-    } catch (error) {
-      showToast('加载任务失败')
+watch(
+  () => route.params.id,
+  async (newId) => {
+    if (newId && newId !== projectId) {
+      try {
+        await fetchTasksByProject(newId as string);
+        const projectInfo = getProjectInfo();
+        currentProject.value = projectInfo || null;
+      } catch {
+        showToast("加载任务失败");
+      }
     }
   }
-})
+);
 </script>
 
 <template>
@@ -191,91 +193,15 @@ watch(() => route.params.id, async (newId) => {
       @click-left="$router.go(-1)"
     />
 
-    <!-- 项目信息卡片 -->
-    <div v-if="currentProject" class="project-info">
-      <van-card>
-        <template #header>
-          <div class="project-header">
-            <div class="project-title">{{ currentProject.name }}</div>
-            <van-tag
-              :type="currentProject.status === 'active' ? 'success' : 'default'"
-              size="small"
-            >
-              {{ currentProject.status === 'active' ? '激活' : '隐藏' }}
-            </van-tag>
-          </div>
-        </template>
-
-        <div v-if="currentProject.description" class="project-desc">
-          {{ currentProject.description }}
-        </div>
-
-        <div class="project-stats">
-          <van-grid :column-num="3" :border="false">
-            <van-grid-item>
-              <van-cell
-                :title="activeTasks.length"
-                label="进行中"
-                center
-              />
-            </van-grid-item>
-            <van-grid-item>
-              <van-cell
-                :title="completedTasks.length"
-                label="已完成"
-                center
-              />
-            </van-grid-item>
-            <van-grid-item>
-              <van-cell
-                :title="projectTasks.length"
-                label="总任务"
-                center
-              />
-            </van-grid-item>
-          </van-grid>
-        </div>
-      </van-card>
-    </div>
-
     <!-- 标签页 -->
     <van-tabs v-model="activeTab" sticky>
       <van-tab title="进行中" name="active">
         <!-- 新增任务按钮 -->
         <div class="add-task-section">
-          <van-button
-            v-if="!showAddTask"
-            type="primary"
-            block
-            @click="showAddTask = true"
-          >
+          <van-button type="primary" block @click="showAddDialog = true">
             <van-icon name="plus" />
             新增任务
           </van-button>
-
-          <!-- 新增任务输入框 -->
-          <van-cell-group v-else>
-            <van-field
-              v-model="newTaskTitle"
-              placeholder="输入任务内容"
-              :border="false"
-              :clearable="true"
-              @keyup.enter="handleCreateTask"
-            >
-              <template #button>
-                <van-button size="small" type="primary" @click="handleCreateTask">
-                  添加
-                </van-button>
-                <van-button
-                  size="small"
-                  type="default"
-                  @click="showAddTask = false; newTaskTitle = ''"
-                >
-                  取消
-                </van-button>
-              </template>
-            </van-field>
-          </van-cell-group>
         </div>
 
         <!-- 任务列表 -->
@@ -285,9 +211,8 @@ watch(() => route.params.id, async (newId) => {
             :key="task.id"
             :title="task.title"
             :label="`优先级: ${task.priority} | ${getTaskStatusText(task.status)}`"
-            :value="task.status === 'pending' ? '开始处理' : '完成'"
             clickable
-            @click="handleUpdateTaskStatus(task, task.status === 'pending' ? 'in_progress' : 'completed')"
+            @click="handleEditTask(task)"
           >
             <template #icon>
               <van-icon
@@ -296,26 +221,13 @@ watch(() => route.params.id, async (newId) => {
               />
             </template>
             <template #right-icon>
-              <van-dropdown-menu>
-                <van-dropdown-item
-                  v-for="action in [
-                    { text: '复制内容', value: 'copy' },
-                    { text: '删除任务', value: 'delete' }
-                  ]"
-                  :key="action.value"
-                  @click="action.value === 'copy' ? handleCopyTask(task) : handleDeleteTask(task)"
-                />
-              </van-dropdown-menu>
+              <van-icon name="edit" @click.stop="handleEditTask(task)" />
             </template>
           </van-cell>
         </van-cell-group>
 
         <!-- 空状态 -->
-        <van-empty
-          v-else
-          description="暂无进行中的任务"
-          image="search"
-        />
+        <van-empty v-else description="暂无进行中的任务" image="search" />
       </van-tab>
 
       <van-tab title="已完成" name="completed">
@@ -326,39 +238,63 @@ watch(() => route.params.id, async (newId) => {
             :title="task.title"
             :label="`优先级: ${task.priority} | ${getTaskStatusText(task.status)}`"
             clickable
-            @click="handleUpdateTaskStatus(task, 'pending')"
+            @click="handleEditTask(task)"
           >
             <template #icon>
               <van-icon name="success" color="#07c160" />
             </template>
             <template #right-icon>
-              <van-dropdown-menu>
-                <van-dropdown-item
-                  v-for="action in [
-                    { text: '复制内容', value: 'copy' },
-                    { text: '删除任务', value: 'delete' },
-                    { text: '重新开始', value: 'restart' }
-                  ]"
-                  :key="action.value"
-                  @click="
-                    action.value === 'copy' ? handleCopyTask(task) :
-                    action.value === 'delete' ? handleDeleteTask(task) :
-                    handleUpdateTaskStatus(task, 'pending')
-                  "
-                />
-              </van-dropdown-menu>
+              <van-icon name="edit" @click.stop="handleEditTask(task)" />
             </template>
           </van-cell>
         </van-cell-group>
 
         <!-- 空状态 -->
-        <van-empty
-          v-else
-          description="暂无已完成的任务"
-          image="search"
-        />
+        <van-empty v-else description="暂无已完成的任务" image="search" />
       </van-tab>
     </van-tabs>
+
+    <!-- 新增任务对话框 -->
+    <van-dialog
+      v-model:show="showAddDialog"
+      title="新增任务"
+      :close-on-click-overlay="false"
+      show-cancel-button
+      cancel-button-text="取消"
+      confirm-button-text="添加"
+      @confirm="handleCreateTask"
+      @cancel="handleCancelAdd"
+    >
+      <van-field
+        v-model="newTaskTitle"
+        placeholder="请输入任务内容"
+        type="textarea"
+        :rows="3"
+        :autosize="{ minHeight: 60, maxHeight: 120 }"
+        @keyup.enter="handleCreateTask"
+      />
+    </van-dialog>
+
+    <!-- 编辑任务对话框 -->
+    <van-dialog
+      v-model:show="showEditDialog"
+      title="编辑任务"
+      :close-on-click-overlay="false"
+      show-cancel-button
+      cancel-button-text="取消"
+      confirm-button-text="保存"
+      @confirm="handleSaveEdit"
+      @cancel="handleCancelEdit"
+    >
+      <van-field
+        v-model="editTaskTitle"
+        placeholder="请输入任务内容"
+        type="textarea"
+        :rows="3"
+        :autosize="{ minHeight: 60, maxHeight: 120 }"
+        @keyup.enter="handleSaveEdit"
+      />
+    </van-dialog>
   </div>
 </template>
 
@@ -367,35 +303,6 @@ watch(() => route.params.id, async (newId) => {
   min-height: 100vh;
   background-color: #f7f8fa;
   padding-bottom: 50px;
-}
-
-.project-info {
-  padding: 16px;
-}
-
-.project-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.project-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #323233;
-  flex: 1;
-}
-
-.project-desc {
-  color: #646566;
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 8px 0;
-}
-
-.project-stats {
-  margin-top: 16px;
 }
 
 .add-task-section {
@@ -427,19 +334,6 @@ watch(() => route.params.id, async (newId) => {
 :deep(.van-tab) {
   flex: 1;
   text-align: center;
-}
-
-/* 自定义下拉菜单样式 */
-:deep(.van-dropdown-menu) {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-:deep(.van-dropdown-menu__item) {
-  padding: 8px 12px;
-  font-size: 14px;
 }
 
 /* 空状态样式 */

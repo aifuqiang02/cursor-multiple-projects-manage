@@ -1160,3 +1160,495 @@
 [2026-01-09 19:31:11] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
 [2026-01-09 19:31:11] AI execution stop API called
 [2026-01-09 19:31:11] Hook execution cycle finished
+[2026-01-09 23:22:33] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"2422b099-0087-425a-ae58-357b29ea7836","model":"claude-4.5-opus-high-thinking","prompt":"@front-end pc端录入任务的时候，内容输入完成，直接按回车。提示请输入内容。创建失败。我必须得重新粘贴，再回车。就好了。\n\n排查下，看着处理一下","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\services\\projects.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\services\\tasks.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\router\\index.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\HomeView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:22:33] Calling API to start AI execution...
+[2026-01-09 23:22:33] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:22:33] AI execution start API called
+[2026-01-09 23:22:33] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:23:41] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"2422b099-0087-425a-ae58-357b29ea7836","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:23:41] Hook completed successfully
+[2026-01-09 23:23:41] Calling API to stop AI execution...
+[2026-01-09 23:23:42] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:23:42] AI execution stop API called
+[2026-01-09 23:23:42] Hook execution cycle finished
+[2026-01-09 23:25:21] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"dc7aa246-4d0e-4826-b01b-13bcda05b60f","model":"claude-4.5-opus-high-thinking","prompt":"不行啊，我有时候，任务内容比较多，input 满足不了我的需求哦。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:25:21] Calling API to start AI execution...
+[2026-01-09 23:25:22] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:25:22] AI execution start API called
+[2026-01-09 23:25:22] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:25:47] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"dc7aa246-4d0e-4826-b01b-13bcda05b60f","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:25:47] Hook completed successfully
+[2026-01-09 23:25:47] Calling API to stop AI execution...
+[2026-01-09 23:25:48] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:25:48] AI execution stop API called
+[2026-01-09 23:25:48] Hook execution cycle finished
+[2026-01-09 23:32:45] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"36feaf6c-289b-4b12-a0e8-f4fdc53ed4ea","model":"claude-4.5-opus-high-thinking","prompt":"<div data-v-25ac887b=\"\" class=\"project-info\"></div> 去掉。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:32:45] Calling API to start AI execution...
+[2026-01-09 23:32:45] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:32:45] AI execution start API called
+[2026-01-09 23:32:45] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:35:19] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"36feaf6c-289b-4b12-a0e8-f4fdc53ed4ea","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:35:19] Hook completed successfully
+[2026-01-09 23:35:19] Calling API to stop AI execution...
+[2026-01-09 23:35:20] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:35:20] AI execution stop API called
+[2026-01-09 23:35:20] Hook execution cycle finished
+[2026-01-09 23:37:31] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"5402ab1d-a29e-448f-aefd-116c7e5239e6","model":"claude-4.5-opus-high-thinking","prompt":"<div class=\"van-cell__value\">完成</div> 去掉。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:37:31] Calling API to start AI execution...
+[2026-01-09 23:37:31] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:37:31] AI execution start API called
+[2026-01-09 23:37:31] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:37:38] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"5402ab1d-a29e-448f-aefd-116c7e5239e6","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:37:38] Hook completed successfully
+[2026-01-09 23:37:38] Calling API to stop AI execution...
+[2026-01-09 23:37:38] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:37:38] AI execution stop API called
+[2026-01-09 23:37:38] Hook execution cycle finished
+[2026-01-09 23:37:48] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"1281de6d-b4bb-4b66-8517-ce2f0665472e","model":"claude-4.5-opus-high-thinking","prompt":"<div class=\"van-cell__value\">完成</div> 去掉。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:37:48] Calling API to start AI execution...
+[2026-01-09 23:37:48] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:37:48] AI execution start API called
+[2026-01-09 23:37:48] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:38:54] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"1281de6d-b4bb-4b66-8517-ce2f0665472e","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:38:54] Hook completed successfully
+[2026-01-09 23:38:54] Calling API to stop AI execution...
+[2026-01-09 23:38:54] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"19eb61c3-48cc-497c-b99d-4b979e5b65bd","model":"claude-4.5-opus-high-thinking","prompt":"<div id=\"van-dropdown-menu-10-0\" role=\"button\" tabindex=\"0\" data-allow-mismatch=\"attribute\" class=\"van-dropdown-menu__item van-haptics-feedback\"></div> <div id=\"van-dropdown-menu-10-1\" role=\"button\" tabindex=\"0\" data-allow-mismatch=\"attribute\" class=\"van-dropdown-menu__item van-haptics-feedback\"></div> 这个排序也去掉。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:38:54] Calling API to start AI execution...
+[2026-01-09 23:38:54] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:38:55] AI execution start API called
+[2026-01-09 23:38:55] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:38:55] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:38:55] AI execution stop API called
+[2026-01-09 23:38:55] Hook execution cycle finished
+[2026-01-09 23:39:58] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"19eb61c3-48cc-497c-b99d-4b979e5b65bd","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:39:58] Hook completed successfully
+[2026-01-09 23:39:58] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"d3155fdd-af43-4b28-9e00-2a14c286e6b2","model":"claude-4.5-opus-high-thinking","prompt":"<div data-v-25ac887b=\"\" class=\"project-info\"></div> 项目描述板块去掉。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:39:58] Calling API to stop AI execution...
+[2026-01-09 23:39:58] Calling API to start AI execution...
+[2026-01-09 23:39:59] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:39:59] AI execution start API called
+[2026-01-09 23:39:59] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:39:59] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:39:59] AI execution stop API called
+[2026-01-09 23:39:59] Hook execution cycle finished
+[2026-01-09 23:40:51] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"d3155fdd-af43-4b28-9e00-2a14c286e6b2","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:40:51] Hook completed successfully
+[2026-01-09 23:40:51] Calling API to stop AI execution...
+[2026-01-09 23:40:51] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:40:51] AI execution stop API called
+[2026-01-09 23:40:51] Hook execution cycle finished
+[2026-01-09 23:41:18] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"b678d9d5-08b5-4083-867e-afff45807abe","model":"claude-4.5-opus-high-thinking","prompt":"<div data-v-25ac887b=\"\" class=\"project-info\"></div> 这个板块去掉。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:41:18] Calling API to start AI execution...
+[2026-01-09 23:41:18] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:41:18] AI execution start API called
+[2026-01-09 23:41:18] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:42:14] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"b678d9d5-08b5-4083-867e-afff45807abe","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:42:14] Hook completed successfully
+[2026-01-09 23:42:14] Calling API to stop AI execution...
+[2026-01-09 23:42:14] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:42:14] AI execution stop API called
+[2026-01-09 23:42:14] Hook execution cycle finished
+[2026-01-09 23:42:24] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"be3a5977-9db8-4474-b736-6d0c3c1cb814","model":"claude-4.5-opus-high-thinking","prompt":"<div data-v-25ac887b=\"\" class=\"van-cell van-cell--clickable\" role=\"button\" tabindex=\"0\">移动端使用内网穿透。实现外网可以访问。挂在公众号菜单上 优先级: 3 | 进行中</div> 去掉任务点击修改状态功能。点击可修改内容。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:42:24] Calling API to start AI execution...
+[2026-01-09 23:42:24] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:42:24] AI execution start API called
+[2026-01-09 23:42:24] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:47:07] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"be3a5977-9db8-4474-b736-6d0c3c1cb814","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:47:07] Hook completed successfully
+[2026-01-09 23:47:07] Calling API to stop AI execution...
+[2026-01-09 23:47:08] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:47:08] AI execution stop API called
+[2026-01-09 23:47:08] Hook execution cycle finished
+[2026-01-09 23:47:17] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"d0e49c85-f5bf-45ee-9133-a834d8167c7d","model":"claude-4.5-opus-high-thinking","prompt":"@mobile-front-end/src/views/ProjectTasksView.vue:224-270 去掉。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\HomeView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:47:17] Calling API to start AI execution...
+[2026-01-09 23:47:17] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:47:17] AI execution start API called
+[2026-01-09 23:47:17] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:48:51] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"d0e49c85-f5bf-45ee-9133-a834d8167c7d","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:48:51] Hook completed successfully
+[2026-01-09 23:48:51] Calling API to stop AI execution...
+[2026-01-09 23:48:52] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:48:52] AI execution stop API called
+[2026-01-09 23:48:52] Hook execution cycle finished
+[2026-01-09 23:48:52] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"25e93250-4342-483d-a017-3d1bab1973a7","model":"claude-4.5-opus-high-thinking","prompt":"@mobile-front-end/src/views/HomeView.vue:95-112 这个里面的project._count?.tasks . 改为 待处理和进行中的总个数 。 和列表进行中的对应上。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:48:52] Calling API to start AI execution...
+[2026-01-09 23:48:52] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:48:53] AI execution start API called
+[2026-01-09 23:48:53] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:50:55] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"25e93250-4342-483d-a017-3d1bab1973a7","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:50:55] Hook completed successfully
+[2026-01-09 23:50:55] Calling API to stop AI execution...
+[2026-01-09 23:50:55] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:50:55] AI execution stop API called
+[2026-01-09 23:50:55] Hook execution cycle finished
+[2026-01-09 23:51:31] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"c7aae81b-027f-4e40-bc44-bfcd48132ef4","model":"claude-4.5-opus-high-thinking","prompt":"@front-end/src/views/Home.vue:850-867 进行优化，这样的话，现在10个项目，就得请求10次。\n\n这个方法保留。单独实现一个，直接一次性获取到所有待处理和进行中的。然后在代码里。去对应到项目上。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\HomeView.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\services\\tasks.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:51:31] Calling API to start AI execution...
+[2026-01-09 23:51:32] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:51:32] AI execution start API called
+[2026-01-09 23:51:32] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:55:23] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"c7aae81b-027f-4e40-bc44-bfcd48132ef4","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:55:23] Hook completed successfully
+[2026-01-09 23:55:23] Calling API to stop AI execution...
+[2026-01-09 23:55:24] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:55:24] AI execution stop API called
+[2026-01-09 23:55:24] Hook execution cycle finished
+[2026-01-09 23:58:50] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"4cb41844-8d43-46c1-8645-6e5a2c22636d","model":"claude-4.5-opus-high-thinking","prompt":"@mobile-front-end/src/views/ProjectTasksView.vue:288-291 用自带的。不要自定义。丑的很","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\tasks.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\services\\tasks.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:58:50] Calling API to start AI execution...
+[2026-01-09 23:58:50] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:58:50] AI execution start API called
+[2026-01-09 23:58:50] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:59:02] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"4cb41844-8d43-46c1-8645-6e5a2c22636d","model":"claude-4.5-opus-high-thinking","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:59:02] Hook completed successfully
+[2026-01-09 23:59:02] Calling API to stop AI execution...
+[2026-01-09 23:59:02] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:59:02] AI execution stop API called
+[2026-01-09 23:59:02] Hook execution cycle finished
+[2026-01-09 23:59:09] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"999732fb-451b-4902-926e-eaa60577bddd","model":"claude-4.5-opus-high-thinking","prompt":"@mobile-front-end/src/views/ProjectTasksView.vue:288-291 用自带的。不要自定义。丑的很","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\tasks.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\services\\tasks.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:59:09] Calling API to start AI execution...
+[2026-01-09 23:59:09] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-09 23:59:09] AI execution start API called
+[2026-01-09 23:59:09] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-09 23:59:19] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"999732fb-451b-4902-926e-eaa60577bddd","model":"claude-4.5-opus-high-thinking","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-09 23:59:19] Hook completed successfully
+[2026-01-09 23:59:19] Calling API to stop AI execution...
+[2026-01-09 23:59:20] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-09 23:59:20] AI execution stop API called
+[2026-01-09 23:59:20] Hook execution cycle finished
+[2026-01-10 11:27:33] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"962bdc6b-c54c-487f-beda-b5533e4a99d1","model":"claude-4.5-opus-high-thinking","prompt":"@mobile-front-end/src/views/ProjectTasksView.vue:288-291 用自带的。不要自定义。丑的很","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\tasks.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\services\\tasks.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-10 11:27:33] Calling API to start AI execution...
+[2026-01-10 11:27:34] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 11:27:34] AI execution start API called
+[2026-01-10 11:27:34] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 11:27:41] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"962bdc6b-c54c-487f-beda-b5533e4a99d1","model":"claude-4.5-opus-high-thinking","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"7rj9w01myehi@freecursor.fun"}
+[2026-01-10 11:27:41] Hook completed successfully
+[2026-01-10 11:27:41] Calling API to stop AI execution...
+[2026-01-10 11:27:41] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 11:27:41] AI execution stop API called
+[2026-01-10 11:27:41] Hook execution cycle finished
+[2026-01-10 11:28:04] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"511e5589-054a-49bf-a0d2-6d257caa712d","model":"claude-4.5-opus-high-thinking","prompt":"@mobile-front-end/src/views/ProjectTasksView.vue:288-291 用自带的。不要自定义。丑的很","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\tasks.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\services\\tasks.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:28:04] Calling API to start AI execution...
+[2026-01-10 11:28:05] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 11:28:05] AI execution start API called
+[2026-01-10 11:28:05] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 11:28:39] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"511e5589-054a-49bf-a0d2-6d257caa712d","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:28:40] Hook completed successfully
+[2026-01-10 11:28:40] Calling API to stop AI execution...
+[2026-01-10 11:28:40] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 11:28:40] AI execution stop API called
+[2026-01-10 11:28:40] Hook execution cycle finished
+[2026-01-10 11:29:49] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"c8a15fa9-0702-44c0-9502-7900611f4c7a","model":"claude-4.5-opus-high-thinking","prompt":"@mobile-front-end/src/views/ProjectTasksView.vue:195-198 改为修改那样的弹出框","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:29:49] Calling API to start AI execution...
+[2026-01-10 11:29:49] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 11:29:49] AI execution start API called
+[2026-01-10 11:29:49] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 11:30:41] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"c8a15fa9-0702-44c0-9502-7900611f4c7a","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:30:41] Hook completed successfully
+[2026-01-10 11:30:41] Calling API to stop AI execution...
+[2026-01-10 11:30:42] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 11:30:42] AI execution stop API called
+[2026-01-10 11:30:42] Hook execution cycle finished
+[2026-01-10 11:33:00] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"da4241c9-e946-4a18-9164-a8420ebad997","model":"claude-4.5-opus-high-thinking","prompt":"<span>2 个进行中任务</span> 直接用一个圈+数字即可。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\ProjectTasksView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:33:00] Calling API to start AI execution...
+[2026-01-10 11:33:00] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 11:33:00] AI execution start API called
+[2026-01-10 11:33:01] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 11:33:34] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"da4241c9-e946-4a18-9164-a8420ebad997","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:33:34] Hook completed successfully
+[2026-01-10 11:33:34] Calling API to stop AI execution...
+[2026-01-10 11:33:34] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 11:33:34] AI execution stop API called
+[2026-01-10 11:33:34] Hook execution cycle finished
+[2026-01-10 11:34:36] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"b22640ef-5188-4bc7-9785-8fd29d44a2fb","model":"claude-4.5-opus-high-thinking","prompt":"<div data-v-b4e148ca=\"\" class=\"van-badge van-badge--top-right\">2</div> 列表按照这个排序","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\HomeView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:34:36] Calling API to start AI execution...
+[2026-01-10 11:34:36] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 11:34:36] AI execution start API called
+[2026-01-10 11:34:36] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 11:35:09] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"b22640ef-5188-4bc7-9785-8fd29d44a2fb","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:35:09] Hook completed successfully
+[2026-01-10 11:35:09] Calling API to stop AI execution...
+[2026-01-10 11:35:09] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 11:35:10] AI execution stop API called
+[2026-01-10 11:35:10] Hook execution cycle finished
+[2026-01-10 11:35:37] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"27ac5ce3-8ba6-4901-be1c-123b14d7c908","model":"claude-4.5-opus-high-thinking","prompt":"Uncaught (in promise) ReferenceError: computed is not defined\n    at setup (HomeView.vue:25:24)\n    at callWithErrorHandling (chunk-4PHBYQFJ.js?v=8d3be4e1:2342:19)\n    at setupStatefulComponent (chunk-4PHBYQFJ.js?v=8d3be4e1:10198:25)\n    at setupComponent (chunk-4PHBYQFJ.js?v=8d3be4e1:10160:36)\n    at mountComponent (chunk-4PHBYQFJ.js?v=8d3be4e1:8100:7)\n    at processComponent (chunk-4PHBYQFJ.js?v=8d3be4e1:8066:9)\n    at patch (chunk-4PHBYQFJ.js?v=8d3be4e1:7562:11)\n    at ReactiveEffect.componentUpdateFn [as fn] (chunk-4PHBYQFJ.js?v=8d3be4e1:8292:9)\n    at ReactiveEffect.run (chunk-4PHBYQFJ.js?v=8d3be4e1:505:19)\n    at ReactiveEffect.runIfDirty (chunk-4PHBYQFJ.js?v=8d3be4e1:543:12)","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\HomeView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:35:37] Calling API to start AI execution...
+[2026-01-10 11:35:37] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 11:35:37] AI execution start API called
+[2026-01-10 11:35:37] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 11:35:59] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"27ac5ce3-8ba6-4901-be1c-123b14d7c908","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:35:59] Hook completed successfully
+[2026-01-10 11:35:59] Calling API to stop AI execution...
+[2026-01-10 11:36:00] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 11:36:00] AI execution stop API called
+[2026-01-10 11:36:00] Hook execution cycle finished
+[2026-01-10 11:36:55] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"874b8a3a-8721-4788-9205-fa87537e481a","model":"claude-4.5-opus-high-thinking","prompt":"<div data-v-b4e148ca=\"\" role=\"tab\" class=\"van-tabbar-item van-tabbar-item--active\" tabindex=\"0\" aria-selected=\"true\">搜索</div> <div data-v-b4e148ca=\"\" role=\"tab\" class=\"van-tabbar-item\" tabindex=\"0\" aria-selected=\"false\">好友</div> 去掉","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\HomeView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:36:55] Calling API to start AI execution...
+[2026-01-10 11:36:55] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 11:36:55] AI execution start API called
+[2026-01-10 11:36:55] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 11:38:32] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"874b8a3a-8721-4788-9205-fa87537e481a","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 11:38:32] Hook completed successfully
+[2026-01-10 11:38:32] Calling API to stop AI execution...
+[2026-01-10 11:38:32] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 11:38:32] AI execution stop API called
+[2026-01-10 11:38:32] Hook execution cycle finished
+[2026-01-10 12:10:22] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"2f161d34-0ef5-4959-8be6-aa7de8e203ca","model":"claude-4.5-opus-high-thinking","prompt":"移动端显示的项目列表与pc端不一致。pc端10个项目。移动端7个。排查分析下。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\HomeView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:10:22] Calling API to start AI execution...
+[2026-01-10 12:10:23] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 12:10:23] AI execution start API called
+[2026-01-10 12:10:23] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 12:11:26] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"2f161d34-0ef5-4959-8be6-aa7de8e203ca","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:11:26] Hook completed successfully
+[2026-01-10 12:11:26] Calling API to stop AI execution...
+[2026-01-10 12:11:26] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 12:11:26] AI execution stop API called
+[2026-01-10 12:11:26] Hook execution cycle finished
+[2026-01-10 12:20:57] BeforeSubmitPrompt Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"1083360e-5989-4ba9-a0e2-ea498ee57179","model":"claude-4.5-opus-high-thinking","prompt":"移动端，登录后，不管哪个页面，只要刷新。就会退出到登录页面，排查分析下","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\mobile-front-end\\src\\views\\HomeView.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:20:57] Calling API to start AI execution...
+[2026-01-10 12:20:57] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 12:20:57] AI execution start API called
+[2026-01-10 12:20:57] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 12:21:54] Hook executed: {"conversation_id":"f435b0be-80fa-4f85-9b2f-729e605c629a","generation_id":"1083360e-5989-4ba9-a0e2-ea498ee57179","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:21:54] Hook completed successfully
+[2026-01-10 12:21:54] Calling API to stop AI execution...
+[2026-01-10 12:21:55] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 12:21:55] AI execution stop API called
+[2026-01-10 12:21:55] Hook execution cycle finished
+[2026-01-10 12:29:10] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"2ae066f0-891a-4d57-bd02-5e5639def6df","model":"claude-4.5-opus-high-thinking","prompt":"我有很多项目，每次这些项目分配端口时，总会有冲突。我想在现在的pc端项目里，实现一个自动分配端口的功能。比如，每一个项目，自动分配1000-2000 这个范围内的10个端口。分配了这些端口后，项目自己决定这10个端口，每一个端口对应的a前端、a后端、b前端这样子。\n","attachments":[{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:29:10] Calling API to start AI execution...
+[2026-01-10 12:29:11] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 12:29:11] AI execution start API called
+[2026-01-10 12:29:11] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 12:35:22] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"efa19e75-626e-42a4-9011-c64e74a8e00a","model":"claude-4.5-opus-high-thinking","prompt":"不是这样子的。 比如，修改新增项目里，增加一个分配端口按钮，用户点击一下。就会生成指定个数的端口，每一个端口后面，可以加一个备注。将这个项目用到的这些端口，组装为json arr 存储到项目表字段里面。下次再回显下，可以修改。但是端口不能修改。端口在多个项目之间不能重复。分配时，按照顺序分配。\n\n<div class=\"el-dialog\" tabindex=\"-1\" style=\"--el-dialog-width: 500px;\">编辑项目 项目名 Cursor密钥 描述 状态 活跃 隐藏 取消 更新</div> ","attachments":[{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:35:22] Calling API to start AI execution...
+[2026-01-10 12:35:22] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 12:35:22] AI execution start API called
+[2026-01-10 12:35:22] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 12:36:30] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"90eddd7e-234d-4fcf-a79c-452f974ed52c","model":"claude-4.5-opus-high-thinking","prompt":"","attachments":[{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:36:30] Calling API to start AI execution...
+[2026-01-10 12:36:30] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 12:36:31] AI execution start API called
+[2026-01-10 12:36:31] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 12:37:36] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"90eddd7e-234d-4fcf-a79c-452f974ed52c","model":"claude-4.5-opus-high-thinking","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:37:36] Hook completed successfully
+[2026-01-10 12:37:36] Calling API to stop AI execution...
+[2026-01-10 12:37:36] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 12:37:36] AI execution stop API called
+[2026-01-10 12:37:36] Hook execution cycle finished
+[2026-01-10 12:38:16] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"3878506c-8d96-4ec7-b1ae-3ba7f0161023","model":"claude-4.5-opus-high-thinking","prompt":"Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.\n\nTo-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.","attachments":[{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\8.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:38:16] Calling API to start AI execution...
+[2026-01-10 12:38:16] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 12:38:16] AI execution start API called
+[2026-01-10 12:38:16] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 12:41:43] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"3878506c-8d96-4ec7-b1ae-3ba7f0161023","model":"claude-4.5-opus-high-thinking","command":"cd server && npm run db:generate","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:41:43] Checking command: cd server && npm run db:generate
+[2026-01-10 12:41:43] Command allowed: cd server && npm run db:generate
+[2026-01-10 12:42:03] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"3878506c-8d96-4ec7-b1ae-3ba7f0161023","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:42:03] Hook completed successfully
+[2026-01-10 12:42:03] Calling API to stop AI execution...
+[2026-01-10 12:42:05] API Response - Status: 000, Body: 
+[2026-01-10 12:42:05] AI execution stop API called
+[2026-01-10 12:42:05] Hook execution cycle finished
+[2026-01-10 12:49:00] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","prompt":"\n(base) PS D:\\git-projects\\cursor-multiple-projects-manage\\server> npm run dev\n\n> cursor-projects-manager-server@1.0.0 dev\n> tsx watch src/index.ts\n\nD:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\lib\\portAllocator.ts:1        \nimport { PrismaClient, PortAllocation } from '@prisma/client'\n                       ^\n\nSyntaxError: The requested module '@prisma/client' does not provide an export named 'PortAllocation'\n    at ModuleJob._instantiate (node:internal/modules/esm/module_job:213:21)\n    at async ModuleJob.run (node:internal/modules/esm/module_job:320:5)\n    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)      \n\nNode.js v20.19.5\n","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\prisma\\schema.prisma"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\config\\ports.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\lib\\portAllocator.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\projects.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\services\\projects.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\tests\\portAllocation.test.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\README.md"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:49:00] Calling API to start AI execution...
+[2026-01-10 12:49:03] API Response - Status: 000, Body: 
+[2026-01-10 12:49:03] AI execution start API called
+[2026-01-10 12:49:03] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 12:49:11] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd server && npx prisma generate --force","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:49:11] Checking command: cd server && npx prisma generate --force
+[2026-01-10 12:49:11] Command allowed: cd server && npx prisma generate --force
+[2026-01-10 12:49:25] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd server && npm run db:generate","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:49:25] Checking command: cd server && npm run db:generate
+[2026-01-10 12:49:25] Command allowed: cd server && npm run db:generate
+[2026-01-10 12:49:36] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npm run db:generate","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:49:36] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npm run db:generate
+[2026-01-10 12:49:36] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npm run db:generate
+[2026-01-10 12:49:50] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \"console.log(Object.keys(require('@prisma/client')).filter(k => k.includes('Port')).join('\\n'))\"","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:49:50] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \
+[2026-01-10 12:49:51] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \
+[2026-01-10 12:50:02] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \"const { PrismaClient } = require('@prisma/client'); const client = new PrismaClient(); console.log('Available models:', Object.keys(client).filter(k => typeof client[k] === 'object' && client[k] !== null && 'findMany' in client[k]))\"","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:50:02] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \
+[2026-01-10 12:50:02] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \
+[2026-01-10 12:50:12] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && find node_modules/@prisma/client -name \"*.d.ts\" | head -5","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:50:12] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && find node_modules/@prisma/client -name \
+[2026-01-10 12:50:12] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && find node_modules/@prisma/client -name \
+[2026-01-10 12:50:32] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && dir node_modules\\@prisma\\client\\.prisma","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:50:32] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && dir node_modules\\@prisma\\client\\.prisma
+[2026-01-10 12:50:32] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && dir node_modules\\@prisma\\client\\.prisma
+[2026-01-10 12:50:47] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && dir .prisma","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:50:47] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && dir .prisma
+[2026-01-10 12:50:48] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && dir .prisma
+[2026-01-10 12:51:14] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \"console.log(Object.keys(require('@prisma/client')).slice(0, 20))\"","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:51:14] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \
+[2026-01-10 12:51:14] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \
+[2026-01-10 12:51:25] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \"console.log(Object.keys(require('@prisma/client').Prisma).filter(k => k.includes('Port')).join('\\n'))\"","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:51:25] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \
+[2026-01-10 12:51:25] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node -e \
+[2026-01-10 12:51:37] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && find . -name \"*.d.ts\" -path \"*/@prisma/client/*\" | head -10","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:51:37] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && find . -name \
+[2026-01-10 12:51:38] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && find . -name \
+[2026-01-10 12:51:55] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npm run dev","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:51:55] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npm run dev
+[2026-01-10 12:51:55] Command matches blacklist pattern: .*npm run dev.*
+[2026-01-10 12:51:55] Command blocked: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npm run dev
+[2026-01-10 12:52:04] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npx tsc --noEmit","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:52:04] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npx tsc --noEmit
+[2026-01-10 12:52:04] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npx tsc --noEmit
+[2026-01-10 12:52:17] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npx tsx src/index.ts","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:52:17] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npx tsx src/index.ts
+[2026-01-10 12:52:17] Command matches blacklist pattern: .*npx tsx.*
+[2026-01-10 12:52:17] Command blocked: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npx tsx src/index.ts
+[2026-01-10 12:52:32] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npm run db:push","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:52:33] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npm run db:push
+[2026-01-10 12:52:33] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && npm run db:push
+[2026-01-10 12:52:53] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node test-import.js","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:52:53] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node test-import.js
+[2026-01-10 12:52:53] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node test-import.js
+[2026-01-10 12:53:11] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && mv test-import.js test-import.mjs","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:53:11] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && mv test-import.js test-import.mjs
+[2026-01-10 12:53:11] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && mv test-import.js test-import.mjs
+[2026-01-10 12:53:21] BeforeShellExecution Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","command":"cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node test-import.mjs","cwd":"","sandbox":false,"hook_event_name":"beforeShellExecution","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:53:21] Checking command: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node test-import.mjs
+[2026-01-10 12:53:21] Command allowed: cd D:\\git-projects\\cursor-multiple-projects-manage\\server && node test-import.mjs
+[2026-01-10 12:53:46] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"f212f88a-7d6e-4eaf-8d60-018b5760f144","model":"claude-4.5-opus-high-thinking","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:53:46] Hook completed successfully
+[2026-01-10 12:53:46] Calling API to stop AI execution...
+[2026-01-10 12:53:48] API Response - Status: 000, Body: 
+[2026-01-10 12:53:48] AI execution stop API called
+[2026-01-10 12:53:48] Hook execution cycle finished
+[2026-01-10 12:59:05] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"cfd9f5b8-9197-433f-b583-c6d30e2195a6","model":"claude-4.5-opus-high-thinking","prompt":"Home.vue:841 Failed to allocate ports: ReferenceError: allocatePorts is not defined\n    at handleAllocatePorts (Home.vue:833:20)","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\lib\\portAllocator.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\test-import.mjs"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:59:05] Calling API to start AI execution...
+[2026-01-10 12:59:06] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 12:59:06] AI execution start API called
+[2026-01-10 12:59:06] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 12:59:34] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"cfd9f5b8-9197-433f-b583-c6d30e2195a6","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 12:59:34] Hook completed successfully
+[2026-01-10 12:59:34] Calling API to stop AI execution...
+[2026-01-10 12:59:34] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 12:59:34] AI execution stop API called
+[2026-01-10 12:59:35] Hook execution cycle finished
+[2026-01-10 13:18:30] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"5cf1e77b-fee2-4206-903c-a803cadb2e72","model":"claude-4.5-opus-high-thinking","prompt":"第一个项目成功分配了端口，第二个不行了。\n\n\nprisma:query SELECT COUNT(*) AS \"_count$_all\" FROM (SELECT \"public\".\"port_allocations\".\"id\" FROM \"public\".\"port_allocations\" WHERE (\"public\".\"port_allocations\".\"port\" >= $1 AND \"public\".\"port_allocations\".\"port\" <= $2) OFFSET $3) AS \"sub\"\nprisma:error \nInvalid `tx.portAllocation.create()` invocation in\nD:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\lib\\portAllocator.ts:123:35   \n\n  120 for (let port = portConfig.minPort; port <= portConfig.maxPort && allocatedPorts.length < count; port++) {\n  121   try {\n  122     // 尝试分配这个端口\n→ 123     await tx.portAllocation.create(\nUnique constraint failed on the fields: (`port`)\nprisma:error current transaction is aborted, commands ignored until end of transaction block\nprisma:query ROLLBACK\nAllocate ports error: DriverAdapterError: current transaction is aborted, commands ignored until end of transaction block\n    at PgTransaction.onError (file:///D:/git-projects/cursor-multiple-projects-manage/server/node_modules/@prisma/adapter-pg/dist/index.mjs:651:11)\n    at PgTransaction.performIO (file:///D:/git-projects/cursor-multiple-projects-manage/server/node_modules/@prisma/adapter-pg/dist/index.mjs:646:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)        \n    at async PgTransaction.queryRaw (file:///D:/git-projects/cursor-multiple-projects-manage/server/node_modules/@prisma/adapter-pg/dist/index.mjs:566:30)\n    at async <anonymous> (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client-engine-runtime\\src\\tracing.ts:68:22)\n    at async fr (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client-engine-runtime\\src\\tracing.ts:56:10)\n    at async e.interpretNode (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client-engine-runtime\\src\\interpreter\\query-interpreter.ts:190:26)      \n    at async e.interpretNode (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client-engine-runtime\\src\\interpreter\\query-interpreter.ts:217:41)      \n    at async e.interpretNode (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client-engine-runtime\\src\\interpreter\\query-interpreter.ts:276:41)      \n    at async e.run (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client-engine-runtime\\src\\interpreter\\query-interpreter.ts:96:23) {\n  cause: {\n    originalCode: '25P02',\n    originalMessage: 'current transaction is aborted, commands ignored until end of transaction block',\n    kind: 'postgres',\n    code: '25P02',\n    severity: 'ERROR',\n    message: 'current transaction is aborted, commands ignored until end of transaction block',\n    detail: undefined,\n    column: undefined,\n    hint: undefined\n  },\n  clientVersion: '7.2.0'\n}","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:18:30] Calling API to start AI execution...
+[2026-01-10 13:18:30] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 13:18:30] AI execution start API called
+[2026-01-10 13:18:30] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 13:19:11] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"5cf1e77b-fee2-4206-903c-a803cadb2e72","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:19:11] Hook completed successfully
+[2026-01-10 13:19:11] Calling API to stop AI execution...
+[2026-01-10 13:19:12] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 13:19:12] AI execution stop API called
+[2026-01-10 13:19:12] Hook execution cycle finished
+[2026-01-10 13:25:00] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"7cffefcd-bf9f-47b0-93ff-f955ec691ddd","model":"claude-4.5-opus-high-thinking","prompt":"<form data-v-2dc54a20=\"\" class=\"el-form el-form--default el-form--label-right\">项目名 Cursor密钥 描述 状态 活跃 隐藏 分配端口 已分配端口 1010 1011 1012 1013 1014</form> 修改端口，提示修改成功。实际没有。而且，都没有传项目id 。 ","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\lib\\portAllocator.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:25:00] Calling API to start AI execution...
+[2026-01-10 13:25:00] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 13:25:00] AI execution start API called
+[2026-01-10 13:25:00] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 13:26:18] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"7cffefcd-bf9f-47b0-93ff-f955ec691ddd","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:26:18] Hook completed successfully
+[2026-01-10 13:26:18] Calling API to stop AI execution...
+[2026-01-10 13:26:19] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 13:26:19] AI execution stop API called
+[2026-01-10 13:26:19] Hook execution cycle finished
+[2026-01-10 13:28:29] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"41ca2bfe-d2a2-4cf9-bad6-1f0678c5b29e","model":"claude-4.5-opus-high-thinking","prompt":"我理解错了，项目id 是通过url传的。端口也传了，在body。也不知道是没有保存成功，还是没有回显。反正保存后，下次编辑，还不行","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\lib\\portAllocator.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:28:29] Calling API to start AI execution...
+[2026-01-10 13:28:30] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 13:28:30] AI execution start API called
+[2026-01-10 13:28:30] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 13:29:31] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"41ca2bfe-d2a2-4cf9-bad6-1f0678c5b29e","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:29:31] Hook completed successfully
+[2026-01-10 13:29:31] Calling API to stop AI execution...
+[2026-01-10 13:29:32] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 13:29:32] AI execution stop API called
+[2026-01-10 13:29:32] Hook execution cycle finished
+[2026-01-10 13:31:13] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"285d3df3-9c73-41a0-99f6-e357387a85db","model":"claude-4.5-opus-high-thinking","prompt":"\nprisma:query SELECT \"public\".\"projects\".\"id\", \"public\".\"projects\".\"name\", \"public\".\"projects\".\"cursorKey\", \"public\".\"projects\".\"uuid\", \"public\".\"projects\".\"status\", \"public\".\"projects\".\"description\", \"public\".\"projects\".\"ports\", \"public\".\"projects\".\"aiStatus\", \"public\".\"projects\".\"aiCommand\", \"public\".\"projects\".\"aiResult\", \"public\".\"projects\".\"aiDuration\", \"public\".\"projects\".\"aiStartedAt\", \"public\".\"projects\".\"aiCompletedAt\", \"public\".\"projects\".\"createdAt\", \"public\".\"projects\".\"updatedAt\", \"public\".\"projects\".\"userId\" FROM \"public\".\"projects\" WHERE (\"public\".\"projects\".\"id\" = $1 AND \"public\".\"projects\".\"userId\" = $2) LIMIT $3 OFFSET $4\nUpdate project error: PrismaClientValidationError: \nInvalid `prisma.project.update()` invocation in\nD:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\projects.ts:113:42 \n\n  110   return res.status(404).json(ResponseUtil.projectNotFound())\n  111 }\n  112\n→ 113 const project = await prisma.project.update({\n        where: {\n          id: \"cmk5g3gyd0000qwrl3o13kyku\"\n        },\n        data: {\n          name: undefined,\n          cursorKey: undefined,\n          description: undefined,\n          status: undefined\n        },\n        include: {\n          _count: {\n            select: {\n              tasks: true\n            }\n          },\n          ports: true,\n          ~~~~~\n      ?   user?: true,\n      ?   tasks?: true,\n      ?   portAllocations?: true\n        }\n      })\n\nInvalid scalar field `ports` for include statement on model Project. Available options are marked with ?.\nNote that include statements only accept relation fields.\n    at throwValidationException (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\core\\errorRendering\\throwValidationException.ts:46:9)\n    at e.throwValidationError (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\core\\jsonProtocol\\serializeJsonQuery.ts:450:5)\n    at addIncludedRelations (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\core\\jsonProtocol\\serializeJsonQuery.ts:192:15)\n    at createImplicitSelection (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\core\\jsonProtocol\\serializeJsonQuery.ts:170:5)\n    at serializeSelectionSet (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\core\\jsonProtocol\\serializeJsonQuery.ts:154:10)\n    at serializeFieldSelection (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\core\\jsonProtocol\\serializeJsonQuery.ts:125:16)\n    at serializeJsonQuery (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\core\\jsonProtocol\\serializeJsonQuery.ts:113:12) \n    at callback (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\getPrismaClient.ts:852:11)\n    at Object.runInChildSpan (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\core\\tracing\\TracingHelper.ts:28:12)\n    at ti.runInChildSpan (D:\\git-projects\\cursor-multiple-projects-manage\\server\\node_modules\\@prisma\\client\\src\\runtime\\core\\tracing\\TracingHelper.ts:53:36) {\n  clientVersion: '7.2.0'\n}\n[WebSocket Server] Connected sockets count: 2\n[WebSocket Server] Connected sockets count: 2\n\n","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\projects.ts"},{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:31:13] Calling API to start AI execution...
+[2026-01-10 13:31:14] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 13:31:14] AI execution start API called
+[2026-01-10 13:31:14] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 13:31:38] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"285d3df3-9c73-41a0-99f6-e357387a85db","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:31:38] Hook completed successfully
+[2026-01-10 13:31:38] Calling API to stop AI execution...
+[2026-01-10 13:31:38] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 13:31:38] AI execution stop API called
+[2026-01-10 13:31:38] Hook execution cycle finished
+[2026-01-10 13:37:25] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"bf9a903a-1bee-4994-b3f8-98323eea9483","model":"claude-4.5-opus-high-thinking","prompt":"@server/src/routes/projects.ts:88-128 前端修改项目端口，就是调用的这个方法。而这个方法，并没有修改端口。\n\n你是这样，前端直接将project 传后端，后端直接调用update 方法。简单省事","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\projects.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:37:25] Calling API to start AI execution...
+[2026-01-10 13:37:25] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 13:37:25] AI execution start API called
+[2026-01-10 13:37:25] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 13:38:19] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"bf9a903a-1bee-4994-b3f8-98323eea9483","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:38:19] Hook completed successfully
+[2026-01-10 13:38:19] Calling API to stop AI execution...
+[2026-01-10 13:38:20] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 13:38:20] AI execution stop API called
+[2026-01-10 13:38:20] Hook execution cycle finished
+[2026-01-10 13:41:20] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"7d8d9038-c4fa-4cd8-a386-5483ef9440ff","model":"claude-4.5-opus-high-thinking","prompt":"@server/src/routes/projects.ts:349-409 重构这个方法，用最简单的方式实现。不用转过来转过去的。直接将req.body  作为 update 里面的data 参数。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\projects.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:41:20] Calling API to start AI execution...
+[2026-01-10 13:41:21] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 13:41:21] AI execution start API called
+[2026-01-10 13:41:21] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 13:41:46] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"7d8d9038-c4fa-4cd8-a386-5483ef9440ff","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:41:46] Hook completed successfully
+[2026-01-10 13:41:46] Calling API to stop AI execution...
+[2026-01-10 13:41:46] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 13:41:46] AI execution stop API called
+[2026-01-10 13:41:46] Hook execution cycle finished
+[2026-01-10 13:46:20] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"71b77a62-d416-4415-9e7e-1ce4d24a951c","model":"claude-4.5-opus-high-thinking","prompt":" @server/src/routes/projects.ts:359-371 1、不用校验。\n2、 @server/src/routes/projects.ts:372-392 这个应该也不用吧。portAllocator 只需要记录是否分配了，避免不要重复分配即可。不在乎备注。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\projects.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:46:20] Calling API to start AI execution...
+[2026-01-10 13:46:21] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 13:46:21] AI execution start API called
+[2026-01-10 13:46:21] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 13:46:59] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"71b77a62-d416-4415-9e7e-1ce4d24a951c","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:46:59] Hook completed successfully
+[2026-01-10 13:46:59] Calling API to stop AI execution...
+[2026-01-10 13:46:59] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 13:46:59] AI execution stop API called
+[2026-01-10 13:46:59] Hook execution cycle finished
+[2026-01-10 13:47:58] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"624884eb-99eb-4bd2-9f84-3b3927b4d7eb","model":"claude-4.5-opus-high-thinking","prompt":"@server/src/routes/projects.ts:353-371 这些都不需要的。如果不传，那说明2种情况，要么程序有问题，要么恶意操作。都可以忽略。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\projects.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:47:58] Calling API to start AI execution...
+[2026-01-10 13:47:58] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 13:47:58] AI execution start API called
+[2026-01-10 13:47:58] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 13:48:28] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"624884eb-99eb-4bd2-9f84-3b3927b4d7eb","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:48:28] Hook completed successfully
+[2026-01-10 13:48:28] Calling API to stop AI execution...
+[2026-01-10 13:48:29] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 13:48:29] AI execution stop API called
+[2026-01-10 13:48:29] Hook execution cycle finished
+[2026-01-10 13:49:47] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"be4ded20-04c4-4f32-bc21-549b803151b5","model":"claude-4.5-opus-high-thinking","prompt":"@server/src/routes/projects.ts:352-365 去掉try 。 全局统一异常拦截处理。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\projects.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:49:48] Calling API to start AI execution...
+[2026-01-10 13:49:48] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 13:49:48] AI execution start API called
+[2026-01-10 13:49:48] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 13:50:10] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"be4ded20-04c4-4f32-bc21-549b803151b5","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 13:50:10] Hook completed successfully
+[2026-01-10 13:50:10] Calling API to stop AI execution...
+[2026-01-10 13:50:10] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 13:50:10] AI execution stop API called
+[2026-01-10 13:50:11] Hook execution cycle finished
+[2026-01-10 14:02:19] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"97bfbe3e-7a91-40f9-9f35-4009539840cd","model":"claude-4.5-opus-high-thinking","prompt":"<div data-v-2dc54a20=\"\" class=\"el-form-item asterisk-left el-form-item--label-right\" role=\"group\" aria-labelledby=\"el-id-1079-121\">已分配端口 1010 1011 1012 1013 1014</div> 在端口改变的时候，无需保存。用户点击更新的时候。再一次性保存。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\server\\src\\routes\\projects.ts"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:02:19] Calling API to start AI execution...
+[2026-01-10 14:02:19] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 14:02:19] AI execution start API called
+[2026-01-10 14:02:19] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 14:03:13] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"97bfbe3e-7a91-40f9-9f35-4009539840cd","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:03:13] Hook completed successfully
+[2026-01-10 14:03:13] Calling API to stop AI execution...
+[2026-01-10 14:03:14] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 14:03:14] AI execution stop API called
+[2026-01-10 14:03:14] Hook execution cycle finished
+[2026-01-10 14:04:04] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"497e1972-0daf-41fe-a70e-9f51e32a76fb","model":"claude-4.5-opus-high-thinking","prompt":"pc端端口设置为1010 。移动端端口设置为1011 。 server 端口设置为1012  。 固定且不可变。","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:04:04] Calling API to start AI execution...
+[2026-01-10 14:04:04] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 14:04:04] AI execution start API called
+[2026-01-10 14:04:04] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-10 14:05:13] Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"497e1972-0daf-41fe-a70e-9f51e32a76fb","model":"claude-4.5-opus-high-thinking","status":"aborted","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:05:13] Hook completed successfully
+[2026-01-10 14:05:13] Calling API to stop AI execution...
+[2026-01-10 14:05:13] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-10 14:05:13] AI execution stop API called
+[2026-01-10 14:05:13] Hook execution cycle finished
+[2026-01-10 14:06:34] BeforeSubmitPrompt Hook executed: {"conversation_id":"cfd3a7f6-c378-40fd-b907-886a9a1ce1c2","generation_id":"307f1a49-3571-41a2-b721-eea3eaa06acb","model":"claude-4.5-opus-high-thinking","prompt":"pc端端口设置为1010 。移动端端口设置为1011 。 server 端口设置为1012  。 固定且不可变。\n不是现在这个端口设置的需求了。这个端口设置的需求完成了。现在是项目的端口设置。@server \n@front-end @mobile-front-end ","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\1.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"qmclose6hs9u@freecursor.fun"}
+[2026-01-10 14:06:34] Calling API to start AI execution...
+[2026-01-10 14:06:35] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-10 14:06:35] AI execution start API called
+[2026-01-10 14:06:35] BeforeSubmitPrompt Hook execution cycle finished

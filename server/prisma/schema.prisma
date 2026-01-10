@@ -32,6 +32,7 @@ model Project {
   uuid        String   @unique @default(cuid())
   status      String   @default("active") // active, hidden
   description String?
+  ports       Json?    // Allocated ports array: [{port: number, remark: string, allocatedAt: DateTime}]
   // AI execution status fields
   aiStatus    String?  @default("idle") // idle, running, success, failed, warning
   aiCommand   String?  // Current/last AI command executed
@@ -46,6 +47,7 @@ model Project {
   userId    String
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   tasks     Task[]
+  portAllocations PortAllocation[]
 
   @@map("projects")
 }
@@ -65,5 +67,18 @@ model Task {
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("tasks")
+}
+
+// Port allocation model for tracking allocated ports across projects
+model PortAllocation {
+  id        String   @id @default(cuid())
+  port      Int      @unique // Port number, unique across all projects
+  projectId String
+  allocatedAt DateTime @default(now())
+
+  // Relations
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("port_allocations")
 }
 

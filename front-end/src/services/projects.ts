@@ -3,6 +3,12 @@ import { ref, computed } from 'vue'
 import { wsService } from '@/services/websocket'
 import type { Task } from '@/services/tasks'
 
+export interface AllocatedPort {
+  port: number
+  remark: string
+  allocatedAt: Date
+}
+
 export interface Project {
   id: string
   name: string
@@ -10,6 +16,7 @@ export interface Project {
   uuid: string
   status: 'active' | 'hidden'
   description?: string
+  ports?: AllocatedPort[]
   aiStatus?:
     | 'idle'
     | 'active'
@@ -47,6 +54,7 @@ export interface UpdateProjectData {
   cursorKey?: string
   description?: string
   status?: 'active' | 'hidden'
+  ports?: AllocatedPort[]
 }
 
 export interface AIStatusUpdate {
@@ -131,6 +139,11 @@ export const projectService = {
 
   async stopAIExecution(id: string, status: 'completed' | 'aborted' | 'error'): Promise<Project> {
     const response = await api.post(`/projects/${id}/ai-status-stop`, { status })
+    return response.data.data
+  },
+
+  async allocatePorts(id: string, count: number): Promise<AllocatedPort[]> {
+    const response = await api.post(`/projects/${id}/allocate-ports`, { count })
     return response.data.data
   },
 
@@ -369,6 +382,7 @@ const fetchRunningAIProjects = projectService.fetchRunningAIProjectsWithState.bi
 const startAIExecution = projectService.startAIExecutionWithState.bind(projectService)
 const stopAIExecution = projectService.stopAIExecutionWithState.bind(projectService)
 const setupWebSocketListeners = projectService.setupWebSocketListeners.bind(projectService)
+const allocatePorts = projectService.allocatePorts.bind(projectService)
 
 // Export everything
 export {
@@ -395,4 +409,5 @@ export {
   startAIExecution,
   stopAIExecution,
   setupWebSocketListeners,
+  allocatePorts,
 }

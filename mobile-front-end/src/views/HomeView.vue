@@ -1,26 +1,35 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { showToast, showLoadingToast, closeToast } from "vant";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
-import { fetchProjects, projects, activeProjects } from "@/services/projects";
+import { fetchProjects, projects, allProjects } from "@/services/projects";
+import { tasks, fetchTasksByProject } from "@/services/tasks";
 
 // 响应式数据
-const searchValue = ref("");
 const activeTab = ref("projects");
 const activeTabBar = ref(0);
 
 const router = useRouter();
 const authStore = useAuthStore();
 
-// 方法
-const onSearch = (value: string) => {
-  showToast(`搜索: ${value}`);
+// 计算每个项目的活跃任务数量
+const getActiveTaskCount = (projectId: string) => {
+  const projectTasks = tasks.value.filter((task) => task.projectId === projectId);
+  return projectTasks.filter((task) => task.status === "pending" || task.status === "in_progress")
+    .length;
 };
 
-const onClickButton = () => {
-  showToast("Hello Vant!");
-};
+// 按照活跃任务数量降序排序的项目列表
+const sortedProjects = computed(() => {
+  return [...allProjects.value].sort((a, b) => {
+    const countA = getActiveTaskCount(a.id);
+    const countB = getActiveTaskCount(b.id);
+    return countB - countA; // 降序排列，任务多的在前
+  });
+});
+
+// 方法
 
 const handleLogout = () => {
   authStore.logout();
@@ -39,20 +48,11 @@ const onTabBarChange = (index: number) => {
 
   // 根据不同的标签页显示不同内容或执行不同操作
   switch (index) {
-    case 0: // 首页
+    case 0: // 项目
       activeTab.value = "projects";
       // 不显示toast，避免干扰用户体验
       break;
-    case 1: // 搜索
-      activeTab.value = "search";
-      // 显示搜索提示
-      showToast("进入搜索页面");
-      break;
-    case 2: // 好友
-      activeTab.value = "friends";
-      showToast("进入好友页面");
-      break;
-    case 3: // 设置
+    case 1: // 设置
       activeTab.value = "settings";
       showToast("进入设置页面");
       break;
@@ -63,15 +63,26 @@ const onTabBarChange = (index: number) => {
 onMounted(async () => {
   try {
     showLoadingToast({
-      message: '加载项目中...',
+      message: "加载项目中...",
       forbidClick: true,
     });
 
     await fetchProjects();
+
+    // 为所有项目加载任务数据，以便显示活跃任务数量
+    const projectsList = projects.value;
+    for (const project of projectsList) {
+      try {
+        await fetchTasksByProject(project.id);
+      } catch (error) {
+        console.error(`Failed to fetch tasks for project ${project.id}:`, error);
+      }
+    }
+
     closeToast();
-  } catch (error) {
+  } catch {
     closeToast();
-    showToast('加载项目失败');
+    showToast("加载项目失败");
   }
 });
 </script>
@@ -81,24 +92,17 @@ onMounted(async () => {
     <!-- 导航栏 -->
     <van-nav-bar title="移动端项目管理器" right-text="退出" @click-right="handleLogout" />
 
-    <!-- 搜索框 -->
-    <van-search v-model="searchValue" placeholder="请输入搜索关键词" show-action @search="onSearch">
-      <template #action>
-        <div @click="onClickButton">搜索</div>
-      </template>
-    </van-search>
 
     <!-- 标签页内容 -->
     <div class="tab-content">
       <!-- 项目标签页 -->
       <div v-if="activeTab === 'projects'" class="tab-pane">
-        <van-cell-group v-if="activeProjects.length > 0">
+        <van-cell-group v-if="allProjects.length > 0">
           <van-cell
-            v-for="project in activeProjects"
+            v-for="project in sortedProjects"
             :key="project.id"
             :title="project.name"
             :label="project.description || '暂无描述'"
-            :value="`${project._count?.tasks || 0} 个任务`"
             clickable
             @click="handleProjectClick(project)"
           >
@@ -106,62 +110,20 @@ onMounted(async () => {
               <van-icon name="orders-o" />
             </template>
             <template #right-icon>
-              <van-icon name="arrow" />
+              <div class="task-count-wrapper">
+                <van-badge :content="getActiveTaskCount(project.id)" />
+                <van-icon name="arrow" style="margin-left: 8px;" />
+              </div>
             </template>
           </van-cell>
         </van-cell-group>
 
         <!-- 空状态 -->
-        <van-empty
-          v-else
-          description="暂无项目"
-          image="search"
-        >
-          <van-button round type="primary" class="bottom-button">
-            创建项目
-          </van-button>
+        <van-empty v-else description="暂无项目" image="search">
+          <van-button round type="primary" class="bottom-button">创建项目</van-button>
         </van-empty>
       </div>
 
-      <!-- 任务标签页 -->
-      <div v-else-if="activeTab === 'tasks'" class="tab-pane">
-        <van-cell-group>
-          <van-cell
-            v-for="task in tasks"
-            :key="task.id"
-            :title="task.title"
-            :label="task.desc"
-            :value="task.status"
-          />
-        </van-cell-group>
-      </div>
-
-      <!-- 搜索标签页 -->
-      <div v-else-if="activeTab === 'search'" class="tab-pane">
-        <div class="search-content">
-          <van-empty description="搜索项目和任务" image="search">
-            <van-button round type="primary" class="bottom-button" @click="onClickButton">
-              开始搜索
-            </van-button>
-          </van-empty>
-        </div>
-      </div>
-
-      <!-- 好友标签页 -->
-      <div v-else-if="activeTab === 'friends'" class="tab-pane">
-        <div class="friends-content">
-          <van-empty description="好友功能" image="friends-o">
-            <van-button
-              round
-              type="primary"
-              class="bottom-button"
-              @click="showToast('好友功能开发中')"
-            >
-              添加好友
-            </van-button>
-          </van-empty>
-        </div>
-      </div>
 
       <!-- 设置标签页 -->
       <div v-else-if="activeTab === 'settings'" class="tab-pane">
@@ -195,8 +157,6 @@ onMounted(async () => {
     <!-- 底部导航 -->
     <van-tabbar v-model="activeTabBar" @change="onTabBarChange">
       <van-tabbar-item icon="home-o">项目</van-tabbar-item>
-      <van-tabbar-item icon="search">搜索</van-tabbar-item>
-      <van-tabbar-item icon="friends-o">好友</van-tabbar-item>
       <van-tabbar-item icon="setting-o">设置</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -215,16 +175,10 @@ onMounted(async () => {
   min-height: 300px;
 }
 
-.search-content {
-  text-align: center;
-  padding: 40px 20px;
-}
-
 .bottom-button {
   margin-top: 16px;
 }
 
-.friends-content,
 .settings-content {
   text-align: center;
   padding: 40px 20px;
@@ -241,10 +195,6 @@ onMounted(async () => {
   border-radius: 8px;
 }
 
-/* 搜索框样式 */
-:deep(.van-search) {
-  padding: 16px;
-}
 
 /* 标签页样式 */
 :deep(.van-tabs) {
@@ -259,5 +209,14 @@ onMounted(async () => {
 :deep(.van-tab) {
   flex: 1;
   text-align: center;
+}
+
+.task-count-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+:deep(.van-badge) {
+  margin-right: 8px;
 }
 </style>

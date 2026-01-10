@@ -46,6 +46,11 @@ export const taskService = {
     return response.data.data
   },
 
+  async getActiveTasks(): Promise<Task[]> {
+    const response = await api.get('/tasks/active')
+    return response.data.data
+  },
+
   async createTask(data: CreateTaskData): Promise<Task> {
     const response = await api.post('/tasks', data)
     return response.data.data
@@ -75,6 +80,23 @@ export const taskService = {
     tasks.value.push(...data)
     setLoading(false)
     return data
+  },
+
+  async fetchActiveTasks() {
+    setLoading(true)
+    setError(null)
+    try {
+      const data = await this.getActiveTasks()
+      // Replace all tasks with active (not completed) tasks only
+      tasks.value = data
+      setLoading(false)
+      return data
+    } catch (err) {
+      console.error('Failed to fetch active tasks:', err)
+      setError('获取未完成任务失败')
+      setLoading(false)
+      throw err
+    }
   },
 
   async createTaskWithState(data: CreateTaskData) {
@@ -151,6 +173,7 @@ const sortedTasks = computed(() => {
 
 // Create aliases for easier importing
 const fetchTasksByProject = taskService.fetchTasksByProject.bind(taskService)
+const fetchActiveTasks = taskService.fetchActiveTasks.bind(taskService)
 const createTask = taskService.createTaskWithState.bind(taskService)
 const updateTask = taskService.updateTaskWithState.bind(taskService)
 const deleteTask = taskService.deleteTaskWithState.bind(taskService)
@@ -172,6 +195,7 @@ export {
 
   // Business logic methods
   fetchTasksByProject,
+  fetchActiveTasks,
   createTask,
   updateTask,
   deleteTask,

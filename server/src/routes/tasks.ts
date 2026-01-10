@@ -200,4 +200,38 @@ router.put('/:id/order', authenticateToken, async (req, res) => {
   }
 });
 
+// Get all active tasks (not completed) for all user's projects
+router.get('/active', authenticateToken, async (req, res) => {
+  try {
+    const activeTasks = await prisma.task.findMany({
+      where: {
+        status: {
+          not: 'completed'
+        },
+        project: {
+          userId: req.userId
+        }
+      },
+      include: {
+        project: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      },
+      orderBy: [
+        { priority: 'asc' },
+        { order: 'asc' },
+        { createdAt: 'desc' }
+      ]
+    });
+
+    res.json(ResponseUtil.success(activeTasks));
+  } catch (error) {
+    console.error('Get active tasks error:', error);
+    res.status(500).json(ResponseUtil.internalError());
+  }
+});
+
 export default router;

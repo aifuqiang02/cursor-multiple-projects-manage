@@ -31,6 +31,16 @@ api.interceptors.response.use(
   },
   (error) => {
     console.error("API Error:", error);
+
+    // 如果是401认证错误，清除本地token并重定向到登录页
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      // 如果在浏览器环境中，重定向到登录页
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
+    }
+
     return Promise.reject(error);
   }
 );
