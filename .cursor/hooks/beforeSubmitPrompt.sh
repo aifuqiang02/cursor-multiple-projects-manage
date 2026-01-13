@@ -17,7 +17,7 @@ log "BeforeSubmitPrompt Hook executed: $json_input"
 log "Calling API to start AI execution..."
 
 # Make API call and capture response
-response=$(curl -X POST "http://127.0.0.1:1012/api/projects/cmk5g3gyd0000qwrl3o13kyku/ai-status-start" \
+response=$(curl -X POST "http://127.0.0.1:1012/api/projects/cmkasrbel0036y4rll2gxrn8i/ai-status-start" \
   -H "Content-Type: application/json" \
   -s -w "\nHTTP_STATUS:%{http_code}")
 

@@ -23,6 +23,7 @@ export interface UpdateTaskData {
   status?: 'pending' | 'in_progress' | 'completed'
   priority?: number
   order?: number
+  projectId?: string
 }
 
 // State management

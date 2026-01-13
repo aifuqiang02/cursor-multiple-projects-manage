@@ -41,7 +41,12 @@ const authenticateToken = (req, res, next) => {
 router.get('/', authenticateToken, async (req, res) => {
     try {
         const projects = await prisma.project.findMany({
-            where: { userId: req.userId },
+            where: {
+                userId: req.userId,
+                status: {
+                    not: 'deleted',
+                },
+            },
             include: projectInclude,
             orderBy: { updatedAt: 'desc' },
         });
@@ -92,8 +97,9 @@ router.delete('/:id', authenticateToken, async (req, res) => {
         if (!existingProject) {
             return res.status(404).json(ResponseUtil.projectNotFound());
         }
-        await prisma.project.delete({
+        await prisma.project.update({
             where: { id },
+            data: { status: 'deleted' },
         });
         res.json(ResponseUtil.success(null, '项目删除成功'));
     }
@@ -380,6 +386,28 @@ router.put('/:id', authenticateToken, async (req, res) => {
         include: projectInclude,
     });
     res.json(ResponseUtil.success(project, '项目更新成功'));
+});
+// Update project order
+router.put('/order', authenticateToken, async (req, res) => {
+    try {
+        const { projectIds } = req.body;
+        if (!Array.isArray(projectIds)) {
+            return res
+                .status(400)
+                .json(ResponseUtil.badRequest('projectIds必须是数组'));
+        }
+        // Update order for each project
+        const updatePromises = projectIds.map((projectId, index) => prisma.project.update({
+            where: { id: projectId, userId: req.userId },
+            data: { order: index },
+        }));
+        await Promise.all(updatePromises);
+        res.json(ResponseUtil.success(null, '项目排序更新成功'));
+    }
+    catch (error) {
+        console.error('Update project order error:', error);
+        res.status(500).json(ResponseUtil.internalError());
+    }
 });
 export default router;
 //# sourceMappingURL=projects.js.map

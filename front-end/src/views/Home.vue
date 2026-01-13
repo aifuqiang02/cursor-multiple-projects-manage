@@ -41,147 +41,134 @@
           </div>
 
           <div class="projects-grid">
-            <el-card
-              v-for="project in sortedProjects"
-              :key="project.id"
-              class="project-card"
-              :class="{ 'current-project': currentProject?.id === project.id }"
-            >
-              <div class="project-header">
-                <div class="project-title-section">
-                  <h3>{{ project.name }}</h3>
-                  <el-tag
-                    :type="getProjectStatusType(project)"
-                    size="small"
-                    style="cursor: pointer"
-                    @click="toggleProjectActivation(project)"
-                  >
-                    {{ getProjectStatusText(project) }}
-                  </el-tag>
-                  <el-tag
-                    :type="getAIStatusType(project.aiStatus)"
-                    size="small"
-                    style="cursor: pointer"
-                    @click="toggleAIExecution(project)"
-                  >
-                    <span v-if="project.aiStatus === 'running'" class="ai-loading">
-                      <el-icon class="is-loading">
-                        <Loading />
-                      </el-icon>
-                      AI
-                    </span>
-                    <span v-else-if="project.aiStatus === 'success'">
-                      <el-icon><Check /></el-icon>
-                      AI
-                    </span>
-                    <span v-else-if="project.aiStatus === 'failed'">
-                      <el-icon><Close /></el-icon>
-                      AI
-                    </span>
-                    <span v-else-if="project.aiStatus === 'warning'">
-                      <el-icon><Warning /></el-icon>
-                      AI
-                    </span>
-                    <span v-else>AI</span>
-                  </el-tag>
-                </div>
-                <div class="project-meta">
-                  <span class="task-count">
-                    <el-icon><Document /></el-icon>
-                    {{ getActiveTaskCount(project.id) }}
-                    个任务
-                  </span>
-                  <span class="cursor-key" v-if="project.cursorKey">
-                    密钥: {{ project.cursorKey.slice(0, 8) }}...
-                  </span>
-                </div>
-
-                <div class="project-actions">
-                  <el-dropdown
-                    @command="(action: string) => handleProjectAction(project, action)"
-                    class="project-actions-dropdown"
-                  >
-                    <el-button size="small">
-                      操作
-                      <el-icon class="el-icon--right">
-                        <arrow-down />
-                      </el-icon>
-                    </el-button>
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-dropdown-item
-                          v-for="action in projectActions.filter((a) => a.value !== 'delete')"
-                          :key="action.value"
-                          :command="action.value"
-                        >
-                          {{ action.label }}
-                        </el-dropdown-item>
-                        <el-dropdown-item :command="'delete'" class="delete-item">
-                          {{ projectActions.find((a) => a.value === 'delete')?.label }}
-                        </el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
-                </div>
-              </div>
-
-              <!-- Project Tasks -->
-              <div
-                class="project-tasks"
-                v-if="
-                  getProjectTasks(project.id).filter((task) => task.status !== 'completed').length >
-                  0
-                "
+            <div v-for="project in sortedProjects" :key="project.id" class="project-card-wrapper">
+              <el-card
+                class="project-card"
+                :class="{ 'current-project': currentProject?.id === project.id }"
               >
-                <div class="tasks-divider"></div>
-                <draggable
-                  :list="projectTasksMap[project.id] || []"
-                  :group="{ name: 'tasks', pull: false, put: false }"
-                  @change="onTaskOrderChange($event, project.id)"
-                  @start="onDragStart"
-                  @end="onDragEnd"
-                  :animation="200"
-                  handle=".drag-handle"
-                  class="tasks-list"
-                  item-key="id"
-                >
-                  <template #item="{ element: task }">
-                    <div class="task-item" :class="getTaskStatusClass(task.status)">
-                      <div class="drag-handle">
-                        <el-icon><Rank /></el-icon>
-                      </div>
-                      <div class="task-content">
-                        <span class="task-title" @click="copyTaskTitle(task.title)">{{
-                          task.title
-                        }}</span>
-                        <div class="task-status-row">
-                          <el-dropdown
-                            @command="(status: string) => updateTaskStatus(task, status)"
-                            class="task-status-dropdown"
+                <div class="project-header">
+                  <div class="project-title-section">
+                    <h3>{{ project.name }}</h3>
+                    <el-tag
+                      :type="getProjectStatusType(project)"
+                      size="small"
+                      style="cursor: pointer"
+                      @click="toggleProjectActivation(project)"
+                    >
+                      {{ getProjectStatusText(project) }}
+                    </el-tag>
+                    <el-tag
+                      :type="getAIStatusType(project.aiStatus)"
+                      size="small"
+                      style="cursor: pointer"
+                      @click="toggleAIExecution(project)"
+                    >
+                      <span v-if="project.aiStatus === 'running'" class="ai-loading">
+                        <el-icon class="is-loading">
+                          <Loading />
+                        </el-icon>
+                        AI
+                      </span>
+                      <span v-else-if="project.aiStatus === 'success'">
+                        <el-icon><Check /></el-icon>
+                        AI
+                      </span>
+                      <span v-else-if="project.aiStatus === 'failed'">
+                        <el-icon><Close /></el-icon>
+                        AI
+                      </span>
+                      <span v-else-if="project.aiStatus === 'warning'">
+                        <el-icon><Warning /></el-icon>
+                        AI
+                      </span>
+                      <span v-else>AI</span>
+                    </el-tag>
+                  </div>
+                  <div class="project-meta">
+                    <span class="project-id" @click="copyProjectId(project.id)">
+                      ID: {{ project.id.slice(0, 8) }}...
+                      <el-icon class="copy-icon"><CopyDocument /></el-icon>
+                    </span>
+                    <span class="task-count">
+                      <el-icon><Document /></el-icon>
+                      {{ getActiveTaskCount(project.id) }}
+                      个任务
+                    </span>
+                    <span class="cursor-key" v-if="project.cursorKey">
+                      密钥: {{ project.cursorKey.slice(0, 8) }}...
+                    </span>
+                  </div>
+
+                  <!-- 项目描述 -->
+                  <div v-if="project.description" class="project-description">
+                    {{ project.description }}
+                  </div>
+
+                  <div class="project-actions">
+                    <el-dropdown
+                      @command="(action: string) => handleProjectAction(project, action)"
+                      class="project-actions-dropdown"
+                    >
+                      <el-button size="small">
+                        操作
+                        <el-icon class="el-icon--right">
+                          <arrow-down />
+                        </el-icon>
+                      </el-button>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item
+                            v-for="action in projectActions.filter((a) => a.value !== 'delete')"
+                            :key="action.value"
+                            :command="action.value"
                           >
-                            <span class="task-status-text">
-                              {{ getStatusText(task.status) }}
-                              <el-icon class="el-icon--right">
-                                <arrow-down />
-                              </el-icon>
-                            </span>
-                            <template #dropdown>
-                              <el-dropdown-menu>
-                                <el-dropdown-item
-                                  v-for="status in taskStatuses.filter((s) => s.value !== 'delete')"
-                                  :key="status.value"
-                                  :command="status.value"
-                                  :class="{ 'is-active': task.status === status.value }"
-                                >
-                                  {{ status.label }}
-                                </el-dropdown-item>
-                                <el-dropdown-item :command="'delete'" class="delete-item">
-                                  {{ taskStatuses.find((s) => s.value === 'delete')?.label }}
-                                </el-dropdown-item>
-                              </el-dropdown-menu>
-                            </template>
-                          </el-dropdown>
-                          <div class="task-action">
+                            {{ action.label }}
+                          </el-dropdown-item>
+                          <el-dropdown-item :command="'delete'" class="delete-item">
+                            {{ projectActions.find((a) => a.value === 'delete')?.label }}
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                  </div>
+                </div>
+
+                <!-- Project Tasks -->
+                <div
+                  class="project-tasks"
+                  v-if="
+                    getProjectTasks(project.id).filter((task) => task.status !== 'completed')
+                      .length > 0
+                  "
+                >
+                  <div class="tasks-divider"></div>
+
+                  <!-- DEBUG: show task counts and sample items for this project -->
+
+                  <draggable
+                    :list="projectTasksMap[project.id] || []"
+                    :group="{ name: 'tasks', pull: false, put: false }"
+                    :animation="200"
+                    class="tasks-list"
+                    item-key="id"
+                  >
+                    <template #item="{ element: task }">
+                      <div class="task-item" :class="getTaskStatusClass(task.status)">
+                        <div class="task-content">
+                          <div
+                            class="task-title"
+                            style="font-weight: 600; cursor: pointer"
+                            @click="copyTaskTitle(task.title)"
+                            title="点击复制任务内容"
+                          >
+                            {{ task.title }}
+                          </div>
+                          <div style="font-size: 12px; color: #909399; margin-top: 6px">
+                            状态: {{ getStatusText(task.status) }} · 优先级: {{ task.priority }} ·
+                            order: {{ task.order }}
+                          </div>
+
+                          <div class="task-action" style="margin-top: 8px">
                             <el-button
                               v-if="task.status === 'pending'"
                               size="small"
@@ -201,72 +188,72 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </template>
-                </draggable>
-
-                <div
-                  v-if="isProjectExpanded(project.id)"
-                  class="collapse-tasks"
-                  @click="toggleProjectExpansion(project.id)"
-                >
-                  收起任务列表
-                </div>
-              </div>
-
-              <!-- Quick Task Input and More Tasks Row -->
-              <div class="task-input-row">
-                <div class="quick-task-input">
-                  <el-input
-                    v-model="quickTaskInputs[project.id]"
-                    placeholder="输入任务内容，Ctrl+回车创建"
-                    size="small"
-                    clearable
-                    type="textarea"
-                    :rows="1"
-                    :autosize="{ minRows: 1, maxRows: 4 }"
-                    @keydown.ctrl.enter="createQuickTask(project)"
-                    :disabled="(loading as any).value"
-                  >
-                    <template #suffix>
-                      <el-icon @click="createQuickTask(project)">
-                        <Plus />
-                      </el-icon>
                     </template>
-                  </el-input>
-                </div>
-                <div
-                  v-if="
-                    getProjectTasks(project.id).filter((task) => task.status !== 'completed')
-                      .length > 3 && !isProjectExpanded(project.id)
-                  "
-                  class="expand-button"
-                  @click="toggleProjectExpansion(project.id)"
-                >
-                  展开 ({{
-                    getProjectTasks(project.id).filter((task) => task.status !== 'completed')
-                      .length - 3
-                  }}) >>
-                </div>
-              </div>
+                  </draggable>
 
-              <!-- AI Status Details -->
-              <div class="ai-status" v-if="project.aiStatus && project.aiStatus !== 'idle'">
-                <div class="ai-command" v-if="project.aiCommand">
-                  <small>当前命令: {{ project.aiCommand }}</small>
+                  <div
+                    v-if="isProjectExpanded(project.id)"
+                    class="collapse-tasks"
+                    @click="toggleProjectExpansion(project.id)"
+                  >
+                    收起任务列表
+                  </div>
                 </div>
-                <div class="ai-duration" v-if="project.aiDuration">
-                  <small>耗时: {{ formatDuration(project.aiDuration) }}</small>
+
+                <!-- Quick Task Input and More Tasks Row -->
+                <div class="task-input-row">
+                  <div class="quick-task-input">
+                    <el-input
+                      v-model="quickTaskInputs[project.id]"
+                      placeholder="输入任务内容，Ctrl+回车创建"
+                      size="small"
+                      clearable
+                      type="textarea"
+                      :rows="1"
+                      :autosize="{ minRows: 1, maxRows: 4 }"
+                      @keydown.ctrl.enter="createQuickTask(project)"
+                      :disabled="(loading as any).value"
+                    >
+                      <template #suffix>
+                        <el-icon @click="createQuickTask(project)">
+                          <Plus />
+                        </el-icon>
+                      </template>
+                    </el-input>
+                  </div>
+                  <div
+                    v-if="
+                      getProjectTasks(project.id).filter((task) => task.status !== 'completed')
+                        .length > 3 && !isProjectExpanded(project.id)
+                    "
+                    class="expand-button"
+                    @click="toggleProjectExpansion(project.id)"
+                  >
+                    展开 ({{
+                      getProjectTasks(project.id).filter((task) => task.status !== 'completed')
+                        .length - 3
+                    }}) >>
+                  </div>
                 </div>
-                <el-progress
-                  v-if="project.aiStatus === 'running'"
-                  :percentage="50"
-                  :indeterminate="true"
-                  :stroke-width="4"
-                  color="#409eff"
-                />
-              </div>
-            </el-card>
+
+                <!-- AI Status Details -->
+                <div class="ai-status" v-if="project.aiStatus && project.aiStatus !== 'idle'">
+                  <div class="ai-command" v-if="project.aiCommand">
+                    <small>当前命令: {{ project.aiCommand }}</small>
+                  </div>
+                  <div class="ai-duration" v-if="project.aiDuration">
+                    <small>耗时: {{ formatDuration(project.aiDuration) }}</small>
+                  </div>
+                  <el-progress
+                    v-if="project.aiStatus === 'running'"
+                    :percentage="50"
+                    :indeterminate="true"
+                    :stroke-width="4"
+                    color="#409eff"
+                  />
+                </div>
+              </el-card>
+            </div>
           </div>
         </div>
 
@@ -330,6 +317,50 @@
             placeholder="项目描述（可选）"
             :rows="3"
           />
+        </el-form-item>
+
+        <el-form-item label="待办事项">
+          <div class="todos-input">
+            <div v-for="(todo, index) in projectForm.todos" :key="index" class="todo-item">
+              <el-input
+                v-model="projectForm.todos[index]"
+                placeholder="输入待办事项"
+                size="small"
+                style="flex: 1; margin-right: 8px"
+              />
+              <el-button type="danger" size="small" icon="Delete" @click="removeTodo(index)" />
+            </div>
+            <el-button
+              type="primary"
+              size="small"
+              icon="Plus"
+              @click="addTodo"
+              style="margin-top: 8px"
+            >
+              添加待办事项
+            </el-button>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="提示音">
+          <el-upload
+            ref="uploadRef"
+            v-model:file-list="notificationSoundFileList"
+            :action="''"
+            :auto-upload="false"
+            :limit="1"
+            accept=".mp3"
+            :on-change="handleNotificationSoundChange"
+            :on-remove="handleNotificationSoundRemove"
+          >
+            <el-button type="primary" :loading="uploading">
+              <el-icon><Upload /></el-icon>
+              选择MP3文件
+            </el-button>
+            <template #tip>
+              <div class="el-upload__tip">只能上传MP3文件，且不超过10MB</div>
+            </template>
+          </el-upload>
         </el-form-item>
       </el-form>
 
@@ -466,8 +497,8 @@
 </template>
 
 <script setup lang="ts">
-import draggable from 'vuedraggable'
 import { ref, reactive, computed, onMounted, watch } from 'vue'
+import draggable from 'vuedraggable'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import {
@@ -481,6 +512,8 @@ import {
   Warning,
   Document,
   Setting,
+  CopyDocument,
+  Upload,
 } from '@element-plus/icons-vue'
 import { logout } from '@/services/auth'
 import CursorHooksDocs from '@/components/CursorHooksDocs.vue'
@@ -497,6 +530,8 @@ import {
   stopAIExecution,
   setupWebSocketListeners,
   allocatePorts,
+  updateProjectOrder,
+  uploadNotificationSound,
 } from '@/services/projects'
 import {
   tasks,
@@ -520,9 +555,6 @@ const getActiveTaskCount = (projectId: string) => {
   return tasks.value.filter((task) => task.projectId === projectId).length
 }
 
-// 创建一个响应式的任务列表映射
-const projectTasksMap = reactive<Record<string, Task[]>>({})
-
 // 使用直接导入的函数和变量
 
 // Reactive data
@@ -536,6 +568,8 @@ const showHeader = ref(true) // 控制头部显示状态
 const activeMenu = ref('home') // 当前激活的菜单项
 const currentView = ref('home') // 当前显示的视图：'home' 或 'docs'
 const selectedProjectId = ref('') // 文档中选择的项目ID
+const notificationSoundFileList = ref<any[]>([]) // 提示音文件列表
+const uploading = ref(false) // 上传状态
 
 // Task statuses
 const taskStatuses = [
@@ -558,6 +592,7 @@ const projectForm = reactive({
   name: '',
   cursorKey: '',
   description: '',
+  todos: [] as string[], // 待办事项数组
 })
 
 // Edit project form
@@ -567,7 +602,7 @@ const editProjectForm = reactive({
   name: '',
   cursorKey: '',
   description: '',
-  status: 'active' as 'active' | 'hidden',
+  status: 'active' as 'active' | 'hidden' | 'deleted',
   ports: [] as Array<{ port: number; remark: string; allocatedAt: Date }>,
 })
 
@@ -580,29 +615,44 @@ const projectRules = {
   name: [{ required: true, message: '请输入项目名称', trigger: 'blur' }],
 }
 
+// 创建一个响应式的任务列表映射（按项目分组）
+const projectTasksMap = reactive<Record<string, Task[]>>({})
+
+// 初始化项目的任务列表
+const initProjectTasks = (projectId: string) => {
+  const projectTasks = tasks.value
+    .filter((task) => task.projectId === projectId && task.status !== 'completed')
+    .sort((a, b) => {
+      if (a.order !== b.order) {
+        return (a.order || 0) - (b.order || 0)
+      }
+      if (a.priority !== b.priority) {
+        return a.priority - b.priority
+      }
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
+  projectTasksMap[projectId] = projectTasks
+}
+
+// 当 tasks 改变时，更新 projectTasksMap
+watch(
+  tasks,
+  () => {
+    allProjects.value.forEach((project) => {
+      initProjectTasks(project.id)
+    })
+  },
+  { deep: true },
+)
+
 // Computed
 const activatedProjects = computed(() => projects.value.filter((p) => p.aiStatus === 'active'))
-const sortedProjects = computed(() =>
-  [...allProjects.value].sort((a, b) => {
-    // 计算活跃任务数量（待处理 + 进行中）
-    const aActiveTasks = getProjectTasks(a.id).filter(
-      (task) => task.status === 'pending' || task.status === 'in_progress',
-    ).length
-    const bActiveTasks = getProjectTasks(b.id).filter(
-      (task) => task.status === 'pending' || task.status === 'in_progress',
-    ).length
-
-    // 首先按活跃任务数量排序
-    if (bActiveTasks !== aActiveTasks) {
-      return bActiveTasks - aActiveTasks
-    }
-
-    // 如果活跃任务数量相同，按总任务数量排序
-    const aTotalTasks = a._count?.tasks || 0
-    const bTotalTasks = b._count?.tasks || 0
-    return bTotalTasks - aTotalTasks
-  }),
-)
+const sortedProjects = computed(() => {
+  // 按创建时间倒序排列
+  return [...allProjects.value].sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  })
+})
 // 重新定义totalTasks，只统计未完成任务
 const totalTasksOverride = computed(() => {
   return projects.value.reduce((sum, project) => {
@@ -615,6 +665,47 @@ const totalTasksOverride = computed(() => {
 const onProjectSelected = (projectId: string) => {
   selectedProjectId.value = projectId
   // 可以在这里添加其他逻辑，比如更新API示例等
+}
+
+// 处理提示音文件变化
+const handleNotificationSoundChange = (file: any, fileList: any[]) => {
+  notificationSoundFileList.value = fileList
+}
+
+// 移除提示音文件
+const handleNotificationSoundRemove = () => {
+  notificationSoundFileList.value = []
+}
+
+// 添加待办事项
+const addTodo = () => {
+  projectForm.todos.push('')
+}
+
+// 移除待办事项
+const removeTodo = (index: number) => {
+  projectForm.todos.splice(index, 1)
+}
+
+// 复制项目ID
+const copyProjectId = async (projectId: string) => {
+  try {
+    await navigator.clipboard.writeText(projectId)
+    ElMessage.success('项目ID已复制到剪贴板')
+  } catch (err) {
+    // 降级到传统方法
+    const textArea = document.createElement('textarea')
+    textArea.value = projectId
+    document.body.appendChild(textArea)
+    textArea.select()
+    try {
+      document.execCommand('copy')
+      ElMessage.success('项目ID已复制到剪贴板')
+    } catch (fallbackErr) {
+      ElMessage.error('复制失败，请手动复制')
+    }
+    document.body.removeChild(textArea)
+  }
 }
 
 // 快速创建任务
@@ -647,7 +738,9 @@ const createQuickTask = async (project: Project) => {
 
 // Methods
 const getProjectTasks = (projectId: string) => {
-  return tasks.value.filter((task) => task.projectId === projectId)
+  const list = tasks.value.filter((task) => task.projectId === projectId)
+  // debug logging removed
+  return list
 }
 
 const isProjectExpanded = (projectId: string) => {
@@ -858,13 +951,40 @@ const handleCreateProject = async () => {
   try {
     await projectFormRef.value?.validate()
 
+    uploading.value = true
+
+    // 上传提示音文件（如果有）
+    let notificationSoundPath = ''
+    if (notificationSoundFileList.value.length > 0) {
+      const file = notificationSoundFileList.value[0].raw
+      notificationSoundPath = await uploadNotificationSound(file)
+    }
+
     // 确保创建的项目状态为active
     const projectData = {
       ...projectForm,
       status: 'active' as const,
+      notificationSound: notificationSoundPath,
     }
 
-    await createProject(projectData)
+    const newProject = await createProject(projectData)
+
+    // 创建待办事项
+    if (projectForm.todos.length > 0 && newProject) {
+      try {
+        const validTodos = projectForm.todos.filter((todo) => todo.trim())
+        for (const todoTitle of validTodos) {
+          await createTask({
+            title: todoTitle.trim(),
+            projectId: newProject.id,
+            priority: 3, // 默认中等优先级
+          })
+        }
+      } catch (error) {
+        console.error('Failed to create todos:', error)
+        ElMessage.warning('项目创建成功，但部分待办事项创建失败')
+      }
+    }
 
     ElMessage.success('项目创建成功')
     showCreateProject.value = false
@@ -873,8 +993,13 @@ const handleCreateProject = async () => {
     projectForm.name = ''
     projectForm.cursorKey = ''
     projectForm.description = ''
+    projectForm.todos = []
+    notificationSoundFileList.value = []
   } catch (error) {
     console.error('Failed to create project:', error)
+    ElMessage.error('项目创建失败')
+  } finally {
+    uploading.value = false
   }
 }
 
@@ -912,17 +1037,44 @@ const onTaskOrderChange = async (event: TaskOrderEvent, projectId: string) => {
 
   try {
     console.log('onTaskOrderChange', event, projectId)
-    // Get the reordered list from projectTasksMap
-    const reorderedTasks = projectTasksMap[projectId] || []
+    // Get the reordered tasks from the current project
+    const currentTasks = getProjectTasks(projectId).filter((task) => task.status !== 'completed')
 
-    // Update order for all tasks based on their new positions
-    const updatePromises = reorderedTasks.map((task, index) => updateTaskOrder(task.id, index + 1))
+    // Update order for all tasks in the current project based on their new positions
+    const updatePromises = currentTasks.map((task, index) => updateTaskOrder(task.id, index + 1))
 
     await Promise.all(updatePromises)
 
     ElMessage.success('任务排序已更新')
   } catch {
     ElMessage.error('排序更新失败')
+  }
+}
+
+// 处理任务在项目之间移动
+const onTaskMoved = async (
+  event: { item?: { _underlying_vm_?: Task } },
+  targetProjectId: string,
+) => {
+  try {
+    const movedTask = event.item?._underlying_vm_
+    if (!movedTask) return
+
+    console.log('Task moved:', movedTask.title, 'to project:', targetProjectId)
+
+    // 更新任务的项目ID
+    await updateTask(movedTask.id, { projectId: targetProjectId })
+
+    // 重新获取两个项目的数据以更新UI
+    await fetchTasksByProject(targetProjectId)
+    if (movedTask.projectId !== targetProjectId) {
+      await fetchTasksByProject(movedTask.projectId)
+    }
+
+    ElMessage.success(`任务 "${movedTask.title}" 已移动到新项目`)
+  } catch (error) {
+    console.error('Failed to move task:', error)
+    ElMessage.error('任务移动失败')
   }
 }
 
@@ -943,72 +1095,41 @@ onMounted(async () => {
     await fetchProjects()
     setupWebSocketListeners()
 
-    // 一次性获取所有活跃任务（待处理和进行中），大幅提升性能
+    // 为每个项目获取任务数据
     try {
-      await fetchActiveTasks()
-      // 初始化所有项目的任务列表
-      allProjects.value.forEach((project) => {
-        initProjectTasks(project.id)
-      })
+      console.log('Loading tasks for all projects...')
+      for (const project of allProjects.value) {
+        try {
+          console.log(`Fetching tasks for project: ${project.id}`)
+          await fetchTasksByProject(project.id)
+          // 初始化该项目的任务列表映射
+          initProjectTasks(project.id)
+          console.log(
+            `Tasks loaded for project ${project.id}:`,
+            tasks.value.filter((t) => t.projectId === project.id).length,
+          )
+        } catch (error) {
+          console.error(`Failed to load tasks for project ${project.id}:`, error)
+        }
+      }
     } catch (error) {
-      console.error('Failed to fetch active tasks:', error)
+      console.error('Failed to load project tasks:', error)
     }
   } catch (error) {
     console.error('Failed to load projects:', error)
   }
 })
 
-// 初始化项目的任务列表
-const initProjectTasks = (projectId: string) => {
-  const projectTasks = tasks.value
-    .filter((task) => task.projectId === projectId && task.status !== 'completed')
-    .sort((a, b) => {
-      if (a.order !== b.order) {
-        return (a.order || 0) - (b.order || 0)
-      }
-      if (a.priority !== b.priority) {
-        return a.priority - b.priority
-      }
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    })
-  projectTasksMap[projectId] = projectTasks
-}
-
 // Watch for current project changes
 watch(currentProject, async (newProject) => {
   if (newProject) {
     try {
       await fetchTasksByProject(newProject.id)
-      initProjectTasks(newProject.id)
     } catch (error) {
       console.error('Failed to load tasks:', error)
     }
   }
 })
-
-// Watch for tasks changes and update projectTasksMap (skip during drag operations)
-let isDragging = false
-
-const onDragStart = () => {
-  isDragging = true
-}
-const onDragEnd = () => {
-  isDragging = false
-}
-
-// Watch for tasks changes and update projectTasksMap
-watch(
-  tasks,
-  () => {
-    if (!isDragging) {
-      // Update all project task lists
-      allProjects.value.forEach((project) => {
-        initProjectTasks(project.id)
-      })
-    }
-  },
-  { deep: true },
-)
 </script>
 
 <style scoped>
@@ -1123,6 +1244,8 @@ watch(
   width: 100%;
 }
 
+/* VueDraggable wrapper styles for tasks */
+
 .project-card {
   cursor: pointer;
   transition: all 0.2s;
@@ -1131,6 +1254,17 @@ watch(
 .project-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-description {
+  margin-top: 0.75rem;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #606266;
+  line-height: 1.4;
+  border-left: 3px solid #409eff;
 }
 
 .current-project {
@@ -1169,6 +1303,27 @@ watch(
   font-size: 0.875rem;
   color: #909399;
   white-space: nowrap;
+}
+
+.project-id {
+  cursor: pointer;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.project-id:hover {
+  color: #409eff;
+}
+
+.copy-icon {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.project-id:hover .copy-icon {
+  opacity: 1;
 }
 
 .project-actions {
@@ -1579,12 +1734,6 @@ watch(
   padding: 15px;
 }
 
-@media (max-width: 1024px) {
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;
@@ -1592,10 +1741,6 @@ watch(
   }
 
   .tasks-container {
-    grid-template-columns: 1fr;
-  }
-
-  .projects-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1704,5 +1849,21 @@ watch(
   font-size: 12px;
   color: #909399;
   margin-top: 4px;
+}
+
+/* 待办事项输入样式 */
+.todos-input {
+  max-width: 100%;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.todo-item .el-input {
+  flex: 1;
+  margin-right: 8px;
 }
 </style>

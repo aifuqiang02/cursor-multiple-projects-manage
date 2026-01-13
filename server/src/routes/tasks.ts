@@ -113,7 +113,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
     if (!id) {
       return res.status(400).json(ResponseUtil.badRequest('Task ID is required'));
     }
-    const { title, status, priority, order } = req.body;
+    const { title, status, priority, order, projectId } = req.body;
 
     // Find task and verify ownership through project
     const task = await prisma.task.findFirst({
@@ -127,13 +127,24 @@ router.put('/:id', authenticateToken, async (req, res) => {
       return res.status(404).json(ResponseUtil.taskNotFound());
     }
 
+    // If updating projectId, verify the new project belongs to the user
+    if (projectId && projectId !== task.projectId) {
+      const newProject = await prisma.project.findFirst({
+        where: { id: projectId, userId: req.userId }
+      });
+      if (!newProject) {
+        return res.status(404).json(ResponseUtil.notFound('目标项目不存在或无权限访问'));
+      }
+    }
+
     const updatedTask = await prisma.task.update({
       where: { id },
       data: {
-        title,
-        status,
-        priority,
-        order
+        ...(title !== undefined && { title }),
+        ...(status !== undefined && { status }),
+        ...(priority !== undefined && { priority }),
+        ...(order !== undefined && { order }),
+        ...(projectId !== undefined && { projectId })
       }
     });
 

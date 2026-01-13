@@ -20,12 +20,10 @@ const getActiveTaskCount = (projectId: string) => {
     .length;
 };
 
-// 按照活跃任务数量降序排序的项目列表
+// 项目列表，按创建时间倒序排列
 const sortedProjects = computed(() => {
   return [...allProjects.value].sort((a, b) => {
-    const countA = getActiveTaskCount(a.id);
-    const countB = getActiveTaskCount(b.id);
-    return countB - countA; // 降序排列，任务多的在前
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 });
 
@@ -37,8 +35,27 @@ const handleLogout = () => {
   router.push("/login");
 };
 
+// 播放提示音
+const playNotificationSound = () => {
+  try {
+    const audio = new Audio('/notification.mp3');
+    audio.volume = 0.5; // 设置音量为50%
+    audio.play().catch(err => {
+      console.warn('无法播放提示音:', err);
+    });
+  } catch (error) {
+    console.warn('音频播放失败:', error);
+  }
+};
+
 // 点击项目跳转到任务列表
 const handleProjectClick = (project: any) => {
+  // 如果项目有待办事项，播放提示音
+  const activeTaskCount = getActiveTaskCount(project.id);
+  if (activeTaskCount > 0) {
+    playNotificationSound();
+  }
+
   router.push(`/projects/${project.id}/tasks`);
 };
 

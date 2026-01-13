@@ -31,8 +31,10 @@ model Project {
   name        String
   cursorKey   String?  // Cursor密钥
   uuid        String   @unique @default(cuid())
-  status      String   @default("active") // active, hidden
+  status      String   @default("active") // active, hidden, deleted (逻辑删除)
   description String?
+  order       Int?     // 排序字段，用户可拖拽排序
+  notificationSound String? // 待办事项提示音文件路径
   ports       Json?    // Allocated ports array: [{port: number, remark: string, allocatedAt: DateTime}]
   // AI execution status fields
   aiStatus    String?  @default("idle") // idle, running, success, failed, warning

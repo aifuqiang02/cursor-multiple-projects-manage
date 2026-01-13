@@ -11,6 +11,7 @@ import authRoutes from './routes/auth.js';
 import projectRoutes from './routes/projects.js';
 import taskRoutes from './routes/tasks.js';
 import userTodosRoutes from './routes/usertodos.js';
+import uploadRoutes from './routes/upload.js';
 import { ResponseUtil } from './lib/response.js';
 import { setWebSocketServer } from './lib/websocket.js';
 // Database connection test
@@ -49,6 +50,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/usertodos', userTodosRoutes);
+app.use('/api/upload', uploadRoutes);
 // Basic health check
 app.get('/api/health', (req, res) => {
     res.json(ResponseUtil.success({

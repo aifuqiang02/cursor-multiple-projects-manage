@@ -18,7 +18,7 @@ log "Hook completed successfully"
 log "Calling API to stop AI execution..."
 
 # Make API call and capture response
-response=$(curl -X POST "http://127.0.0.1:1012/api/projects/cmk5g3gyd0000qwrl3o13kyku/ai-status-stop" \
+response=$(curl -X POST "http://127.0.0.1:1012/api/projects/cmkasrbel0036y4rll2gxrn8i/ai-status-stop" \
   -H "Content-Type: application/json" \
   -d '{"status": "completed"}' \
   -s -w "\nHTTP_STATUS:%{http_code}")

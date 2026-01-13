@@ -27,8 +27,50 @@ const activeTabBar = ref(1); // 待办任务是第2个标签
 const userTodos = ref<UserTodo[]>([]);
 const loading = ref(false);
 const currentTimestamp = ref(Date.now()); // 当前时间戳
+const previousTodoCount = ref(0); // 上次获取到的待办任务数量
+const lastNotificationTime = ref(0); // 上次播放提示音的时间
 
 const router = useRouter();
+
+// 音频播放功能
+const playNotificationSound = async () => {
+  try {
+    // 检查是否为移动设备
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+
+    if (!isMobile) {
+      return; // 只在移动设备上播放提示音
+    }
+
+    // 尝试播放音频提示音（使用Web Audio API生成简短提示音）
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const audioContext: AudioContext = new AudioContextClass();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.setValueAtTime(600, audioContext.currentTime); // 频率
+    oscillator.type = "sine"; // 波形类型
+
+    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3); // 0.3秒内淡出
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3); // 播放0.3秒
+  } catch (error) {
+    console.log("无法播放提示音:", error);
+    // 如果无法播放音频，使用振动作为替代（仅移动设备）
+    if ("vibrate" in navigator) {
+      navigator.vibrate(150); // 振动150ms作为替代
+    }
+  }
+};
 
 // 时间更新定时器
 let timeUpdateInterval: number | null = null;
@@ -84,7 +126,24 @@ const fetchUserTodos = async () => {
   try {
     loading.value = true;
     const response = await api.get("/usertodos?status=pending");
-    userTodos.value = response.data.data;
+    const newTodos = response.data.data;
+
+    // 检查是否有新增的待办任务
+    const currentTodoCount = newTodos.length;
+    const now = Date.now();
+    if (
+      currentTodoCount > previousTodoCount.value &&
+      previousTodoCount.value > 0 &&
+      now - lastNotificationTime.value > 30000
+    ) {
+      // 30秒内不重复播放
+      // 有新的待办任务，播放提示音
+      await playNotificationSound();
+      lastNotificationTime.value = now;
+    }
+
+    userTodos.value = newTodos;
+    previousTodoCount.value = currentTodoCount;
   } catch (error) {
     console.error("获取待办任务失败:", error);
     showToast("获取待办任务失败");
@@ -210,7 +269,7 @@ onUnmounted(() => {
         </van-list>
 
         <!-- 空状态 -->
-        <van-empty v-else description="暂无待办任务" image="todo-list-o">
+        <van-empty v-else description="暂无待办任务">
           <van-button round type="primary" class="bottom-button"> 刷新 </van-button>
         </van-empty>
       </van-pull-refresh>

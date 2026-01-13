@@ -14,8 +14,10 @@ export interface Project {
   name: string
   cursorKey?: string
   uuid: string
-  status: 'active' | 'hidden'
+  status: 'active' | 'hidden' | 'deleted'
   description?: string
+  order?: number
+  notificationSound?: string
   ports?: AllocatedPort[]
   aiStatus?:
     | 'idle'
@@ -47,13 +49,14 @@ export interface CreateProjectData {
   name: string
   cursorKey?: string
   description?: string
+  notificationSound?: string
 }
 
 export interface UpdateProjectData {
   name?: string
   cursorKey?: string
   description?: string
-  status?: 'active' | 'hidden'
+  status?: 'active' | 'hidden' | 'deleted'
   ports?: AllocatedPort[]
 }
 
@@ -145,6 +148,23 @@ export const projectService = {
   async allocatePorts(id: string, count: number): Promise<AllocatedPort[]> {
     const response = await api.post(`/projects/${id}/allocate-ports`, { count })
     return response.data.data
+  },
+
+  async updateProjectOrder(projectIds: string[]): Promise<void> {
+    await api.put('/projects/order', { projectIds })
+  },
+
+  async uploadNotificationSound(file: File): Promise<string> {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const response = await api.post('/upload/notification-sound', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+
+    return response.data.data.filePath
   },
 
   // Business logic methods
@@ -383,6 +403,8 @@ const startAIExecution = projectService.startAIExecutionWithState.bind(projectSe
 const stopAIExecution = projectService.stopAIExecutionWithState.bind(projectService)
 const setupWebSocketListeners = projectService.setupWebSocketListeners.bind(projectService)
 const allocatePorts = projectService.allocatePorts.bind(projectService)
+const updateProjectOrder = projectService.updateProjectOrder.bind(projectService)
+const uploadNotificationSound = projectService.uploadNotificationSound.bind(projectService)
 
 // Export everything
 export {
@@ -410,4 +432,6 @@ export {
   stopAIExecution,
   setupWebSocketListeners,
   allocatePorts,
+  updateProjectOrder,
+  uploadNotificationSound,
 }
