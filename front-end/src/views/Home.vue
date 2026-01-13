@@ -159,7 +159,7 @@
                   <!-- DEBUG: show task counts and sample items for this project -->
 
                   <draggable
-                    :list="projectTasksMap[project.id] || []"
+                    :list="getVisibleTasks(project.id)"
                     :group="{ name: 'tasks', pull: false, put: false }"
                     :animation="200"
                     class="tasks-list"
@@ -791,6 +791,13 @@ const toggleProjectExpansion = (projectId: string) => {
   } else {
     expandedProjects.value.add(projectId)
   }
+}
+
+// Return tasks visible in the project card (max 3 unless expanded)
+const getVisibleTasks = (projectId: string) => {
+  const list = projectTasksMap[projectId] || []
+  if (isProjectExpanded(projectId)) return list
+  return list.slice(0, 3)
 }
 
 // Update task status or delete task
