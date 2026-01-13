@@ -170,7 +170,7 @@
                         <div class="task-content">
                           <div
                             class="task-title"
-                            style="font-weight: 600; cursor: pointer"
+                            style="cursor: pointer"
                             @click="copyTaskTitle(task.title)"
                             title="点击复制任务内容"
                           >

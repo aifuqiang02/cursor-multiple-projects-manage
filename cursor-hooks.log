@@ -2828,3 +2828,14 @@
 [2026-01-13 16:12:13] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
 [2026-01-13 16:12:13] AI execution stop API called
 [2026-01-13 16:12:13] Hook execution cycle finished
+[2026-01-13 17:40:15] BeforeSubmitPrompt Hook executed: {"conversation_id":"e546300a-3eba-4c28-b2f8-ba0833c306c5","generation_id":"f6131c2c-3939-474a-a507-8e59adb4839a","model":"claude-4.5-opus-high-thinking","prompt":"<div data-v-2dc54a20=\"\" class=\"task-title\" title=\"点击复制任务内容\" style=\"font-weight: 600; cursor: pointer;\">专家移动端，显示活动创建人的联系电话。需要咨询什么的时候。可以打电话联系</div> 这个任务内容字体不用加粗","attachments":[{"type":"file","file_path":"d:\\git-projects\\cursor-multiple-projects-manage\\front-end\\src\\views\\Home.vue"},{"type":"file","file_path":"c:\\Users\\Administrator\\.cursor\\projects\\d-git-projects-cursor-multiple-projects-manage\\terminals\\2.txt"},{"type":"rule","file_path":"my.mdc"}],"hook_event_name":"beforeSubmitPrompt","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"lg7ag9txgwc6@freecursor.fun"}
+[2026-01-13 17:40:15] Calling API to start AI execution...
+[2026-01-13 17:40:16] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
+[2026-01-13 17:40:16] AI execution start API called
+[2026-01-13 17:40:16] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-13 17:41:19] Hook executed: {"conversation_id":"e546300a-3eba-4c28-b2f8-ba0833c306c5","generation_id":"f6131c2c-3939-474a-a507-8e59adb4839a","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"lg7ag9txgwc6@freecursor.fun"}
+[2026-01-13 17:41:19] Hook completed successfully
+[2026-01-13 17:41:19] Calling API to stop AI execution...
+[2026-01-13 17:41:20] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-13 17:41:20] AI execution stop API called
+[2026-01-13 17:41:20] Hook execution cycle finished
