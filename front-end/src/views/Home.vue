@@ -41,7 +41,7 @@
           </div>
 
           <div class="projects-grid">
-            <div v-for="project in sortedProjects" :key="project.id" class="project-card-wrapper">
+            <div v-for="project in allProjects" :key="project.id" class="project-card-wrapper">
               <el-card
                 class="project-card"
                 :class="{ 'current-project': currentProject?.id === project.id }"
@@ -100,6 +100,15 @@
                   </div>
 
                   <div class="project-actions">
+                    <el-select
+                      size="small"
+                      :value="getProjectCurrentPosition(project.id)"
+                      placeholder="排序"
+                      style="width: 84px; margin-right: 8px"
+                      @change="(val: number) => handleProjectOrderSelect(project, val)"
+                    >
+                      <el-option v-for="n in numberOptions" :key="n" :label="n" :value="n" />
+                    </el-select>
                     <el-dropdown
                       @command="(action: string) => handleProjectAction(project, action)"
                       class="project-actions-dropdown"
@@ -617,6 +626,31 @@ const allocatePortsForm = reactive({
 
 const projectRules = {
   name: [{ required: true, message: '请输入项目名称', trigger: 'blur' }],
+}
+
+// Order dropdown helpers
+const numberOptions = computed(() => {
+  return Array.from({ length: allProjects.value.length }, (_, i) => i + 1)
+})
+
+const getProjectCurrentPosition = (projectId: string) => {
+  const idx = allProjects.value.findIndex((p) => p.id === projectId)
+  return idx === -1 ? allProjects.value.length : idx + 1
+}
+
+const handleProjectOrderSelect = async (project: Project, position: number) => {
+  try {
+    // Build new ordered id list by moving this project to the chosen position
+    const ids = allProjects.value.map((p) => p.id).filter((id) => id !== project.id)
+    ids.splice(position - 1, 0, project.id)
+    await updateProjectOrder(ids)
+    // Refresh projects to get updated order/state
+    await fetchProjects()
+    ElMessage.success('项目顺序已更新')
+  } catch (error) {
+    console.error('Failed to update project order:', error)
+    ElMessage.error('更新排序失败')
+  }
 }
 
 // 创建一个响应式的任务列表映射（按项目分组）

@@ -58,7 +58,7 @@ router.get('/', authenticateToken, async (req, res) => {
         },
       },
       include: projectInclude,
-      orderBy: { updatedAt: 'desc' },
+      orderBy: [{ order: 'asc' }, { updatedAt: 'desc' }],
     })
 
     res.json(ResponseUtil.success(projects))
