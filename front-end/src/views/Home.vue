@@ -176,10 +176,7 @@
                           >
                             {{ task.title }}
                           </div>
-                          <div style="font-size: 12px; color: #909399; margin-top: 6px">
-                            状态: {{ getStatusText(task.status) }} · 优先级: {{ task.priority }} ·
-                            order: {{ task.order }}
-                          </div>
+                          
 
                           <div class="task-action" style="margin-top: 8px">
                             <el-button

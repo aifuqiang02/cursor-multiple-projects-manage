@@ -2822,3 +2822,9 @@
 [2026-01-13 16:11:26] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已启动","data":""}
 [2026-01-13 16:11:26] AI execution start API called
 [2026-01-13 16:11:26] BeforeSubmitPrompt Hook execution cycle finished
+[2026-01-13 16:12:13] Hook executed: {"conversation_id":"e546300a-3eba-4c28-b2f8-ba0833c306c5","generation_id":"18f35dfa-01cd-4740-884a-d28cb4930337","model":"claude-4.5-opus-high-thinking","status":"completed","loop_count":0,"hook_event_name":"stop","cursor_version":"2.2.3","workspace_roots":["/d:/git-projects/cursor-multiple-projects-manage"],"user_email":"lg7ag9txgwc6@freecursor.fun"}
+[2026-01-13 16:12:13] Hook completed successfully
+[2026-01-13 16:12:13] Calling API to stop AI execution...
+[2026-01-13 16:12:13] API Response - Status: 200, Body: {"code":200,"msg":"AI执行已停止","data":""}
+[2026-01-13 16:12:13] AI execution stop API called
+[2026-01-13 16:12:13] Hook execution cycle finished
