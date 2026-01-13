@@ -99,11 +99,6 @@
                     </span>
                   </div>
 
-                  <!-- 项目描述 -->
-                  <div v-if="project.description" class="project-description">
-                    {{ project.description }}
-                  </div>
-
                   <div class="project-actions">
                     <el-dropdown
                       @command="(action: string) => handleProjectAction(project, action)"
@@ -131,6 +126,15 @@
                       </template>
                     </el-dropdown>
                   </div>
+                </div>
+
+                <!-- Project description (moved below header for full-width display) -->
+                <div
+                  v-if="project.description"
+                  class="project-description"
+                  style="margin-top: 12px"
+                >
+                  {{ project.description }}
                 </div>
 
                 <!-- Project Tasks -->
@@ -1258,13 +1262,12 @@ watch(currentProject, async (newProject) => {
 
 .project-description {
   margin-top: 0.75rem;
-  padding: 0.5rem;
-  background-color: #f8f9fa;
-  border-radius: 6px;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
   font-size: 0.875rem;
-  color: #606266;
+  color: #909399; /* 辅助性文字颜色 */
   line-height: 1.4;
-  border-left: 3px solid #409eff;
 }
 
 .current-project {
